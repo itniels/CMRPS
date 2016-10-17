@@ -38,5 +38,12 @@ namespace CMRPS.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        // DB Sets
+        public DbSet<ComputerModel> Computers { get; set; }
+        public DbSet<ColorModel> Colors { get; set; }
+        public DbSet<LocationModel> Locations { get; set; }
+        public DbSet<InfoModel> ComputerInfos { get; set; }
+        public DbSet<ComputerTypeModel> ComputerTypes { get; set; }
     }
 }
