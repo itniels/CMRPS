@@ -75,7 +75,7 @@ namespace CMRPS.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -139,7 +139,15 @@ namespace CMRPS.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            // Only allow 1 user to register without having signed in!
+            ApplicationDbContext db = new ApplicationDbContext();
+            int usercount = db.Users.Count();
+            if (usercount == 0 || User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return View("NoRegistration");
+
         }
 
         //
@@ -151,7 +159,7 @@ namespace CMRPS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, Firstname = model.Firstname, Lastname = model.Lastname };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
