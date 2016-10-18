@@ -6,10 +6,12 @@
     <title>@ViewBag.Title - CMRPS</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
 </head>
 <body>
-    <div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -21,9 +23,28 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home", null, new { title = "Homepage" })</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Computers <span class="caret"></span></a>
+                            <ul class="dropdown-menu navbar-inverse">
+                                <li><a href="#">Overview</a></li>
+                                <li><a href="#">List</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage <span class="caret"></span></a>
+                            <ul class="dropdown-menu navbar-inverse">
+                                <li><a href="#">Computers</a></li>
+                                <li>@Html.ActionLink("Colors", "Index", "Color", null, new { title = "Manage Computer Colors" })</li>
+                                <li><a href="#">Locations</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Import</a></li>
+                                <li><a href="#">Export</a></li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -33,7 +54,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <div class="navbar-default navbar-fixed-bottom">
+            <div class="navbar-inverse navbar-fixed-bottom">
                 <div class="footer-text">
                     <p>&copy; @DateTime.Now.Year - CMRPS - Computer Manager and Remote Power System - by Niels Schmidt</p>
                 </div>
@@ -41,8 +62,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -18,12 +18,13 @@
 
         }
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Admin", "Index", "Admin", null, htmlAttributes: new { title = "Administration area for site settings." })</li>
+            <li>
+                @Html.ActionLink("Hello " + name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new {title = "Your profile"})
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()" title="Log off">Log off</a></li>
+        </ul>
     }
 }
 else

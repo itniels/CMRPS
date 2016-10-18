@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using CMPRS.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -40,6 +41,7 @@ namespace CMRPS.Web.Models
         }
 
         // DB Sets
+        public DbSet<SettingsModel> Settings { get; set; }
         public DbSet<ComputerModel> Computers { get; set; }
         public DbSet<ColorModel> Colors { get; set; }
         public DbSet<LocationModel> Locations { get; set; }

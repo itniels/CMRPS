@@ -20,6 +20,10 @@
 input,
 select,
 textarea {
+    /*max-width: 280px;*/
+}
+
+.fixed-width-textarea {
     max-width: 280px;
 }
 
@@ -27,4 +31,8 @@ textarea {
     color: whitesmoke;
     text-align: center;
     padding-top: 5px;
+}
+
+.no-registration-text {
+    text-align: center;
 }
