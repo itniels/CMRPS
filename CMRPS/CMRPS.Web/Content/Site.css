@@ -43,3 +43,8 @@ textarea {
     font-weight: bold;
     padding-top: 25px;
 }
+
+.description-input-box {
+    width: 95% !important;
+    height: 320px !important;
+}

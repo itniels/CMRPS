@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -30,10 +31,15 @@ namespace CMRPS.Web.Controllers
             Ping pinger = new Ping();
             try
             {
+                // Ping computer
                 PingReply reply = pinger.Send(computer.Hostname);
+                //Update database
+                computer.Status = reply.Status == IPStatus.Success;
+                db.Computers.AddOrUpdate(computer);
+                // return
                 return reply.Status == IPStatus.Success;
             }
-            catch (PingException ex) { }
+            catch (PingException) { }
             return false;
         }
 
@@ -161,7 +167,7 @@ namespace CMRPS.Web.Controllers
                 Process.Start(path, args);
                 return true;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             return false;
 
         }
@@ -207,7 +213,7 @@ namespace CMRPS.Web.Controllers
                     bool length = returnValue == bytes.Length;
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -231,7 +237,7 @@ namespace CMRPS.Web.Controllers
                 string args = String.Format("-s -m \\\\{0} -t {1} {2} {3}", hostname, timeout, useForce, useMessage);
                 Process.Start("shutdown", args);
             }
-            catch (Exception ex){ }
+            catch (Exception){ }
             return false;
         }
 
@@ -270,7 +276,7 @@ namespace CMRPS.Web.Controllers
 
                 return true;
             }
-            catch (Exception ex){ }
+            catch (Exception){ }
             return false;
         }
 
@@ -311,7 +317,7 @@ namespace CMRPS.Web.Controllers
                 }
                 return true;
             }
-            catch (Exception ex){ }
+            catch (Exception){ }
             return false;
         }
 
@@ -327,7 +333,7 @@ namespace CMRPS.Web.Controllers
                 string args = String.Format("-r -m \\\\{0} -t {1} {2} {3}", hostname, timeout, useForce, useMessage);
                 Process.Start("shutdown", args);
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             return false;
         }
 
@@ -366,7 +372,7 @@ namespace CMRPS.Web.Controllers
 
                 return true;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             return false;
         }
 
@@ -407,7 +413,7 @@ namespace CMRPS.Web.Controllers
                 }
                 return true;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             return false;
         }
     }

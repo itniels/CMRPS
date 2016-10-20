@@ -1,4 +1,5 @@
 ﻿using CMPRS.Web.App_Start;
+using CMRPS.Web.Controllers;
 using Hangfire;
 using Microsoft.Owin;
 using Owin;
@@ -17,6 +18,9 @@ namespace CMRPS.Web
             app.MapSignalR();
             app.UseHangfireDashboard();
             app.UseHangfireServer();
+
+            // Add hangfire jobs
+            RecurringJob.AddOrUpdate(() => JobsController.Ping(), Cron.Minutely);
         }
     }
 }

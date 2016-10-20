@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +12,7 @@ namespace CMRPS.Web.Models
 
         public string Description { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime PurchaseDate { get; set; }
 
         public string Manufacturer { get; set; }

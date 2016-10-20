@@ -23,11 +23,14 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
-        //[HttpGet]
-        //[Authorize]
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        [Authorize]
+        public ActionResult Create()
+        {
+            CreateComputerViewModel model = new CreateComputerViewModel();
+            model.Colors = new SelectList(db.Colors.ToList());
+            model.Locations = new SelectList(db.Locations.ToList());
+            return View(model);
+        }
     }
 }

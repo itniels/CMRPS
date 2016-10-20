@@ -195,9 +195,11 @@
     <Compile Include="Controllers\ColorController.cs" />
     <Compile Include="Controllers\ComputerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
+    <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Enums\Action.cs" />
     <Compile Include="Enums\ActionStatus.cs" />
@@ -228,6 +230,10 @@
     <Compile Include="Migrations\201610181444126_m5.cs" />
     <Compile Include="Migrations\201610181444126_m5.Designer.cs">
       <DependentUpon>201610181444126_m5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610201502136_m6.cs" />
+    <Compile Include="Migrations\201610201502136_m6.Designer.cs">
+      <DependentUpon>201610201502136_m6.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
@@ -333,12 +339,15 @@
     <Content Include="Views\Location\Index.cshtml" />
     <Content Include="Views\Computer\Index.cshtml" />
     <Content Include="Views\Computer\_PartialIndexList.cshtml" />
+    <Content Include="Views\Computer\Create.cshtml" />
     <None Include="Views\Status\ListView.cshtml" />
     <None Include="Views\Status\Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Jobs\" />
     <Folder Include="Views\Power\" />
+    <Folder Include="Views\Schedule\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -361,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610181444126_m5.resx">
       <DependentUpon>201610181444126_m5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610201502136_m6.resx">
+      <DependentUpon>201610201502136_m6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
