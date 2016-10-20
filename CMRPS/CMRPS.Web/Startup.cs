@@ -1,4 +1,5 @@
 ﻿using CMPRS.Web.App_Start;
+using Hangfire;
 using Microsoft.Owin;
 using Owin;
 
@@ -9,8 +10,13 @@ namespace CMRPS.Web
     {
         public void Configuration(IAppBuilder app)
         {
+            GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
+
             Site.SettingsLoad();
             ConfigureAuth(app);
+            app.MapSignalR();
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
         }
     }
 }

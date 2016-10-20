@@ -33,20 +33,20 @@ namespace CMPRS.Web.App_Start
             return true;
         }
 
-        public static bool SettingsSave(SettingsModel model)
-        {
-            try
-            {
-                Settings = model;
-                db.Settings.AddOrUpdate(model);
-                db.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
+        //public static bool SettingsSave(SettingsModel model)
+        //{
+        //    try
+        //    {
+        //        Settings = model;
+        //        db.Settings.AddOrUpdate(model);
+        //        db.SaveChanges();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
     }
 }

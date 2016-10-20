@@ -29,19 +29,16 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Computers <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li><a href="#">Overview</a></li>
-                                <li><a href="#">List</a></li>
+                                <li>@Html.ActionLink("Computers", "Overview", "Status", null, new { title = "See status overview" })</li>
+                                <li>@Html.ActionLink("Computers", "ListView", "Status", null, new { title = "See status list view" })</li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li><a href="#">Computers</a></li>
-                                <li>@Html.ActionLink("Colors", "Index", "Color", null, new { title = "Manage Computer Colors" })</li>
-                                <li><a href="#">Locations</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Import</a></li>
-                                <li><a href="#">Export</a></li>
+                                <li>@Html.ActionLink("Computers", "Index", "Computer", null, new { title = "Manage Computers" })</li>
+                                <li>@Html.ActionLink("Colors", "Index", "Color", null, new {title = "Manage Computer Colors"})</li>
+                                <li>@Html.ActionLink("Locations", "Index", "Location", null, new { title = "Manage Computer Locations" })</li>
                             </ul>
                         </li>
                     }
@@ -52,7 +49,6 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
         <footer>
             <div class="navbar-inverse navbar-fixed-bottom">
                 <div class="footer-text">
