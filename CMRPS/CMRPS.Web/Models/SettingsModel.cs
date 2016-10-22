@@ -17,6 +17,7 @@ namespace CMPRS.Web.Models
         [Display(Name = "Administrator Username")]
         public string AdminUsername { get; set; }
 
+        [DataType(DataType.Password)]
         [Display(Name = "Administrator Password")]
         public string AdminPassword { get; set; }
 

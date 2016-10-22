@@ -1,19 +1,20 @@
 ﻿@using CMRPS.Web.Models
 @model CMRPS.Web.ModelsView.CreateComputerViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create Computer</h2>
+<h2>Edit Computer</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Computer.Id)
     <div class="error-text">@Html.ValidationSummary()</div>
 
     <div class="row">
         <div class="col-md-12">
-            <input type="submit" value="Create" class="btn btn-sm btn-success pull-right" />
+            <input type="submit" value="Save" class="btn btn-sm btn-success pull-right" />
         </div>
     </div>
 
@@ -110,7 +111,7 @@
                     @Html.LabelFor(x => x.Computer.PurchaseDate)
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
+                    @Html.EditorFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
                 </div>
             </div>
             <br />

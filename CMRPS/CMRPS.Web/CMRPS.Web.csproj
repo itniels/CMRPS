@@ -194,6 +194,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ColorController.cs" />
     <Compile Include="Controllers\ComputerController.cs" />
+    <Compile Include="Controllers\ComputerTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -235,7 +236,28 @@
     <Compile Include="Migrations\201610201502136_m6.Designer.cs">
       <DependentUpon>201610201502136_m6.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610211509581_m7.cs" />
+    <Compile Include="Migrations\201610211509581_m7.Designer.cs">
+      <DependentUpon>201610211509581_m7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211532015_m8.cs" />
+    <Compile Include="Migrations\201610211532015_m8.Designer.cs">
+      <DependentUpon>201610211532015_m8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211543566_m9.cs" />
+    <Compile Include="Migrations\201610211543566_m9.Designer.cs">
+      <DependentUpon>201610211543566_m9.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211551347_m10.cs" />
+    <Compile Include="Migrations\201610211551347_m10.Designer.cs">
+      <DependentUpon>201610211551347_m10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610221217465_m11.cs" />
+    <Compile Include="Migrations\201610221217465_m11.Designer.cs">
+      <DependentUpon>201610221217465_m11.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
     <Compile Include="ModelsView\HomeViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -244,7 +266,6 @@
     <Compile Include="Models\ComputerTypeModel.cs" />
     <Compile Include="Models\EventLogModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\InfoModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SettingsModel.cs" />
@@ -340,6 +361,12 @@
     <Content Include="Views\Computer\Index.cshtml" />
     <Content Include="Views\Computer\_PartialIndexList.cshtml" />
     <Content Include="Views\Computer\Create.cshtml" />
+    <Content Include="Views\Computer\Edit.cshtml" />
+    <Content Include="Views\ComputerType\Create.cshtml" />
+    <Content Include="Views\ComputerType\Delete.cshtml" />
+    <Content Include="Views\ComputerType\Details.cshtml" />
+    <Content Include="Views\ComputerType\Edit.cshtml" />
+    <Content Include="Views\ComputerType\Index.cshtml" />
     <None Include="Views\Status\ListView.cshtml" />
     <None Include="Views\Status\Overview.cshtml" />
   </ItemGroup>
@@ -373,6 +400,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610201502136_m6.resx">
       <DependentUpon>201610201502136_m6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211509581_m7.resx">
+      <DependentUpon>201610211509581_m7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211532015_m8.resx">
+      <DependentUpon>201610211532015_m8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211543566_m9.resx">
+      <DependentUpon>201610211543566_m9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211551347_m10.resx">
+      <DependentUpon>201610211551347_m10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610221217465_m11.resx">
+      <DependentUpon>201610221217465_m11.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

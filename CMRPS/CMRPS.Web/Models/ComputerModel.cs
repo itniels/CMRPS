@@ -10,8 +10,7 @@ namespace CMRPS.Web.Models
     {
         public int Id { get; set; }
 
-        public ComputerTypeModel Type { get; set; }
-
+        [Required]
         [Display(Name = "Friendly Name")]
         public string Name { get; set; }
 
@@ -21,15 +20,59 @@ namespace CMRPS.Web.Models
         [Display(Name = "MAC Address")]
         public string MAC { get; set; }
 
+        [Required]
         [Display(Name = "Computername")]
         public string Hostname { get; set; }
 
-        public ColorModel Color { get; set; }
+        public ComputerTypeModel Type { get; set; }
 
-        public InfoModel info { get; set; }
+        public ColorModel Color { get; set; }
 
         public LocationModel Location { get; set; }
 
+        [Display(Name = "Status:")]
         public bool Status { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Purchase Date")]
+        public DateTime PurchaseDate { get; set; }
+
+        // Info (optional)
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Display(Name = "Manufacturer")]
+        public string Manufacturer { get; set; }
+
+        [Display(Name = "Model")]
+        public string Model { get; set; }
+
+        [Display(Name = "CPU")]
+        public string CPU { get; set; }
+
+        [Display(Name = "CPU Cores")]
+        public string CPUCores { get; set; }
+
+        [Display(Name = "RAM")]
+        public string RAM { get; set; }
+
+        [Display(Name = "RAM Size")]
+        public string RAMSize { get; set; }
+
+        [Display(Name = "Disk(s)")]
+        public string Disk { get; set; }
+
+        [Display(Name = "Disk Size")]
+        public string DiskSize { get; set; }
+
+        [Display(Name = "Ethernet Cable")]
+        public string EthernetCable { get; set; }
+
+        [Display(Name = "Ethernet WIFI")]
+        public string EthernetWifi { get; set; }
+
+        [Display(Name = "Operating System")]
+        public string OS { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using CMPRS.Web.Models;
+using CMRPS.Web.Models;
 
 namespace CMRPS.Web.Migrations
 {
@@ -35,7 +36,26 @@ namespace CMRPS.Web.Migrations
                     RebootMessage = "Rebooting in 2 minutes by CMRPS.",
                     RebootTimeout = 120,
                 }
-            
+
+            );
+
+            // Types
+            context.ComputerTypes.AddOrUpdate(x => x.Id,
+                new ComputerTypeModel
+                {
+                    Id = 1,
+                    ImagePath = "",
+                    Name = "Desktop",
+                }
+            );
+
+            context.ComputerTypes.AddOrUpdate(x => x.Id,
+                new ComputerTypeModel
+                {
+                    Id = 2,
+                    ImagePath = "",
+                    Name = "Laptop",
+                }
             );
         }
     }

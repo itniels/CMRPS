@@ -14,5 +14,10 @@ namespace CMRPS.Web.Models
         public string ImagePath { get; set; }
 
         public virtual List<ComputerModel> Computers { get; set; }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

@@ -45,7 +45,6 @@ namespace CMRPS.Web.Models
         public DbSet<ComputerModel> Computers { get; set; }
         public DbSet<ColorModel> Colors { get; set; }
         public DbSet<LocationModel> Locations { get; set; }
-        public DbSet<InfoModel> ComputerInfos { get; set; }
         public DbSet<ComputerTypeModel> ComputerTypes { get; set; }
     }
 }

@@ -45,6 +45,10 @@ textarea {
 }
 
 .description-input-box {
-    width: 95% !important;
-    height: 320px !important;
+    width: 95%;
+    height: 175px;
+}
+
+.error-text {
+    color: red;
 }

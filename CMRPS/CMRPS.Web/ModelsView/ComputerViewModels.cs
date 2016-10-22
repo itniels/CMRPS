@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,11 +19,19 @@ namespace CMRPS.Web.ModelsView
     {
         // Computer Fields
         public ComputerModel Computer { get; set; }
+        
+        // Type
+        [Required]
+        [Display(Name = "Type:")]
+        public string SelectedType { get; set; }
         // Color
-        public SelectList Colors { get; set; }
+        [Required]
+        [Display(Name = "Color:")]
+        public string SelectedColor { get; set; }
         // Location
-        public SelectList Locations { get; set; }
-        // Info
-        public InfoModel Info { get; set; }
+        [Required]
+        [Display(Name = "Location:")]
+        public string SelectedLocation { get; set; }
+        
     }
 }
