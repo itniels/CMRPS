@@ -7,21 +7,20 @@
 <script src="../../Scripts/jquery-hex-colorpicker.min.js"></script>
 <link rel="stylesheet" href="../../Content/jquery-hex-colorpicker.css"/>
 
-<h2>Create</h2>
+<h2>Create new color</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <hr/>
-    <h4>Example</h4>
-    <span id="text-example">&nbsp;&nbsp; Some-PC &nbsp;&nbsp;</span>
+    <div class="text-center">
+        <span>Example label: </span><br/><span id="text-example">&nbsp;&nbsp; Some-PC &nbsp;&nbsp;</span>
+    </div>
     <hr />
 
     <div class="form-horizontal">
-        <h4>ColorModel</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -34,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ColorLabel, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ColorLabel, new { htmlAttributes = new { @class = "form-control", id = "color-label", @onchange = "demoColors();" } })
+                @Html.EditorFor(model => model.ColorLabel, new { htmlAttributes = new { @class = "form-control", id = "color-label", @onchange = "demoColors();", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.ColorLabel, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ColorText, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ColorText, new { htmlAttributes = new { @class = "form-control", id = "color-text", @onchange = "demoColors();" } })
+                @Html.EditorFor(model => model.ColorText, new { htmlAttributes = new { @class = "form-control", id = "color-text", @onchange = "demoColors();", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.ColorText, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -76,4 +75,6 @@
         $('#text-example').css('color', textColor);
         $('#text-example').css('background-color', labelColor);
     }
+
+    demoColors();
 </script>

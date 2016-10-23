@@ -38,29 +38,15 @@ namespace CMRPS.Web.Controllers
         }
 
         // GET: ComputerType/Create
+        [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ComputerType/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,Name,ImagePath")] ComputerTypeModel computerTypeModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.ComputerTypes.Add(computerTypeModel);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(computerTypeModel);
-        //}
-
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateComputerTypeViewModel model)
         {
@@ -72,7 +58,7 @@ namespace CMRPS.Web.Controllers
                 if (model.UploadedFile != null)
                 {
                     string directory = Server.MapPath("~/Content/TypeImages/");
-                    var path = Path.Combine(directory, model.UploadedFile.FileName);
+                    var path = Path.Combine(directory, model.ComputerType.Name + Path.GetExtension(model.UploadedFile.FileName));
 
                     if (!Directory.Exists(directory))
                         Directory.CreateDirectory(directory);

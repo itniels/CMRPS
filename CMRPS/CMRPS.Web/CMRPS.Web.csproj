@@ -367,6 +367,7 @@
     <Content Include="Views\ComputerType\Details.cshtml" />
     <Content Include="Views\ComputerType\Edit.cshtml" />
     <Content Include="Views\ComputerType\Index.cshtml" />
+    <Content Include="Views\Computer\_PartialDetails.cshtml" />
     <None Include="Views\Status\ListView.cshtml" />
     <None Include="Views\Status\Overview.cshtml" />
   </ItemGroup>

@@ -36,7 +36,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ColorLabel, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ColorLabel, new { htmlAttributes = new { @class = "form-control", id = "color-label", @onchange = "demoColors();" } })
+                @Html.EditorFor(model => model.ColorLabel, new { htmlAttributes = new { @class = "form-control", id = "color-label", @onchange = "demoColors();", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.ColorLabel, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ColorText, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ColorText, new { htmlAttributes = new { @class = "form-control", id = "color-text", @onchange = "demoColors();" } })
+                @Html.EditorFor(model => model.ColorText, new { htmlAttributes = new { @class = "form-control", id = "color-text", @onchange = "demoColors();", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.ColorText, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -25,6 +25,14 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
+        [ChildActionOnly]
+        public ActionResult Details(int id)
+        {
+            ComputerModel model = db.Computers.SingleOrDefault(x => x.Id == id);
+            return PartialView("_PartialDetails", model);
+        }
+
         [HttpGet]
         [Authorize]
         public ActionResult Create()
@@ -89,16 +97,19 @@ namespace CMRPS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CreateComputerViewModel model)
         {
-            // Get models from dropdowns and add to computer.
-            model.Computer.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == model.SelectedType);
-            model.Computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
-            model.Computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
-
             if (ModelState.IsValid)
             {
-                // Save to db if valid
+                // Save primitive type to 'local' first without committing to DB.
                 db.Computers.AddOrUpdate(model.Computer);
+
+                // Get model back into context including dependencie objects (color,type,location) and primitive types saved above.
+                ComputerModel computer = db.Computers.Single(x => x.Id == model.Computer.Id);
+                computer.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == model.SelectedType);
+                computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
+                computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
+                db.Computers.AddOrUpdate(computer);
                 db.SaveChanges();
+
                 return RedirectToAction("Index", "Computer");
             }
 
