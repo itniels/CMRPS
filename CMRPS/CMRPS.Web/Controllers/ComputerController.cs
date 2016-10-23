@@ -33,6 +33,15 @@ namespace CMRPS.Web.Controllers
             return PartialView("_PartialDetails", model);
         }
 
+        [Authorize]
+        public ActionResult Delete(int id)
+        {
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            db.Computers.Remove(model);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         [Authorize]
         public ActionResult Create()
