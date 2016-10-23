@@ -13,7 +13,10 @@ namespace CMRPS.Web.Controllers
     public class ComputerController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: Computer
+        /// <summary>
+        /// GET | Gets the list of computers in teh system.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ActionResult Index()
@@ -25,6 +28,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// GET | ChildActionOnly | View details of a computer in a partial view for a modal display box.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize]
         [ChildActionOnly]
         public ActionResult Details(int id)
@@ -33,6 +41,11 @@ namespace CMRPS.Web.Controllers
             return PartialView("_PartialDetails", model);
         }
 
+        /// <summary>
+        /// GET | Delete a Computer in the system.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Delete(int id)
         {
@@ -42,6 +55,10 @@ namespace CMRPS.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// GET | Create a new computer.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ActionResult Create()
@@ -54,6 +71,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST | Create computer from form data.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -81,6 +103,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// GET | Returns the view for edit with the computer to edit.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ActionResult Edit(int id)
@@ -101,6 +128,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST | Saves the edited computer to the database.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
