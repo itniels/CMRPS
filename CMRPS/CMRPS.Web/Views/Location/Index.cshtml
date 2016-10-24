@@ -24,8 +24,8 @@
         </td>
         <td>
             <div class="pull-right">
-                <button class="btn btn-xs btn-warning" onclick="location.href('@Url.Action("Edit", "Location", new {id = item.Id})')">Edit</button>
-                <button class="btn btn-xs btn-danger" onclick="location.href('@Url.Action("Delete", "Location", new {id = item.Id})')">Delete</button>
+                <button class="btn btn-xs btn-warning" onclick="location.href='@Url.Action("Edit", "Location", new {id = item.Id})'">Edit</button>
+                <button class="btn btn-xs btn-danger" onclick="location.href='@Url.Action("Delete", "Location", new {id = item.Id})'">Delete</button>
             </div>
             @*@Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
             @Html.ActionLink("Details", "Details", new {id = item.Id}) |

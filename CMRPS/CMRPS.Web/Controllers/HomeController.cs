@@ -10,6 +10,7 @@ namespace CMRPS.Web.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
         [Authorize]
         public ActionResult Index()
         {
