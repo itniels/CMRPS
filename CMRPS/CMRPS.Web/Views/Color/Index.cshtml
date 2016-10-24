@@ -38,9 +38,10 @@
                 @Html.DisplayFor(modelItem => item.ColorText)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
-                @Html.ActionLink("Details", "Details", new {id = item.Id}) |
-                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-warning" onclick="location.href('@Url.Action("Edit", "Color", new {id = item.Id})')">Edit</button>
+                    <button class="btn btn-xs btn-danger" onclick="location.href('@Url.Action("Delete", "Color", new {id = item.Id})')">Delete</button>
+                </div>
             </td>
         </tr>
 
