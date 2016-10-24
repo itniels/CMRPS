@@ -11,6 +11,7 @@ namespace CMRPS.Web.Controllers
     public class JobsController : Controller
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
+        private RecurringJobManager manager = new RecurringJobManager();
         public static bool Ping()
         {
             List<ComputerModel> computers = db.Computers.ToList();

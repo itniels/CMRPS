@@ -40,7 +40,15 @@
                                 <li role="separator" class="divider"></li>
                                 <li>@Html.ActionLink("Colors", "Index", "Color", null, new {title = "Manage Computer Colors"})</li>
                                 <li>@Html.ActionLink("Locations", "Index", "Location", null, new {title = "Manage Computer Locations"})</li>
-                                <li>@Html.ActionLink("Computer Types", "Index", "ComputerType", null, new { title = "Manage Computer Types" })</li>
+                                <li>@Html.ActionLink("Computer Types", "Index", "ComputerType", null, new {title = "Manage Computer Types"})</li>
+                            </ul>
+                        </li>
+                        <li>@Html.ActionLink("Scheduler", "Index", "Home", null, new { title = "Schedule WOL and Shutdown of computers." })</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+                            <ul class="dropdown-menu navbar-inverse">
+                                <li>@Html.ActionLink("Network Tools", "Index", "Home", null, new { title = "Network Tools (Ping, WOL, Shutdown, etc.)" })</li>
+                                <li>@Html.ActionLink("Network Scanner", "Index", "Home", null, new { title = "Network Scanner (Scans the network for devices)" })</li>
                             </ul>
                         </li>
                     }

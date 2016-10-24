@@ -55,5 +55,9 @@ namespace CMPRS.Web.Models
         // Startup
         [Display(Name = "Method")]
         public StartupMethod StartupMethod { get; set; }
+
+        // HangFire
+        [Display(Name = "Interval in minutes to ping")]
+        public int PingInterval { get; set; }
     }
 }
