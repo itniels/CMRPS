@@ -3,10 +3,18 @@
     ViewBag.Title = "Home Page";
 }
 
+@{
+    var name = "Anonymous";
+    if (User.Identity.IsAuthenticated)
+    {
+        name = ((ClaimsIdentity)User.Identity).FindFirst("FirstName").Value;
+    }
+}
+
 <div class="jumbotron">
     <h1>CMRPS</h1>
     <p class="lead">
-        Welcome <b>@(((ClaimsIdentity)User.Identity).FindFirst("FirstName").Value)</b>, to Computer Manager and Remote Power System.
+        Welcome <b>@name</b>, to Computer Manager and Remote Power System.
     </p>
     <p></p>
 </div>
