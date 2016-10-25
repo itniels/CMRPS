@@ -1,0 +1,57 @@
+﻿@model CMRPS.Web.Models.ComputerTypeModel
+
+
+<div class="row">
+    <div class="col-md-2">
+        <img src="@Model.ImagePath" width="50" height="50"/>
+    </div>
+
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-2">
+                Name:
+            </div>
+            <div class="col-md-10">
+                @Model.Name
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Filename:
+            </div>
+            <div class="col-md-10">
+                @Model.Filename
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Path:
+            </div>
+            <div class="col-md-10">
+                @Model.ImagePath
+            </div>
+        </div>
+
+    </div>
+</div>
+<hr/>
+
+    <h4>Used by:</h4>
+
+@if (@Model.Computers != null && @Model.Computers.Count > 0)
+{
+    foreach (var item in @Model.Computers)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                 @item.Name
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="row">
+        <div class="no-items-found">No computers found..</div>
+    </div>
+}

@@ -14,37 +14,54 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Color
+        /// <summary>
+        /// GET | List of colors.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Colors.ToList());
         }
 
-        // GET: Color/Details/5
+        /// <summary>
+        /// GET | Details for a color.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ColorModel colorModel = db.Colors.Find(id);
+            ColorModel colorModel = db.Colors.Single(x => x.Id == id);
             if (colorModel == null)
             {
                 return HttpNotFound();
             }
-            return View(colorModel);
+            return PartialView("_PartialDetails", colorModel);
         }
 
-        // GET: Color/Create
+        /// <summary>
+        /// GET | Create color
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Color/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST | Create new color.
+        /// </summary>
+        /// <param name="colorModel"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,ColorLabel,ColorText")] ColorModel colorModel)
         {
@@ -58,7 +75,12 @@ namespace CMRPS.Web.Controllers
             return View(colorModel);
         }
 
-        // GET: Color/Edit/5
+        /// <summary>
+        /// GET | Edit a color.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -73,10 +95,13 @@ namespace CMRPS.Web.Controllers
             return View(colorModel);
         }
 
-        // POST: Color/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST | Edit a color.
+        /// </summary>
+        /// <param name="colorModel"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,ColorLabel,ColorText")] ColorModel colorModel)
         {
@@ -89,7 +114,12 @@ namespace CMRPS.Web.Controllers
             return View(colorModel);
         }
 
-        // GET: Color/Delete/5
+        /// <summary>
+        /// GET | Delete a color.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -104,7 +134,12 @@ namespace CMRPS.Web.Controllers
             return View(colorModel);
         }
 
-        // POST: Color/Delete/5
+        /// <summary>
+        /// POST | Delete a color.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

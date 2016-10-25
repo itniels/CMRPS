@@ -1,4 +1,4 @@
-﻿@model CMRPS.Web.Models.ComputerTypeModel
+﻿@model CMRPS.Web.ModelsView.CreateComputerTypeViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "ComputerType", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -14,27 +14,29 @@
         <h4>ComputerTypeModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ComputerType.Id)
+        @Html.HiddenFor(model => model.ComputerType.ImagePath)
+        @Html.HiddenFor(model => model.ComputerType.Filename)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ComputerType.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ComputerType.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ComputerType.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ImagePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ComputerType.ImagePath, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ImagePath, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.UploadedFile, new { type = "file", name = "image", htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UploadedFile, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-warning" />
             </div>
         </div>
     </div>

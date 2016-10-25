@@ -1,16 +1,18 @@
 ﻿@model IEnumerable<CMRPS.Web.Models.ColorModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Colors";
 }
 
 
 
-<h2>Index</h2>
+<h2>Colors</h2>
+<hr />
+<div>
+    <span class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "Color")'">Create new</span>
+</div>
+<br />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -22,6 +24,7 @@
         <th>
             @Html.DisplayNameFor(model => model.ColorText)
         </th>
+        <th>Used by</th>
         <th></th>
     </tr>
 
@@ -38,16 +41,48 @@
                 @Html.DisplayFor(modelItem => item.ColorText)
             </td>
             <td>
+                @if (item.Computers.Count == 0)
+                {
+                    <span>Not in use</span>
+                }
+                else if (item.Computers.Count == 1)
+                {
+                    @item.Computers.Count
+                    <span>Computer</span>
+                }
+                else
+                {
+                    @item.Computers.Count
+                    <span>Computers</span>
+                }
+            </td>
+            <td>
                 <div class="pull-right">
-                    <button class="btn btn-xs btn-warning" onclick="location.href='@Url.Action("Edit", "Color", new {id = item.Id})'">Edit</button>
-                    <button class="btn btn-xs btn-danger" onclick="location.href='@Url.Action("Delete", "Color", new {id = item.Id})'">Delete</button>
+                    <button class="btn btn-xs btn-info" onclick="ShowDetails(@item.Id);" data-toggle="modal" data-target="#myModal">Details</button>
+                    <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "Color", new {id = item.Id})'">Edit</button>
+                    <button class="btn btn-xs btn-danger" onclick="location.href = '@Url.Action("Delete", "Color", new {id = item.Id})'">Delete</button>
                 </div>
             </td>
         </tr>
 
     }
 
+
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @foreach (var item in Model)
 {
@@ -62,3 +97,23 @@
     </script>
 }
 
+<script>
+    function ShowDetails(id) {
+        console.log('ID: ' + id);
+        $("#modal-body").html("");
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Details")',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            data: {Id: id},
+            success: function (result) {
+                $("#modal-body").html(result);
+            },
+            error: function() {
+                console.log('Error');
+            }
+        });
+    };
+</script>

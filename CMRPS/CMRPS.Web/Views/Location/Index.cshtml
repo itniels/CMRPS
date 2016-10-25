@@ -1,19 +1,22 @@
 ﻿@model IEnumerable<CMRPS.Web.Models.LocationModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Locations";
 }
 
-<h2>Index</h2>
+<h2>Locations</h2>
+<hr />
+<div>
+    <span class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "Location")'">Create new</span>
+</div>
+<br />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Location)
         </th>
+        <th>Used by</th>
         <th></th>
     </tr>
 
@@ -23,15 +26,65 @@
             @Html.DisplayFor(modelItem => item.Location)
         </td>
         <td>
+            @if (item.Computers.Count == 0)
+                {
+                <span>Not in use</span>
+            }
+            else if (item.Computers.Count == 1)
+            {
+                @item.Computers.Count
+                <span>Computer</span>
+            }
+            else
+            {
+                @item.Computers.Count
+                <span>Computers</span>
+            }
+        </td>
+
+        <td>
             <div class="pull-right">
-                <button class="btn btn-xs btn-warning" onclick="location.href='@Url.Action("Edit", "Location", new {id = item.Id})'">Edit</button>
-                <button class="btn btn-xs btn-danger" onclick="location.href='@Url.Action("Delete", "Location", new {id = item.Id})'">Delete</button>
+                <button class="btn btn-xs btn-info" onclick="ShowDetails(@item.Id);" data-toggle="modal" data-target="#myModal">Details</button>
+                <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "Location", new {id = item.Id})'">Edit</button>
+                <button class="btn btn-xs btn-danger" onclick="location.href = '@Url.Action("Delete", "Location", new {id = item.Id})'">Delete</button>
             </div>
-            @*@Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
-            @Html.ActionLink("Details", "Details", new {id = item.Id}) |
-            @Html.ActionLink("Delete", "Delete", new {id = item.Id})*@
         </td>
     </tr>
 }
 
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ShowDetails(id) {
+        console.log('ID: ' + id);
+        $("#modal-body").html("");
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Details")',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            data: {Id: id},
+            success: function (result) {
+                $("#modal-body").html(result);
+            },
+            error: function() {
+                console.log('Error');
+            }
+        });
+    };
+</script>

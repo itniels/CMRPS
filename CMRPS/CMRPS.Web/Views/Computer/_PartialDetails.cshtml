@@ -1,5 +1,229 @@
 ﻿@model CMRPS.Web.Models.ComputerModel
 
-<div>
-    <h3>@Model.Name</h3>
+
+<div class="row">
+    <div class="col-md-2">
+        <img src="@Model.Type.ImagePath" width="50" height="50" />
+    </div>
+    <div class="col-md-10">
+        <h3>@Model.Name</h3>
+    </div>
 </div>
+
+<hr />
+<h4>Info</h4>
+
+<div class="row">
+    <div class="col-md-6">
+        <b>Status:</b>
+    </div>
+    <div class="col-md-6">
+        <span class="label @(Model.Status ? "label-success" : "label-danger")">@(Model.Status ? "ONLINE" : "OFFLINE")</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>IP:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.IP
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>MAC:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.MAC
+        </div>
+    </div>
+</div>
+
+<hr />
+<h4>Computer</h4>
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Name:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.Name
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Hostname:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.Hostname
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Type:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.Type.Name
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Puchased:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.PurchaseDate.ToShortDateString()
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Color:</b>
+        </div>
+        <div id="color" class="col-md-8">
+            @Model.Color.Name
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Location:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.Location.Location
+        </div>
+    </div>
+</div>
+
+<h4>Computer Details</h4>
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Make:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.Manufacturer
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Model:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.Model
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>CPU:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.CPU
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-5">
+            <b>CPU Cores:</b>
+        </div>
+        <div class="col-md-7">
+            @Model.CPUCores
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-6">
+            <b>RAM:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.RAM
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-5">
+            <b>RAM Size:</b>
+        </div>
+        <div class="col-md-7">
+            @Model.RAMSize
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-5">
+            <b>Disk(s):</b>
+        </div>
+        <div class="col-md-7">
+            @Model.Disk
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-5">
+            <b>Disk Size:</b>
+        </div>
+        <div class="col-md-7">
+            @Model.DiskSize
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Eth. Cable:</b>
+        </div>
+        <div id="color" class="col-md-8">
+            @Model.EthernetCable
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <b>Eth. WiFi:</b>
+        </div>
+        <div class="col-md-8">
+            @Model.EthernetWifi
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <b>OS:</b>
+        </div>
+        <div class="col-md-9">
+            @Model.OS
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <b>Description:</b>
+        </div>
+        <div class="col-md-9">
+            @Model.Description
+        </div>
+    </div>
+</div>
+
+<script>
+    var textColor = '@Model.Color.ColorText.Replace("#", "")';
+    var labelColor = '@Model.Color.ColorLabel.Replace("#", "")';
+
+    $("#color").css({
+        "color": '#' + textColor,
+        "background-color": '#' + labelColor
+    });
+</script>

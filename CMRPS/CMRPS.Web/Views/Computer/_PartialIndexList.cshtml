@@ -22,7 +22,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <img src="@item.Type.ImagePath" width="25" height="25"/> @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Hostname)
@@ -63,16 +63,19 @@
 <script>
     function ShowDetails(id) {
         console.log('ID: ' + id);
+        $("#modal-body").html("");
 
         $.ajax({
             type: 'GET',
-            url: 'Computer/Details',
+            url: '@Url.Action("Details")',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
             data: {Id: id},
             success: function (result) {
                 $("#modal-body").html(result);
             },
-            error: function (emp) {
-                alert('error');
+            error: function() {
+                console.log('Error');
             }
         });
     };

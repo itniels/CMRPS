@@ -14,20 +14,30 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Location
+        /// <summary>
+        /// GET | List locations.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Locations.ToList());
         }
 
-        // GET: Location/Details/5
+        /// <summary>
+        /// GET | Details for a location.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LocationModel locationModel = db.Locations.Find(id);
+            LocationModel locationModel = db.Locations.Single(x => x.Id == id);
             if (locationModel == null)
             {
                 return HttpNotFound();
@@ -35,16 +45,23 @@ namespace CMRPS.Web.Controllers
             return View(locationModel);
         }
 
-        // GET: Location/Create
+        /// <summary>
+        /// GET | Create a new location.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Location/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST | Create new location.
+        /// </summary>
+        /// <param name="locationModel"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Location")] LocationModel locationModel)
         {
@@ -58,7 +75,12 @@ namespace CMRPS.Web.Controllers
             return View(locationModel);
         }
 
-        // GET: Location/Edit/5
+        /// <summary>
+        /// GET | Edit a location.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -73,10 +95,13 @@ namespace CMRPS.Web.Controllers
             return View(locationModel);
         }
 
-        // POST: Location/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST | Edit a location.
+        /// </summary>
+        /// <param name="locationModel"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Location")] LocationModel locationModel)
         {
@@ -89,7 +114,12 @@ namespace CMRPS.Web.Controllers
             return View(locationModel);
         }
 
-        // GET: Location/Delete/5
+        /// <summary>
+        /// GET | Delete a location.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -104,7 +134,12 @@ namespace CMRPS.Web.Controllers
             return View(locationModel);
         }
 
-        // POST: Location/Delete/5
+        /// <summary>
+        /// POST | Delete a location.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

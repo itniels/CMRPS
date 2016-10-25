@@ -40,24 +40,7 @@ namespace CMRPS.Web.Migrations
 
             );
 
-            // Types
-            context.ComputerTypes.AddOrUpdate(x => x.Id,
-                new ComputerTypeModel
-                {
-                    Id = 1,
-                    ImagePath = "",
-                    Name = "Desktop",
-                }
-            );
-
-            context.ComputerTypes.AddOrUpdate(x => x.Id,
-                new ComputerTypeModel
-                {
-                    Id = 2,
-                    ImagePath = "",
-                    Name = "Laptop",
-                }
-            );
+            
         }
     }
 }

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
@@ -16,28 +18,35 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: ComputerType
+        /// <summary>
+        /// GET | List the computer types
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.ComputerTypes.ToList());
         }
 
-        // GET: ComputerType/Details/5
+        /// <summary>
+        /// GET | Details about the Computer type.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ComputerTypeModel computerTypeModel = db.ComputerTypes.Find(id);
-            if (computerTypeModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(computerTypeModel);
+            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            ComputerTypeModel model = db.ComputerTypes.Single(x => x.Id == id);
+            if (model == null) { return HttpNotFound(); }
+            return PartialView("_PartialDetails", model);
         }
 
-        // GET: ComputerType/Create
+        /// <summary>
+        /// GET | Create a new computer type.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ActionResult Create()
@@ -45,69 +54,109 @@ namespace CMRPS.Web.Controllers
             return View();
         }
 
+        /// <summary>
+        /// POST | Create a new computer type.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateComputerTypeViewModel model)
         {
-            
             if (ModelState.IsValid)
             {
+                // Save to DB to get the ID
+                db.ComputerTypes.Add(model.ComputerType);
+                db.SaveChanges();
+
                 // uploaded file
-                
-                if (model.UploadedFile != null)
+                if (model.UploadedFile != null && model.UploadedFile.ContentLength > 0)
                 {
                     string directory = Server.MapPath("~/Content/TypeImages/");
-                    var path = Path.Combine(directory, model.ComputerType.Name + Path.GetExtension(model.UploadedFile.FileName));
+                    string filename = model.ComputerType.Id + Path.GetExtension(model.UploadedFile.FileName);
+                    var path = Path.Combine(directory, filename);
 
                     if (!Directory.Exists(directory))
                         Directory.CreateDirectory(directory);
 
                     model.UploadedFile.SaveAs(path);
-                    model.ComputerType.ImagePath = path;
-                }
+                    model.ComputerType.ImagePath = "/Content/TypeImages/" + filename;
+                    model.ComputerType.Filename = filename;
 
-                // Database
-                db.ComputerTypes.Add(model.ComputerType);
-                db.SaveChanges();
+                    // Save again to save the image properties.
+                    db.ComputerTypes.AddOrUpdate(model.ComputerType);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 
             return View(model);
         }
 
-        // GET: ComputerType/Edit/5
+        /// <summary>
+        /// GET | Edit a computer type
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ComputerTypeModel computerTypeModel = db.ComputerTypes.Find(id);
-            if (computerTypeModel == null)
+            CreateComputerTypeViewModel model = new CreateComputerTypeViewModel();
+            model.ComputerType = db.ComputerTypes.Find(id);
+
+            if (model.ComputerType == null)
             {
                 return HttpNotFound();
             }
-            return View(computerTypeModel);
+            return View(model);
         }
 
-        // POST: ComputerType/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST | Edit a computer type
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ImagePath")] ComputerTypeModel computerTypeModel)
+        public ActionResult Edit(CreateComputerTypeViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(computerTypeModel).State = EntityState.Modified;
+                // uploaded file will overwrite the old one.
+                if (model.UploadedFile != null && model.UploadedFile.ContentLength > 0)
+                {
+                    string directory = Server.MapPath("~/Content/TypeImages/");
+                    string filename = model.ComputerType.Id + Path.GetExtension(model.UploadedFile.FileName);
+                    var path = Path.Combine(directory, filename);
+
+                    if (!Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
+
+                    model.UploadedFile.SaveAs(path);
+                    model.ComputerType.ImagePath = "/Content/TypeImages/" + filename;
+                    model.ComputerType.Filename = filename;
+                }
+
+                // Database
+                db.ComputerTypes.AddOrUpdate(model.ComputerType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(computerTypeModel);
+            return View(model);
         }
 
-        // GET: ComputerType/Delete/5
+        /// <summary>
+        /// GET | Confirmation | Delete computer type.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -122,12 +171,24 @@ namespace CMRPS.Web.Controllers
             return View(computerTypeModel);
         }
 
-        // POST: ComputerType/Delete/5
+        /// <summary>
+        /// POST | Delete computer type.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             ComputerTypeModel computerTypeModel = db.ComputerTypes.Find(id);
+            try
+            {
+                // Delete the image drom filesystem.
+                string file = Server.MapPath("~" + computerTypeModel.ImagePath);
+                System.IO.File.Delete(file);
+            }
+            catch (Exception) { }
             db.ComputerTypes.Remove(computerTypeModel);
             db.SaveChanges();
             return RedirectToAction("Index");

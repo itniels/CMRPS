@@ -13,6 +13,7 @@ namespace CMRPS.Web.Controllers
     public class ComputerController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
         /// <summary>
         /// GET | Gets the list of computers in teh system.
         /// </summary>
@@ -29,15 +30,20 @@ namespace CMRPS.Web.Controllers
         }
 
         /// <summary>
-        /// GET | ChildActionOnly | View details of a computer in a partial view for a modal display box.
+        /// GET | View details of a computer in a partial view for a modal display box.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize]
-        [ChildActionOnly]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Details(int id)
         {
-            ComputerModel model = db.Computers.SingleOrDefault(x => x.Id == id);
+            ComputerModel model = db.Computers
+                .Include(a => a.Color)
+                .Include(a => a.Location)
+                .Include(a => a.Type)
+                .Single(x => x.Id == id);
+
             return PartialView("_PartialDetails", model);
         }
 

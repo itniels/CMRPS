@@ -1,0 +1,62 @@
+﻿@model CMRPS.Web.Models.ColorModel
+    
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                Name:
+            </div>
+            <div id="name" class="col-md-9">
+                @Model.Name
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                Label Color:
+            </div>
+            <div id="label" class="col-md-9">
+                @Model.ColorLabel
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                Text Color:
+            </div>
+            <div id="text" class="col-md-9">
+                @Model.ColorText
+            </div>
+        </div>
+
+    </div>
+</div>
+<hr />
+
+<h4>Used by:</h4>
+
+@if (@Model.Computers != null && @Model.Computers.Count > 0)
+{
+    foreach (var item in @Model.Computers)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                @item.Name
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="row">
+        <div class="no-items-found">No computers found..</div>
+    </div>
+}
+
+<script>
+        var textColor = '@Model.ColorText.Replace("#", "")';
+        var labelColor = '@Model.ColorLabel.Replace("#", "")';
+
+        $("#name").css({
+            "color": '#' + textColor,
+            "background-color": '#' + labelColor
+        });
+</script>
