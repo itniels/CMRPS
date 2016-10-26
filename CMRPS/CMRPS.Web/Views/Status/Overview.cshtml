@@ -1,1 +1,72 @@
-﻿@model dynamic
+﻿@model List<CMRPS.Web.Models.ComputerModel>
+
+<h2>Overview</h2>
+<hr/>
+<h4>Actions:</h4>
+
+<hr/>
+
+@for (int i = 0; i < Model.Count(); i += 4)
+{
+    <div class="row">
+        @foreach (var item in Model.Skip(i).Take(4))
+        {
+            <div id="item-id-@item.Id" class="col-md-3">
+                <div class="panel @(item.Status ? "panel-success" : "panel-danger")">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><img src="@item.Type.ImagePath" width="25" height="25"/><b> @item.Name</b></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b>Host:</b>
+                            </div>
+                            <div class="col-md-9">
+                                <span id="color-label-@item.Id">&nbsp;@item.Hostname&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b>IP:</b>
+                            </div>
+                            <div class="col-md-9">
+                                @item.IP
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b>MAC:</b>
+                            </div>
+                            <div class="col-md-9">
+                                @item.MAC
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-md-12 glyphicon-align-center">
+                                <span class="btn btn-xs btn-success">ON</span>
+                                <span class="btn btn-xs btn-warning">Reboot</span>
+                                <span class="btn btn-xs btn-danger">OFF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+
+@foreach (var item in Model)
+{
+    <script>
+        var textColor = '@item.Color.ColorText.Replace("#", "")';
+        var labelColor = '@item.Color.ColorLabel.Replace("#", "")';
+
+        $('#color-label-' + @item.Id).css({
+            "color": '#' + textColor,
+            "background-color": '#' + labelColor
+        });
+    </script>
+}

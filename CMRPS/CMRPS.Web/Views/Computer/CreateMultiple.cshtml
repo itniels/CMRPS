@@ -1,0 +1,220 @@
+﻿@using CMRPS.Web.Models
+@model CMRPS.Web.ModelsView.CreateComputerViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Computer</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="error-text">@Html.ValidationSummary()</div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <input type="submit" value="Create" class="btn btn-sm btn-success pull-right" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Computer (Required)</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Hostname)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.Hostname)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.IP)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.IP, new { @disabled = "disabled" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.MAC)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.MAC, new { @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Physical information (Required)</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.SelectedType)
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(x => x.SelectedType, new SelectList(ViewBag.Types), "Select Type")
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.SelectedColor)
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(x => x.SelectedColor, new SelectList(ViewBag.Colors), "Select Color")
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.SelectedLocation)
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(x => x.SelectedLocation, new SelectList(ViewBag.Locations), "Select Location")
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Status)
+                </div>
+                <div class="col-md-6">
+                    <span class="label label-info">UNKNOWN</span>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Computer Details (Optional)</h4>
+            <hr />
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.PurchaseDate)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Manufacturer)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.Manufacturer)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Model)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.Model)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.OS)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.OS)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Description)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextAreaFor(x => x.Computer.Description, new { @class = "description-input-box" })
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.CPU)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.CPU)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.CPUCores)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.CPUCores)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.RAM)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.RAM)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.RAMSize)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.RAMSize)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Disk)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.Disk)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.DiskSize)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.DiskSize)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.EthernetCable)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.EthernetCable)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.EthernetWifi)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.EthernetWifi)
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+}

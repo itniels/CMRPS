@@ -11,7 +11,8 @@
 <h4>Actions</h4>
 <div class="row">
     <div class="col-md-8">
-        <button class="btn btn-xs btn-success" onclick="location.href='@Url.Action("Create", "Computer")'">Create New</button>
+        <button class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "Computer")'">Create</button>
+        <button class="btn btn-xs btn-success" onclick="location.href='@Url.Action("CreateMultiple", "Computer")'">Create Multiple</button>
         <button class="btn btn-xs btn-warning">Import</button>
         <button class="btn btn-xs btn-info">Export Selected</button>
         <button class="btn btn-xs btn-danger">Delete Selected</button>

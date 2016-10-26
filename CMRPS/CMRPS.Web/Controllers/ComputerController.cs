@@ -92,6 +92,10 @@ namespace CMRPS.Web.Controllers
             model.Computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
             model.Computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
 
+            // Set the friendly name if not supplied.
+            if (model.Computer.Name == null)
+                model.Computer.Name = model.Computer.Hostname.ToUpper();
+
             if (ModelState.IsValid)
             {
                 // Save to db if valid
@@ -100,6 +104,64 @@ namespace CMRPS.Web.Controllers
                 return RedirectToAction("Index", "Computer");
             }
             
+            // If NOT valid
+            // Send lists of items for dropdowns.
+            ViewBag.Colors = db.Colors.ToList();
+            ViewBag.Locations = db.Locations.ToList();
+            ViewBag.Types = db.ComputerTypes.ToList();
+            // Return model with errors.
+            return View(model);
+        }
+
+        /// <summary>
+        /// GET | Create a new computer.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        public ActionResult CreateMultiple()
+        {
+            // Send lists of items for dropdowns.
+            ViewBag.Colors = db.Colors.ToList();
+            ViewBag.Locations = db.Locations.ToList();
+            ViewBag.Types = db.ComputerTypes.ToList();
+            CreateComputerViewModel model = new CreateComputerViewModel();
+            return View(model);
+        }
+
+        /// <summary>
+        /// POST | Create computer from form data.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateMultiple(CreateComputerViewModel model)
+        {
+            // Get models from dropdowns
+            model.Computer.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == model.SelectedType);
+            model.Computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
+            model.Computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
+
+            // Get array of computers to create
+            string[] hostnames = model.Computer.Hostname.Split(',');
+
+            if (ModelState.IsValid)
+            {
+                // Save to db if valid
+                foreach (string hostname in hostnames)
+                {
+                    model.Computer.Hostname = hostname;
+                    model.Computer.Name = hostname.ToUpper();
+                    db.Computers.Add(model.Computer);
+                    db.SaveChanges();
+                }
+                
+                
+                return RedirectToAction("Index", "Computer");
+            }
+
             // If NOT valid
             // Send lists of items for dropdowns.
             ViewBag.Colors = db.Colors.ToList();
