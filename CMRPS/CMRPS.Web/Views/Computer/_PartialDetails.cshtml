@@ -1,5 +1,10 @@
 ﻿@model CMRPS.Web.Models.ComputerModel
 
+@{
+    // Column sizes
+    var col1 = 4;
+    var col2 = 8;
+}
 
 <div class="row">
     <div class="col-md-2">
@@ -14,209 +19,200 @@
 <h4>Info</h4>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-@col1">
         <b>Status:</b>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-@col2">
         <span class="label @(Model.Status ? "label-success" : "label-danger")">@(Model.Status ? "ONLINE" : "OFFLINE")</span>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>IP:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.IP
-        </div>
+    <div class="col-md-@col1">
+        <b>IP:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>MAC:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.MAC
-        </div>
+    <div class="col-md-@col2"> 
+        @Model.IP
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>MAC:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.MAC
     </div>
 </div>
 
 <hr />
 <h4>Computer</h4>
+
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Name:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.Name
-        </div>
+    <div class="col-md-@col1">
+        <b>Name:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Hostname:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.Hostname
-        </div>
+    <div class="col-md-@col2">
+        @Model.Name
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Type:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.Type.Name
-        </div>
+    <div class="col-md-@col1">
+        <b>Hostname:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Puchased:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.PurchaseDate.ToShortDateString()
-        </div>
+    <div class="col-md-@col2">
+        @Model.Hostname
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Color:</b>
-        </div>
-        <div id="color" class="col-md-8">
-            @Model.Color.Name
-        </div>
+    <div class="col-md-@col1">
+        <b>Type:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Location:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.Location.Location
-        </div>
+    <div class="col-md-@col2">
+        @Model.Type.Name
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Purchased:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.PurchaseDate.ToShortDateString()
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Location:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.Location.Location
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Color:</b>
+    </div>
+    <div id="color" class="col-md-@col2">
+        @Model.Color.Name
+    </div>
+</div>
+
+<hr/>
 <h4>Computer Details</h4>
+
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Make:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.Manufacturer
-        </div>
+    <div class="col-md-@col1">
+        <b>Manufacturer:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Model:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.Model
-        </div>
+    <div class="col-md-@col2">
+        @Model.Manufacturer
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>CPU:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.CPU
-        </div>
+    <div class="col-md-@col1">
+        <b>Model:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-5">
-            <b>CPU Cores:</b>
-        </div>
-        <div class="col-md-7">
-            @Model.CPUCores
-        </div>
+    <div class="col-md-@col2">
+        @Model.Model
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-6">
-            <b>RAM:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.RAM
-        </div>
+    <div class="col-md-@col1">
+        <b>CPU:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-5">
-            <b>RAM Size:</b>
-        </div>
-        <div class="col-md-7">
-            @Model.RAMSize
-        </div>
+    <div class="col-md-@col2">
+        @Model.CPU
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-5">
-            <b>Disk(s):</b>
-        </div>
-        <div class="col-md-7">
-            @Model.Disk
-        </div>
+    <div class="col-md-@col1">
+        <b>CPU Cores:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-5">
-            <b>Disk Size:</b>
-        </div>
-        <div class="col-md-7">
-            @Model.DiskSize
-        </div>
+    <div class="col-md-@col2">
+        @Model.CPUCores
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Eth. Cable:</b>
-        </div>
-        <div id="color" class="col-md-8">
-            @Model.EthernetCable
-        </div>
+    <div class="col-md-@col1">
+        <b>RAM:</b>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4">
-            <b>Eth. WiFi:</b>
-        </div>
-        <div class="col-md-8">
-            @Model.EthernetWifi
-        </div>
+    <div class="col-md-@col2">
+        @Model.RAM
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="col-md-3">
-            <b>OS:</b>
-        </div>
-        <div class="col-md-9">
-            @Model.OS
-        </div>
+    <div class="col-md-@col1">
+        <b>RAM Size:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.RAMSize
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="col-md-3">
-            <b>Description:</b>
-        </div>
-        <div class="col-md-9">
-            @Model.Description
-        </div>
+    <div class="col-md-@col1">
+        <b>Disk(s):</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.Disk
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Disk Size:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.DiskSize
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Ethernet (Cable):</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.EthernetCable
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Ethernet (WiFi):</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.EthernetWifi
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Operating System:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.OS
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-@col1">
+        <b>Description:</b>
+    </div>
+    <div class="col-md-@col2">
+        @Model.Description
+    </div>
+</div>
+
 
 <script>
     var textColor = '@Model.Color.ColorText.Replace("#", "")';

@@ -9,7 +9,9 @@ using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CMPRS.Web.App_Start;
@@ -23,24 +25,98 @@ namespace CMRPS.Web.Controllers
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
 
+        // Declarations of imports
+        [DllImport("iphlpapi.dll", ExactSpelling = true)]
+        public static extern int SendARP(int DestIP, int SrcIP, [Out] byte[] pMacAddr, ref int PhyAddrLen);
+
         // =======================================================================================
         // Public Methods
         // =======================================================================================
-        public static bool Ping(ComputerModel computer)
+        public static bool Ping(int ComputerID)
         {
-            Ping pinger = new Ping();
+            ComputerModel computer = db.Computers.Single(x => x.Id == ComputerID);
+
+            if (computer != null)
+            {
+                Ping pinger = new Ping();
+                try
+                {
+                    // Ping computer
+                    PingReply reply = pinger.Send(computer.Hostname);
+                    //Update database
+                    computer.IP = GetIP(computer.Hostname, computer.IP);
+                    computer.Status = GetStatus(reply);
+                    computer.MAC = GetMAC(computer.IP, computer.MAC);
+                }
+                catch (PingException)
+                {
+                    computer.Status = false;
+                }
+                db.Computers.AddOrUpdate(computer);
+                db.SaveChanges();
+                return computer.Status;
+            }
+            return false;
+        }
+
+        private static bool GetStatus(PingReply ping)
+        {
             try
             {
-                // Ping computer
-                PingReply reply = pinger.Send(computer.Hostname);
-                //Update database
-                computer.Status = reply.Status == IPStatus.Success;
-                db.Computers.AddOrUpdate(computer);
-                // return
-                return reply.Status == IPStatus.Success;
+                return ping.Status == IPStatus.Success;
             }
-            catch (PingException) { }
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static string GetIP(string hostname, string oldIP)
+        {
+            try
+            {
+                string IP = "";
+                var addresses = Dns.GetHostAddresses(hostname);
+                foreach (IPAddress address in addresses)
+                {
+                    if (address.AddressFamily == AddressFamily.InterNetwork)
+                        return address.ToString();
+                }
+                return "No IPv4 address found!";
+            }
+            catch (Exception)
+            {
+                return oldIP;
+            }
+        }
+
+        
+
+        private static string GetMAC(string IP, string oldMAC)
+        {
+            try
+            {
+                IPAddress address = IPAddress.Parse(IP);
+
+                byte[] macAddr = new byte[6];
+                int macAddrLen = (int)macAddr.Length;
+                if (SendARP((int)address.Address, 0, macAddr, ref macAddrLen) != 0)
+                    return oldMAC;
+
+                StringBuilder macAddressString = new StringBuilder();
+                for (int i = 0; i < macAddr.Length; i++)
+                {
+                    if (macAddressString.Length > 0)
+                        macAddressString.Append(":");
+
+                    macAddressString.AppendFormat("{0:x2}", macAddr[i]);
+                }
+                return macAddressString.ToString().ToUpper();
+            }
+            catch (Exception)
+            {
+                return oldMAC;
+            }
         }
 
         public static bool PowerOn(ComputerModel computer)

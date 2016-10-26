@@ -18,5 +18,20 @@ namespace CMRPS.Web.Controllers
             return View();
             
         }
+
+        // ====================================================================
+        // DEBUG
+        // ====================================================================
+
+        [Authorize]
+        public ActionResult Debug()
+        {
+            return View();
+        }
+
+        public void DebugPing()
+        {
+            ActionController.Ping(4);
+        }
     }
 }

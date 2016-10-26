@@ -386,6 +386,7 @@
     <Content Include="Views\Computer\_PartialDetails.cshtml" />
     <Content Include="Views\ComputerType\_PartialDetails.cshtml" />
     <Content Include="Views\Color\_PartialDetails.cshtml" />
+    <Content Include="Views\Home\Debug.cshtml" />
     <None Include="Views\Status\ListView.cshtml" />
     <None Include="Views\Status\Overview.cshtml" />
   </ItemGroup>

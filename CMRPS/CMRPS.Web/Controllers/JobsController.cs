@@ -11,13 +11,13 @@ namespace CMRPS.Web.Controllers
     public class JobsController : Controller
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
-        private RecurringJobManager manager = new RecurringJobManager();
+        //private RecurringJobManager manager = new RecurringJobManager();
         public static bool Ping()
         {
             List<ComputerModel> computers = db.Computers.ToList();
             foreach (ComputerModel computer in computers)
             {
-                BackgroundJob.Enqueue(() => ActionController.Ping(computer));
+                BackgroundJob.Enqueue(() => ActionController.Ping(computer.Id));
             }
             return false;
         }
