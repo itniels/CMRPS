@@ -75,7 +75,6 @@ namespace CMRPS.Web.Controllers
         {
             try
             {
-                string IP = "";
                 var addresses = Dns.GetHostAddresses(hostname);
                 foreach (IPAddress address in addresses)
                 {
@@ -96,11 +95,15 @@ namespace CMRPS.Web.Controllers
         {
             try
             {
+                // Parse IP
                 IPAddress address = IPAddress.Parse(IP);
+                // Get INT
+                int intAddress = BitConverter.ToInt32(address.GetAddressBytes(), 0);
 
                 byte[] macAddr = new byte[6];
                 int macAddrLen = (int)macAddr.Length;
-                if (SendARP((int)address.Address, 0, macAddr, ref macAddrLen) != 0)
+
+                if (SendARP(intAddress, 0, macAddr, ref macAddrLen) != 0)
                     return oldMAC;
 
                 StringBuilder macAddressString = new StringBuilder();
