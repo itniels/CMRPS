@@ -8,6 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/site")
 
 </head>
 <body>
@@ -35,18 +36,18 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li>@Html.ActionLink("Computers", "Index", "Computer", null, new {title = "Manage Computers"})</li>
+                                <li>@Html.ActionLink("Computers", "Index", "Computer", null, new { title = "Manage Computers" })</li>
                                 <li role="separator" class="divider"></li>
-                                <li>@Html.ActionLink("Colors", "Index", "Color", null, new {title = "Manage Computer Colors"})</li>
-                                <li>@Html.ActionLink("Locations", "Index", "Location", null, new {title = "Manage Computer Locations"})</li>
-                                <li>@Html.ActionLink("Computer Types", "Index", "ComputerType", null, new {title = "Manage Computer Types"})</li>
+                                <li>@Html.ActionLink("Colors", "Index", "Color", null, new { title = "Manage Computer Colors" })</li>
+                                <li>@Html.ActionLink("Locations", "Index", "Location", null, new { title = "Manage Computer Locations" })</li>
+                                <li>@Html.ActionLink("Computer Types", "Index", "ComputerType", null, new { title = "Manage Computer Types" })</li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li>@Html.ActionLink("Network Tools", "Index", "Home", null, new {title = "Network Tools (Ping, WOL, Shutdown, etc.)"})</li>
-                                <li>@Html.ActionLink("Network Scanner", "Index", "Home", null, new {title = "Network Scanner (Scans the network for devices)"})</li>
+                                <li>@Html.ActionLink("Network Tools", "Index", "Home", null, new { title = "Network Tools (Ping, WOL, Shutdown, etc.)" })</li>
+                                <li>@Html.ActionLink("Network Scanner", "Index", "Home", null, new { title = "Network Scanner (Scans the network for devices)" })</li>
                             </ul>
                         </li>
                         <li>@Html.ActionLink("Scheduler", "Index", "Home", null, new { title = "Schedule WOL and Shutdown of computers." })</li>
@@ -61,13 +62,37 @@
         <footer>
             <div class="navbar-inverse navbar-fixed-bottom">
                 <div class="footer-text">
+                    <div id="server-warning" class="alert-danger hidden">Server is NOT RUNNING!</div>
                     <p>&copy; @DateTime.Now.Year - CMRPS - Computer Manager and Remote Power System - by Niels Schmidt</p>
+
                 </div>
             </div>
         </footer>
     </div>
 
-    
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<script>
+    function connectionStateChanged(state) {
+        var stateConversion = { 0: 'connecting', 1: 'connected', 2: 'reconnecting', 4: 'disconnected' };
+        console.log('SignalR state changed from: ' + stateConversion[state.oldState]
+         + ' to: ' + stateConversion[state.newState]);
+
+        // Show warning
+        if (state != 1) {
+            $("#server-warning").hidden = false;
+            $("#server-warning").val('server is ' + stateConversion + '!');
+        } else {
+            $("#server-warning").hidden = true;
+        }
+    }
+
+    $.connection.hub.start
+    connection = $.connection(ConnectedHub);
+    connection.stateChanged(connectionStateChanged);
+    connection.start({ waitForPageLoad: false });
+
+</script>

@@ -211,6 +211,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\Connected.cs" />
     <Compile Include="Hubs\HomeHub.cs" />
     <Compile Include="Migrations\201610180919008_m1.cs" />
     <Compile Include="Migrations\201610180919008_m1.Designer.cs">
@@ -331,6 +332,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Site.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
