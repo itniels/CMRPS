@@ -32,7 +32,7 @@
     {
         <tr>
             <td>
-                <span id="text-@item.Id">&nbsp;&nbsp;@Html.DisplayFor(modelItem => item.Name)&nbsp;&nbsp;</span>
+                <span id="color-label-@item.Id">&nbsp;&nbsp;@Html.DisplayFor(modelItem => item.Name)&nbsp;&nbsp;</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ColorLabel)
@@ -58,7 +58,7 @@
             </td>
             <td>
                 <div class="pull-right">
-                    <button class="btn btn-xs btn-info" onclick="ShowDetails(@item.Id);" data-toggle="modal" data-target="#myModal">Details</button>
+                    <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#myModal">Details</button>
                     <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "Color", new {id = item.Id})'">Edit</button>
                     <button class="btn btn-xs btn-danger" onclick="location.href = '@Url.Action("Delete", "Color", new {id = item.Id})'">Delete</button>
                 </div>
@@ -87,33 +87,6 @@
 @foreach (var item in Model)
 {
     <script>
-        var textColor = '@item.ColorText.Replace("#", "")';
-        var labelColor = '@item.ColorLabel.Replace("#", "")';
-
-        $('#text-' + @item.Id).css({
-            "color": '#' + textColor,
-            "background-color": '#' + labelColor
-        });
+        colorLabel(@item.Id, '@item.ColorText', '@item.ColorLabel');
     </script>
 }
-
-<script>
-    function ShowDetails(id) {
-        console.log('ID: ' + id);
-        $("#modal-body").html("Loading...");
-
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("Details")',
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            data: {Id: id},
-            success: function (result) {
-                $("#modal-body").html(result);
-            },
-            error: function() {
-                console.log('Error');
-            }
-        });
-    };
-</script>

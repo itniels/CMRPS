@@ -6,7 +6,7 @@
             <div class="col-md-3">
                 Name:
             </div>
-            <div id="name" class="col-md-9">
+            <div id="color-label" class="col-md-9">
                 @Model.Name
             </div>
         </div>
@@ -52,11 +52,5 @@ else
 }
 
 <script>
-        var textColor = '@Model.ColorText.Replace("#", "")';
-        var labelColor = '@Model.ColorLabel.Replace("#", "")';
-
-        $("#name").css({
-            "color": '#' + textColor,
-            "background-color": '#' + labelColor
-        });
+    colorLabelDetails('@Model.ColorText', '@Model.ColorLabel');
 </script>

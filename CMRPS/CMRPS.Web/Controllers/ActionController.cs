@@ -23,7 +23,7 @@ namespace CMRPS.Web.Controllers
 {
     public class ActionController : Controller
     {
-        private static ApplicationDbContext db = new ApplicationDbContext();
+        //private static ApplicationDbContext db = new ApplicationDbContext();
 
         // Declarations of imports
         [DllImport("iphlpapi.dll", ExactSpelling = true)]
@@ -32,31 +32,191 @@ namespace CMRPS.Web.Controllers
         // =======================================================================================
         // Public Methods
         // =======================================================================================
-        public static bool Ping(int ComputerID)
+        /// <summary>
+        /// HangFire | Called to update computer info.
+        /// </summary>
+        /// <param name="ComputerID"></param>
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public static void UpdateComputer(int id)
         {
-            ComputerModel computer = db.Computers.Single(x => x.Id == ComputerID);
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel computer = db.Computers.Single(x => x.Id == id);
 
             if (computer != null)
             {
-                Ping pinger = new Ping();
-                try
-                {
-                    // Ping computer
-                    PingReply reply = pinger.Send(computer.Hostname);
-                    //Update database
-                    computer.IP = GetIP(computer.Hostname, computer.IP);
-                    computer.Status = GetStatus(reply);
-                    computer.MAC = GetMAC(computer.IP, computer.MAC);
-                }
-                catch (PingException)
-                {
-                    computer.Status = false;
-                }
+                // Ping computer
+                computer.Status = Ping(computer);
+                // Get Info
+                computer.IP = GetIP(computer);
+                computer.MAC = GetMAC(computer);
+                // Update Database
                 db.Computers.AddOrUpdate(computer);
                 db.SaveChanges();
-                return computer.Status;
             }
-            return false;
+        }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public bool Ping(string hostname)
+        {
+            Ping pinger = new Ping();
+            try
+            {
+                // Ping computer
+                PingReply reply = pinger.Send(hostname);
+                return reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                return false;
+            }
+        }
+
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public bool PowerOn(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            SettingsModel settings = db.Settings.FirstOrDefault();
+            try
+            {
+                if (settings.StartupMethod == StartupMethod.Winwake)
+                {
+                    return WakeupWinwake(model.MAC);
+                }
+                else if (settings.StartupMethod == StartupMethod.Packet)
+                {
+                    return WakeupPacket(model.MAC);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public bool PowerOff(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            SettingsModel settings = db.Settings.FirstOrDefault();
+            try
+            {
+                if (settings.ShutdownMethod == ShutdownMethod.CMD)
+                {
+                    if (settings.AdminUsername.Length > 0 && settings.AdminPassword.Length > 0)
+                    {
+                        ShutdownCMDCredentials(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage,
+                            settings.AdminUsername,
+                            settings.AdminPassword,
+                            settings.AdminDomain
+                            );
+                    }
+                    else
+                    {
+                        ShutdownCMD(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage
+                            );
+                    }
+                }
+                else if (settings.ShutdownMethod == ShutdownMethod.WMI)
+                {
+                    ShutdownWMI(
+                        model.Hostname,
+                        settings.ShutdownForce,
+                        settings.AdminUsername,
+                        settings.AdminPassword,
+                        settings.AdminDomain
+                        );
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public bool PowerRecycle(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            SettingsModel settings = db.Settings.FirstOrDefault();
+            try
+            {
+                if (settings.RebootMethod == RebootMethod.CMD)
+                {
+                    if (settings.AdminUsername.Length > 0 && settings.AdminPassword.Length > 0)
+                    {
+                        RestartCMDCredentials(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage,
+                            settings.AdminUsername,
+                            settings.AdminPassword,
+                            settings.AdminDomain
+                            );
+                    }
+                    else
+                    {
+                        RestartCMD(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage
+                            );
+                    }
+                }
+                else if (settings.RebootMethod == RebootMethod.WMI)
+                {
+                    RestartWMI(
+                        model.Hostname,
+                        settings.ShutdownForce,
+                        settings.AdminUsername,
+                        settings.AdminPassword,
+                        settings.AdminDomain
+                        );
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        // =======================================================================================
+        // Ping Methods
+        // =======================================================================================
+        private static bool Ping(ComputerModel computer)
+        {
+            Ping pinger = new Ping();
+            try
+            {
+                // Ping computer
+                PingReply reply = pinger.Send(computer.Hostname);
+                return reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                return false;
+            }
         }
 
         private static bool GetStatus(PingReply ping)
@@ -71,32 +231,30 @@ namespace CMRPS.Web.Controllers
             }
         }
 
-        private static string GetIP(string hostname, string oldIP)
+        private static string GetIP(ComputerModel computer)
         {
             try
             {
-                var addresses = Dns.GetHostAddresses(hostname);
+                var addresses = Dns.GetHostAddresses(computer.Hostname);
                 foreach (IPAddress address in addresses)
                 {
                     if (address.AddressFamily == AddressFamily.InterNetwork)
                         return address.ToString();
                 }
-                return "No IPv4 address found!";
+                return computer.IP;
             }
             catch (Exception)
             {
-                return oldIP;
+                return computer.IP;
             }
         }
 
-        
-
-        private static string GetMAC(string IP, string oldMAC)
+        private static string GetMAC(ComputerModel computer)
         {
             try
             {
                 // Parse IP
-                IPAddress address = IPAddress.Parse(IP);
+                IPAddress address = IPAddress.Parse(computer.IP);
                 // Get INT
                 int intAddress = BitConverter.ToInt32(address.GetAddressBytes(), 0);
 
@@ -104,7 +262,7 @@ namespace CMRPS.Web.Controllers
                 int macAddrLen = (int)macAddr.Length;
 
                 if (SendARP(intAddress, 0, macAddr, ref macAddrLen) != 0)
-                    return oldMAC;
+                    return computer.MAC;
 
                 StringBuilder macAddressString = new StringBuilder();
                 for (int i = 0; i < macAddr.Length; i++)
@@ -118,117 +276,8 @@ namespace CMRPS.Web.Controllers
             }
             catch (Exception)
             {
-                return oldMAC;
+                return computer.MAC;
             }
-        }
-
-        public static bool PowerOn(ComputerModel computer)
-        {
-            SettingsModel settings = db.Settings.FirstOrDefault();
-            try
-            {
-                if (settings.StartupMethod == StartupMethod.Winwake)
-                {
-                    return WakeupWinwake(computer.MAC);
-                }
-                else if (settings.StartupMethod == StartupMethod.Packet)
-                {
-                    return WakeupPacket(computer.MAC);
-                }
-            }
-            catch (Exception){ }
-            
-            return false;
-        }
-
-        public static bool PowerOff(ComputerModel computer)
-        {
-            SettingsModel settings = db.Settings.FirstOrDefault();
-            try
-            {
-                if (settings.ShutdownMethod == ShutdownMethod.CMD)
-                {
-                    if (settings.AdminUsername.Length > 0 && settings.AdminPassword.Length > 0)
-                    {
-                        ShutdownCMDCredentials(
-                            computer.Hostname,
-                            settings.ShutdownTimeout,
-                            settings.ShutdownForce,
-                            settings.ShutdownMessage,
-                            settings.AdminUsername,
-                            settings.AdminPassword,
-                            settings.AdminDomain
-                            );
-                    }
-                    else
-                    {
-                        ShutdownCMD(
-                            computer.Hostname,
-                            settings.ShutdownTimeout,
-                            settings.ShutdownForce,
-                            settings.ShutdownMessage
-                            );
-                    }
-                }
-                else if (settings.ShutdownMethod == ShutdownMethod.WMI)
-                {
-                    ShutdownWMI(
-                        computer.Hostname,
-                        settings.ShutdownForce, 
-                        settings.AdminUsername,
-                        settings.AdminPassword, 
-                        settings.AdminDomain
-                        );
-                }
-            }
-            catch (Exception) { }
-
-            return false;
-        }
-
-        public static bool PowerRecycle(ComputerModel computer)
-        {
-            SettingsModel settings = db.Settings.FirstOrDefault();
-            try
-            {
-                if (settings.RebootMethod == RebootMethod.CMD)
-                {
-                    if (settings.AdminUsername.Length > 0 && settings.AdminPassword.Length > 0)
-                    {
-                        RestartCMDCredentials(
-                            computer.Hostname,
-                            settings.ShutdownTimeout,
-                            settings.ShutdownForce,
-                            settings.ShutdownMessage,
-                            settings.AdminUsername,
-                            settings.AdminPassword,
-                            settings.AdminDomain
-                            );
-                    }
-                    else
-                    {
-                        RestartCMD(
-                            computer.Hostname,
-                            settings.ShutdownTimeout,
-                            settings.ShutdownForce,
-                            settings.ShutdownMessage
-                            );
-                    }
-                }
-                else if (settings.RebootMethod == RebootMethod.WMI)
-                {
-                    RestartWMI(
-                        computer.Hostname,
-                        settings.ShutdownForce,
-                        settings.AdminUsername,
-                        settings.AdminPassword,
-                        settings.AdminDomain
-                        );
-                }
-            }
-            catch (Exception) { }
-
-            return false;
         }
 
         // =======================================================================================
@@ -316,7 +365,7 @@ namespace CMRPS.Web.Controllers
                 string args = String.Format("-s -m \\\\{0} -t {1} {2} {3}", hostname, timeout, useForce, useMessage);
                 Process.Start("shutdown", args);
             }
-            catch (Exception){ }
+            catch (Exception) { }
             return false;
         }
 
@@ -355,7 +404,7 @@ namespace CMRPS.Web.Controllers
 
                 return true;
             }
-            catch (Exception){ }
+            catch (Exception) { }
             return false;
         }
 
@@ -396,7 +445,7 @@ namespace CMRPS.Web.Controllers
                 }
                 return true;
             }
-            catch (Exception){ }
+            catch (Exception) { }
             return false;
         }
 

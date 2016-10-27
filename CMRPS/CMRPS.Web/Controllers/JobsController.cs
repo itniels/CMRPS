@@ -17,7 +17,7 @@ namespace CMRPS.Web.Controllers
             List<ComputerModel> computers = db.Computers.ToList();
             foreach (ComputerModel computer in computers)
             {
-                BackgroundJob.Enqueue(() => ActionController.Ping(computer.Id));
+                BackgroundJob.Enqueue(() => ActionController.UpdateComputer(computer.Id));
             }
             return false;
         }

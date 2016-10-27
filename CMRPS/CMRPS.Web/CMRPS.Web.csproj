@@ -202,6 +202,7 @@
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Enums\Action.cs" />
     <Compile Include="Enums\ActionStatus.cs" />
     <Compile Include="Enums\RebootMethod.cs" />
@@ -396,6 +397,7 @@
     <Content Include="Views\Computer\CreateMultiple.cshtml" />
     <None Include="Views\Status\ListView.cshtml" />
     <None Include="Views\Status\Overview.cshtml" />
+    <Content Include="Views\Tools\NetworkTools.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -97,7 +97,7 @@
     <div class="col-md-@col1">
         <b>Color:</b>
     </div>
-    <div id="color" class="col-md-@col2">
+    <div id="color-label" class="col-md-@col2">
         @Model.Color.Name
     </div>
 </div>
@@ -213,13 +213,6 @@
     </div>
 </div>
 
-
 <script>
-    var textColor = '@Model.Color.ColorText.Replace("#", "")';
-    var labelColor = '@Model.Color.ColorLabel.Replace("#", "")';
-
-    $("#color").css({
-        "color": '#' + textColor,
-        "background-color": '#' + labelColor
-    });
+    colorLabelDetails('@Model.Color.ColorText','@Model.Color.ColorLabel');
 </script>

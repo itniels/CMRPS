@@ -44,7 +44,7 @@
 
         <td>
             <div class="pull-right">
-                <button class="btn btn-xs btn-info" onclick="ShowDetails(@item.Id);" data-toggle="modal" data-target="#myModal">Details</button>
+                <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#myModal">Details</button>
                 <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "Location", new {id = item.Id})'">Edit</button>
                 <button class="btn btn-xs btn-danger" onclick="location.href = '@Url.Action("Delete", "Location", new {id = item.Id})'">Delete</button>
             </div>
@@ -67,24 +67,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function ShowDetails(id) {
-        console.log('ID: ' + id);
-        $("#modal-body").html("Loading...");
-
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("Details")',
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            data: {Id: id},
-            success: function (result) {
-                $("#modal-body").html(result);
-            },
-            error: function() {
-                console.log('Error');
-            }
-        });
-    };
-</script>

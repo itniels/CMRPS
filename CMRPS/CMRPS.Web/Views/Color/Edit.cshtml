@@ -15,9 +15,10 @@
     @Html.AntiForgeryToken()
 
     <hr />
-        <h4>Example</h4>
-        <span id="text-example">&nbsp;&nbsp; Some-PC &nbsp;&nbsp;</span>
-        <hr />
+    <div class="text-center">
+        <span>Example label: </span><br /><span id="text-example">&nbsp;&nbsp; Some-PC &nbsp;&nbsp;</span>
+    </div>
+    <hr />
 
     <div class="form-horizontal">
         <h4>ColorModel</h4>
@@ -68,16 +69,5 @@
 <script>
     $("#color-label").hexColorPicker();
     $("#color-text").hexColorPicker();
-</script>
-
-<script>
-    function demoColors() {
-        var textColor = $('#color-text').val();
-        var labelColor = $('#color-label').val();
-
-        $('#text-example').css('color', textColor);
-        $('#text-example').css('background-color', labelColor);
-    }
-
     demoColors();
 </script>

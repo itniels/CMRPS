@@ -1,5 +1,9 @@
 ﻿@model List<CMRPS.Web.Models.ComputerModel>
 
+@{
+    ViewBag.Title = "Overview";
+}
+
 <h2>Overview</h2>
 <hr />
 @for (int i = 0; i < Model.Count(); i += 4)
@@ -8,20 +12,19 @@
         @foreach (var item in Model.Skip(i).Take(4))
         {
             <div id="item-id-@item.Id" class="col-md-3">
-
-
-
                 <div class="panel @(item.Status ? "panel-success" : "panel-danger")">
                     <div class="panel-heading">
                         <h3 class="panel-title"><img src="@item.Type.ImagePath" width="25" height="25" /><b> @item.Name</b></h3>
                     </div>
                     <div class="panel-body">
-                            <div class="col-md-12 glyphicon-align-center">
-                                <span class="btn btn-xs btn-info" title="Show details"><span class="glyphicon glyphicon-info-sign"></span></span>
-                                <span class="btn btn-xs btn-success" title="Start"><span class="glyphicon glyphicon-play"></span></span>
-                                <span class="btn btn-xs btn-warning" title="Restart"><span class="glyphicon glyphicon-refresh"></span></span>
-                                <span class="btn btn-xs btn-danger" title="Shutdown"><span class="glyphicon glyphicon-stop"></span></span>
-                            </div>
+                        <div class="col-md-10 center-block">
+                            <span class="btn btn-xs btn-success" title="Start" onclick="computerActionStartup(@item.Id);"><span class="glyphicon glyphicon-play"></span></span>
+                            <span class="btn btn-xs btn-warning" title="Restart" onclick="computerActionReboot(@item.Id);"><span class="glyphicon glyphicon-refresh"></span></span>
+                            <span class="btn btn-xs btn-danger" title="Shutdown" onclick="computerActionShutdown(@item.Id);"><span class="glyphicon glyphicon-stop"></span></span>
+                        </div>
+                        <div class="col-md-2 pull-right">
+                            <span class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details", "Computer")');" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -29,17 +32,16 @@
     </div>
 }
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="modal-body" class="modal-body">
 
-
-@foreach (var item in Model)
-{
-    <script>
-        var textColor = '@item.Color.ColorText.Replace("#", "")';
-        var labelColor = '@item.Color.ColorLabel.Replace("#", "")';
-
-        $('#color-label-' + @item.Id).css({
-            "color": '#' + textColor,
-            "background-color": '#' + labelColor
-        });
-    </script>
-}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

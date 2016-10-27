@@ -1,0 +1,131 @@
+﻿@using System.Web.UI.WebControls
+
+@{
+    ViewBag.Title = "Network Tools";
+}
+
+<h2>Network Tools</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Ping</h4>
+        <div class="row">
+            <div class="col-md-12">
+
+                <span>
+                    @Html.TextBox("test", null, new {@class = "", id = "textbox-ping", PlaceHolder = "IP or Hostname"})
+                </span>
+                <span>
+                    <button class="btn btn-xs btn-info" onclick="toolsPing();">Ping</button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span id="ping-data" class="text-primary">Not sent yet..</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4>Wakeup</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <span>
+                    @Html.TextBox("test", null, new { @class = "", id = "ping-wakeup", PlaceHolder = "MAC Address" })
+                </span>
+                <span>
+                    <button class="btn btn-xs btn-success">Wake Up</button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span id="wakeup-data" class="text-primary">Not sent yet..</span>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Reboot</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <span>
+                    @Html.TextBox("test", null, new { @class = "", id = "ping-textbox", PlaceHolder = "IP or Hostname" })
+                </span>
+                <span>
+                    <button class="btn btn-xs btn-warning">Reboot</button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span id="reboot-data" class="text-primary">Not sent yet..</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4>Shutdown</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <span>
+                    @Html.TextBox("test", null, new { @class = "", id = "ping-textbox", PlaceHolder = "IP or Hostname" })
+                </span>
+                <span>
+                    <button class="btn btn-xs btn-danger">Shutdown</button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span id="shutdown-data" class="text-primary">Not sent yet..</span>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Computer Information</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <span>
+                    @Html.TextBox("test", null, new { @class = "", id = "ping-textbox", PlaceHolder = "IP or Hostname" })
+                </span>
+                <span>
+                    <button class="btn btn-xs btn-info">Get info</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <br/>
+        <div class="row">
+            <div class="col-md-3">
+                <span class="text-primary">Status: </span>
+            </div>
+            <div class="col-md-9">
+                <span id="info-status-data" class="text-primary">Unknown..</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <span class="text-primary">IP: </span>
+            </div>
+            <div class="col-md-9">
+                <span id="info-ip-data" class="text-primary">Unknown..</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <span class="text-primary">MAC: </span>
+            </div>
+            <div class="col-md-9">
+                <span id="info-mac-data" class="text-primary">Unknown..</span>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>

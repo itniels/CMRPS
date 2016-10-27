@@ -31,7 +31,7 @@ namespace CMRPS.Web.Controllers
 
         public void DebugPing()
         {
-            ActionController.Ping(4);
+            
         }
     }
 }
