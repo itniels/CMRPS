@@ -7,6 +7,7 @@ namespace CMRPS.Web.Enums
 {
     public enum Action
     {
+        Unknown,
         Info,
         Login,
         Power,

@@ -37,7 +37,6 @@ namespace CMRPS.Web.Migrations
                     RebootTimeout = 120,
                     PingInterval = 1,
                 }
-
             );
 
             

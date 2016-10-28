@@ -15,6 +15,7 @@ namespace CMRPS.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -68,6 +69,13 @@ namespace CMRPS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            // Log the login
+            SysLogin login = new SysLogin();
+            login.Success = false;
+            login.Timestamp = DateTime.Now;
+            login.User = db.Users.SingleOrDefault(x => x.UserName == model.Username);
+            
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -76,6 +84,16 @@ namespace CMRPS.Web.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
+
+            if (result == SignInStatus.Success)
+            {
+                login.Success = true;
+            }
+                
+
+            db.Logins.Add(login);
+            db.SaveChanges();
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -89,6 +107,8 @@ namespace CMRPS.Web.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+
+
         }
 
         //

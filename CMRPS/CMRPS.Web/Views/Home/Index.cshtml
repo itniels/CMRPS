@@ -1,4 +1,6 @@
-﻿@using System.Security.Claims
+﻿@model CMRPS.Web.ModelsView.HomeIndexViewModels
+@using System.Security.Claims
+@using CMRPS.Web.Enums
 @{
     ViewBag.Title = "Home Page";
 }
@@ -19,34 +21,56 @@
     <p></p>
 </div>
 
-<h4>Note: Demo data only here yet!</h4>
 <div class="row">
     <div class="col-md-4">
         <h2>Devices</h2>
-        <p>Total Devices: 0</p>
-        <p style="color: green;">Online Devices: 0 | 0%</p>
-        <p style="color: red;">Offline Devices: 0 | 0%</p>
+        <p>Total Devices: @Model.DevicesTotal</p>
+        <p style="color: green;">Online Devices: @Model.DevicesOnline | @Model.DevicesOnlinePercentage.ToString("0.00")%</p>
+        <p style="color: red;">Offline Devices: @Model.DevicesOffline | @Model.DevicesOfflinePercentage.ToString("0.00")%</p>
     </div>
 
     <div class="col-md-4">
         <h2>Events</h2>
-        <p>
-            <span class="label label-danger">30/6/2016 14:54</span> <br /> Error Message
-        </p>
-        <p>
-            <span class="label label-warning">30/6/2016 14:54</span> <br /> Warning Message
-        </p>
-        <p>
-            <span class="label label-info">30/6/2016 14:54</span> <br /> Info Message
-        </p>
-        <p>
-            <span class="label label-success">30/6/2016 14:54</span> <br /> Success Message
-        </p>
+        @foreach (var item in @Model.Events)
+        {
+            if (item.ActionStatus == ActionStatus.None)
+            {
+                <span class="label label-info">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
+            }
+            else if (item.ActionStatus == ActionStatus.OK)
+            {
+                <span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
+            }
+            else if (item.ActionStatus == ActionStatus.Warning)
+            {
+                <span class="label label-warning">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
+            }
+            else if (item.ActionStatus == ActionStatus.Error)
+            {
+                <span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span><br />@item.Description
+            }
+            else
+            {
+                <span class="label label-default">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
+            }
+        }
+
     </div>
 
     <div class="col-md-4">
         <h2>Logins</h2>
-        <p><span class="label label-success">30/6/2016 14:54</span> NS</p>
-        <p><span class="label label-danger">30/6/2016 14:53</span> NS</p>
+        @foreach (var item in Model.Logins)
+        {
+            if (item.Success)
+            {
+                <p><span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? "Unknown")</p>
+            }
+            else
+            {
+                <p><span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? "Unknown")</p>
+            }
+        }
+
+
     </div>
 </div>

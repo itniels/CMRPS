@@ -7,6 +7,7 @@ namespace CMRPS.Web.Enums
 {
     public enum ActionStatus
     {
+        Unknown,
         None,
         OK,
         Warning,

@@ -12,7 +12,9 @@ namespace CMRPS.Web.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Color = c.String(),
+                        Name = c.String(),
+                        ColorLabel = c.String(),
+                        ColorText = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -24,42 +26,32 @@ namespace CMRPS.Web.Migrations
                         Name = c.String(),
                         IP = c.String(),
                         MAC = c.String(),
-                        Hostname = c.String(),
+                        Hostname = c.String(nullable: false),
+                        Status = c.Boolean(nullable: false),
+                        PurchaseDate = c.DateTime(nullable: false),
+                        Description = c.String(),
+                        Manufacturer = c.String(),
+                        Model = c.String(),
+                        CPU = c.String(),
+                        CPUCores = c.String(),
+                        RAM = c.String(),
+                        RAMSize = c.String(),
+                        Disk = c.String(),
+                        DiskSize = c.String(),
+                        EthernetCable = c.String(),
+                        EthernetWifi = c.String(),
+                        OS = c.String(),
                         Color_Id = c.Int(),
-                        info_Id = c.Int(),
                         Location_Id = c.Int(),
                         Type_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.ColorModels", t => t.Color_Id)
-                .ForeignKey("dbo.InfoModels", t => t.info_Id)
                 .ForeignKey("dbo.LocationModels", t => t.Location_Id)
                 .ForeignKey("dbo.ComputerTypeModels", t => t.Type_Id)
                 .Index(t => t.Color_Id)
-                .Index(t => t.info_Id)
                 .Index(t => t.Location_Id)
                 .Index(t => t.Type_Id);
-            
-            CreateTable(
-                "dbo.InfoModels",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Description = c.String(),
-                        PurchaseDate = c.DateTime(nullable: false),
-                        Manufacturer = c.String(),
-                        Model = c.String(),
-                        CPU = c.String(),
-                        CPUCores = c.Int(nullable: false),
-                        RAM = c.String(),
-                        RAMSize = c.Int(nullable: false),
-                        Disk = c.String(),
-                        DiskSize = c.Int(nullable: false),
-                        EthernetCable = c.String(),
-                        EthernetWifi = c.String(),
-                        OS = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.LocationModels",
@@ -75,33 +67,26 @@ namespace CMRPS.Web.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false),
                         ImagePath = c.String(),
+                        Filename = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.AspNetRoles",
+                "dbo.Events",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false, maxLength: 256),
+                        ID = c.Int(nullable: false, identity: true),
+                        Timestamp = c.DateTime(nullable: false),
+                        Action = c.Int(nullable: false),
+                        ActionStatus = c.Int(nullable: false),
+                        Description = c.String(),
+                        User_Id = c.String(maxLength: 128),
                     })
-                .PrimaryKey(t => t.Id)
-                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
-            CreateTable(
-                "dbo.AspNetUserRoles",
-                c => new
-                    {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.RoleId);
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
+                .Index(t => t.User_Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -150,36 +135,97 @@ namespace CMRPS.Web.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.AspNetUserRoles",
+                c => new
+                    {
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        RoleId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Logins",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Timestamp = c.DateTime(nullable: false),
+                        Success = c.Boolean(nullable: false),
+                        User_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
+                .Index(t => t.User_Id);
+            
+            CreateTable(
+                "dbo.AspNetRoles",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false, maxLength: 256),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+            
+            CreateTable(
+                "dbo.SiteSettings",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        AdminUsername = c.String(),
+                        AdminPassword = c.String(),
+                        AdminDomain = c.String(),
+                        ShutdownMethod = c.Int(nullable: false),
+                        ShutdownForce = c.Boolean(nullable: false),
+                        ShutdownTimeout = c.Int(nullable: false),
+                        ShutdownMessage = c.String(),
+                        RebootMethod = c.Int(nullable: false),
+                        RebootForce = c.Boolean(nullable: false),
+                        RebootTimeout = c.Int(nullable: false),
+                        RebootMessage = c.String(),
+                        StartupMethod = c.Int(nullable: false),
+                        PingInterval = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Logins", "User_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Events", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.ComputerModels", "Type_Id", "dbo.ComputerTypeModels");
             DropForeignKey("dbo.ComputerModels", "Location_Id", "dbo.LocationModels");
-            DropForeignKey("dbo.ComputerModels", "info_Id", "dbo.InfoModels");
             DropForeignKey("dbo.ComputerModels", "Color_Id", "dbo.ColorModels");
+            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Logins", new[] { "User_Id" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Events", new[] { "User_Id" });
             DropIndex("dbo.ComputerModels", new[] { "Type_Id" });
             DropIndex("dbo.ComputerModels", new[] { "Location_Id" });
-            DropIndex("dbo.ComputerModels", new[] { "info_Id" });
             DropIndex("dbo.ComputerModels", new[] { "Color_Id" });
+            DropTable("dbo.SiteSettings");
+            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Logins");
+            DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.AspNetUserRoles");
-            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Events");
             DropTable("dbo.ComputerTypeModels");
             DropTable("dbo.LocationModels");
-            DropTable("dbo.InfoModels");
             DropTable("dbo.ComputerModels");
             DropTable("dbo.ColorModels");
         }
