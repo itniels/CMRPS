@@ -31,6 +31,10 @@
 
     <div class="col-md-4">
         <h2>Events</h2>
+        @if (Model.Events.Count == 0)
+        {
+            <span class="no-items-found">No event to show</span>
+        }
         @foreach (var item in @Model.Events)
         {
             if (item.ActionStatus == ActionStatus.None)
@@ -59,6 +63,10 @@
 
     <div class="col-md-4">
         <h2>Logins</h2>
+        @if (Model.Logins.Count == 0)
+        {
+            <span class="no-items-found">No logins to show</span>
+        }
         @foreach (var item in Model.Logins)
         {
             if (item.Success)
