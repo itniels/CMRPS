@@ -198,11 +198,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Enums\Action.cs" />
     <Compile Include="Enums\ActionStatus.cs" />
     <Compile Include="Enums\RebootMethod.cs" />
@@ -218,10 +220,16 @@
     <Compile Include="Migrations\201610281057431_m1.Designer.cs">
       <DependentUpon>201610281057431_m1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610291546144_m2.cs" />
+    <Compile Include="Migrations\201610291546144_m2.Designer.cs">
+      <DependentUpon>201610291546144_m2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
     <Compile Include="ModelsView\HomeViewModels.cs" />
+    <Compile Include="ModelsView\ImportViewModels.cs" />
+    <Compile Include="ModelsView\UserViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ColorModel.cs" />
     <Compile Include="Models\ComputerModel.cs" />
@@ -343,6 +351,14 @@
     <Content Include="Views\Status\ListView.cshtml" />
     <Content Include="Views\Status\Overview.cshtml" />
     <Content Include="Views\Tools\NetworkTools.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\Logs\Events.cshtml" />
+    <Content Include="Views\Logs\Logins.cshtml" />
+    <Content Include="Views\Location\Import.cshtml" />
+    <Content Include="Views\Color\Import.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -359,6 +375,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610281057431_m1.resx">
       <DependentUpon>201610281057431_m1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610291546144_m2.resx">
+      <DependentUpon>201610291546144_m2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,52 @@
+﻿@model List<CMRPS.Web.Models.SysLogin>
+
+@{
+    ViewBag.Title = "Events";
+}
+
+<h2>Logins</h2>
+
+<table class="table">
+    <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Success</th>
+        <th>Time</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @if (item.User != null)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Firstname) @Html.DisplayFor(modelItem => item.User.Lastname)
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+            }
+            <td>
+                <span class="label @(item.Success ? "label-success" : "label-danger")">@(item.Success ? "Success" : "Failure")</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (Model.Count == 0)
+{
+    <div class="no-items-found">No logins recorded yet!</div>
+}

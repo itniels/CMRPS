@@ -6,8 +6,13 @@
 
 <h2>Computer Types</h2>
 <hr />
-<div>
-    <span class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "ComputerType")'">Create new</span>
+<div class="row">
+    <div class="col-md-1">
+        <button class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "ComputerType")'">Create new</button>
+    </div>
+    <div class="col-md-11">
+        
+    </div>
 </div>
 <br/>
 
@@ -56,9 +61,9 @@
         </td>
         <td>
             <div class="pull-right">
-                <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#myModal">Details</button>
-                <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "ComputerType", new {id = item.Id})'">Edit</button>
-                <button class="btn btn-xs btn-danger" onclick="location.href = '@Url.Action("Delete", "ComputerType", new {id = item.Id})'">Delete</button>
+                <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails">Details</button>
+                <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", new {id = item.Id})'">Edit</button>
+                <button class="btn btn-xs btn-danger" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete">Delete</button>
             </div>
         </td>
     </tr>
@@ -66,8 +71,8 @@
 
 </table>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Modal Details -->
+<div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div id="modal-body" class="modal-body">
@@ -79,3 +84,25 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Delete -->
+<span id="delete-item-id" hidden="hidden"></span>
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div id="modal-body-delete" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deleteItem('@Url.Action("Delete")');" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Back to safety</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="no-items-found">No types created yet!</div>
+}

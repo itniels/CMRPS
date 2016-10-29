@@ -1,0 +1,75 @@
+﻿@model List<CMRPS.Web.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>User Management</h2>
+<hr />
+
+<div class="row">
+    <span class="btn btn-xs btn-success" onclick="location.href='@Url.Action("Register", "Account")'">Create new user</span>
+</div>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Username
+        </th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>E-Mail</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firstname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+
+            <td>
+                <div class="pull-right">
+                    @*<button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#myModal">Details</button>*@
+                    <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", new {id = item.Id})'">Edit</button>
+                    <button class="btn btn-xs btn-danger" onclick="showDeleteUserModal('@item.Id', '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete">Delete</button>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<!-- Modal Delete -->
+<span id="delete-item-id" hidden="hidden"></span>
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div id="modal-body-delete" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <div class="pull-left">
+                    <span title="This will remove all the LOGINS with this user. Otherwise they will be kept and shown as deleted user in the logs.">@Html.CheckBox("RemoveLogins", new { @class = "", id = "delete-item-logins" }) <span class="text-primary"> Remove Logins</span></span> <br />
+                    <span title="This will remove all the EVENTS with this user. Otherwise they will be kept and shown as deleted user in the logs.">@Html.CheckBox("RemoveEvents", new { @class = "", id = "delete-item-events" }) <span class="text-primary"> Remove Events</span></span><br/>
+                    <div class="pull-left">
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-danger" onclick="deleteUser('@Url.Action("Delete")');" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Back to safety</button>
+            </div>
+        </div>
+    </div>
+</div>

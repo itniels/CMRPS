@@ -156,7 +156,9 @@ namespace CMRPS.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpGet]
         [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -168,7 +170,7 @@ namespace CMRPS.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(computerTypeModel);
+            return PartialView(computerTypeModel);
         }
 
         /// <summary>
@@ -177,9 +179,9 @@ namespace CMRPS.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult Delete(int id)
         {
             ComputerTypeModel computerTypeModel = db.ComputerTypes.Find(id);
             try

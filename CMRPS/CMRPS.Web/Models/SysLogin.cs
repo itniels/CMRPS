@@ -14,6 +14,8 @@ namespace CMRPS.Web.Models
         public DateTime Timestamp { get; set; }
 
         public ApplicationUser User { get; set; }
+        public string Name { get; set; }
+        public string Username { get; set; }
         public bool Success { get; set; }
     }
 }

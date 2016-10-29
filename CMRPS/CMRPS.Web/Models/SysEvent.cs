@@ -17,6 +17,8 @@ namespace CMRPS.Web.Models
         public Action Action { get; set; }
         public ActionStatus ActionStatus { get; set; }
         public ApplicationUser User { get; set; }
+        public string Name { get; set; }
+        public string Username { get; set; }
         public string Description { get; set; }
     }
 }

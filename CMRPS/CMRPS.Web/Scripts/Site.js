@@ -2,7 +2,6 @@
 // Details Modal
 // =====================================================
 function showDetailsModal(id, action) {
-    //console.log('ID: ' + id);
     $("#modal-body").html("Please wait! Loading...");
 
     $.ajax({
@@ -16,6 +15,88 @@ function showDetailsModal(id, action) {
         },
         error: function () {
             $("#modal-body").html("Oops.. Something went wrong! :-(");
+        }
+    });
+}
+
+// =====================================================
+// Delete Modal
+// =====================================================
+function showDeleteModal(id, action) {
+    $("#modal-body-delete").html("Please wait! Loading...");
+    $("#delete-item-id").html(id);
+
+    $.ajax({
+        type: 'GET',
+        url: action,
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        data: { Id: id },
+        success: function (result) {
+            $("#modal-body-delete").html(result);
+        },
+        error: function () {
+            $("#modal-body-delete").html("Oops.. Something went wrong! :-(");
+        }
+    });
+}
+
+function deleteItem(action) {
+    var id = $("#delete-item-id").html();
+
+    $.ajax({
+        type: 'POST',
+        url: action,
+        data: { Id: id },
+        success: function (result) {
+            location.reload();
+        },
+        error: function () {
+            alert("Oops.. Something went wrong! :-(");
+        }
+    });
+}
+
+// =====================================================
+// Delete USER Modal
+// =====================================================
+function showDeleteUserModal(id, action) {
+    $("#modal-body-delete").html("Please wait! Loading...");
+    $("#delete-item-id").html(id);
+
+    $.ajax({
+        type: 'GET',
+        url: action,
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        data: { Id: id },
+        success: function (result) {
+            $("#modal-body-delete").html(result);
+        },
+        error: function () {
+            $("#modal-body-delete").html("Oops.. Something went wrong! :-(");
+        }
+    });
+}
+
+function deleteUser(action) {
+    var id = $("#delete-item-id").html();
+    var logins = $("#delete-item-logins").is(':checked');
+    var events = $("#delete-item-events").is(':checked');
+
+    console.log('ID: ' + id);
+    console.log('Logins: ' + logins);
+    console.log('Events: ' + events);
+
+    $.ajax({
+        type: 'POST',
+        url: action,
+        data: { Id: id, removeLogins: logins, removeEvents: events },
+        success: function (result) {
+            location.reload();
+        },
+        error: function () {
+            alert("Oops.. Something went wrong! :-(");
         }
     });
 }

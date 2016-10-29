@@ -30,7 +30,7 @@
     </div>
 
     <div class="col-md-4">
-        <h2>Events</h2>
+        <h2>Events (Last 10)</h2>
         @if (Model.Events.Count == 0)
         {
             <span class="no-items-found">No event to show</span>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="col-md-4">
-        <h2>Logins</h2>
+        <h2>Logins (Last 10)</h2>
         @if (Model.Logins.Count == 0)
         {
             <span class="no-items-found">No logins to show</span>
@@ -71,11 +71,11 @@
         {
             if (item.Success)
             {
-                <p><span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? "Unknown")</p>
+                <p><span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())</p>
             }
             else
             {
-                <p><span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? "Unknown")</p>
+                <p><span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())</p>
             }
         }
 

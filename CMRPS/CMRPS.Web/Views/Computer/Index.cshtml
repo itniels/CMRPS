@@ -8,24 +8,24 @@
 <h2>Computers</h2>
 
 <hr />
-<h4>Actions</h4>
 <div class="row">
     <div class="col-md-8">
-        <button class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "Computer")'">Create</button>
+        <button class="btn btn-xs btn-success" onclick="location.href = '@Url.Action("Create", "Computer")'">Create Single</button>
         <button class="btn btn-xs btn-success" onclick="location.href='@Url.Action("CreateMultiple", "Computer")'">Create Multiple</button>
         <button class="btn btn-xs btn-warning">Import</button>
-        <button class="btn btn-xs btn-info">Export Selected</button>
-        <button class="btn btn-xs btn-danger">Delete Selected</button>
+        <button class="btn btn-xs btn-warning">Export</button>
     </div>
     <div class="col-md-4">
-        <input type="text" style="height: 30px;" placeholder="Search..."/>
-        <button class="btn btn-xs btn-info">Go</button>
+        <div class="pull-right">
+            <input type="text" style="height: 30px;" placeholder="Search..." />
+            <button class="btn btn-xs btn-info">Go</button>
+        </div>
     </div>
 </div>
 <br/>
 @if (Model.Computers.Count == 0)
 {
-    <div class="no-items-found">Sorry no computers found!</div>
+    <div class="no-items-found">No computers created yet!</div>
 }
 else
 {
