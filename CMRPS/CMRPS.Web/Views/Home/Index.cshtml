@@ -30,39 +30,44 @@
     </div>
 
     <div class="col-md-4">
-        <h2>Events (Last 10)</h2>
+        <h2>Last 10 Events</h2>
         @if (Model.Events.Count == 0)
         {
             <span class="no-items-found">No event to show</span>
         }
         @foreach (var item in @Model.Events)
         {
-            if (item.ActionStatus == ActionStatus.None)
+            var label = "label-default";
+
+            switch (item.ActionStatus)
             {
-                <span class="label label-info">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
+                case ActionStatus.None:
+                    label = "label-info";
+                    break;
+                case ActionStatus.OK:
+                    label = "label-success";
+                    break;
+                case ActionStatus.Warning:
+                    label = "label-warning";
+                    break;
+                case ActionStatus.Error:
+                    label = "label-danger";
+                    break;
+                default:
+                    label = "label-default";
+                    break;
             }
-            else if (item.ActionStatus == ActionStatus.OK)
-            {
-                <span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
-            }
-            else if (item.ActionStatus == ActionStatus.Warning)
-            {
-                <span class="label label-warning">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
-            }
-            else if (item.ActionStatus == ActionStatus.Error)
-            {
-                <span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span><br />@item.Description
-            }
-            else
-            {
-                <span class="label label-default">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <br /> @item.Description
-            }
+
+            <span class="label @label">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span>
+            @item.User.UserName.ToUpper()
+            <br />
+            <span class="text-primary">@item.Description</span><br />
         }
 
     </div>
 
     <div class="col-md-4">
-        <h2>Logins (Last 10)</h2>
+        <h2>Last 10 Logins</h2>
         @if (Model.Logins.Count == 0)
         {
             <span class="no-items-found">No logins to show</span>

@@ -1,4 +1,6 @@
-﻿@model List<CMRPS.Web.Models.SysEvent>
+﻿@using CMRPS.Web.Enums
+@using CMRPS.Web.Models
+@model List<CMRPS.Web.Models.SysEvent>
 
 @{
     ViewBag.Title = "Events";
@@ -8,17 +10,48 @@
 
 <table class="table">
     <tr>
+        <th>Time</th>
         <th>Username</th>
         <th>Name</th>
         <th>Action</th>
         <th>Status</th>
+        <th>Has Exception</th>
         <th>Description</th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (SysEvent item in @Model)
     {
+        var label = "";
+        var actionStatus = "";
+        switch (item.ActionStatus)
+        {
+            case ActionStatus.None:
+                label = "label-info";
+                actionStatus = "Info";
+                break;
+            case ActionStatus.OK:
+                label = "label-success";
+                actionStatus = "Success";
+                break;
+            case ActionStatus.Warning:
+                label = "label-warning";
+                actionStatus = "Warning";
+                break;
+            case ActionStatus.Error:
+                label = "label-danger";
+                actionStatus = "Error";
+                break;
+            default:
+                label = "label-default";
+                actionStatus = "Unknown";
+                break;
+        }
+
         <tr>
+            <td>
+                @item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString() 
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.UserName)
             </td>
@@ -29,14 +62,21 @@
                 @Html.DisplayFor(modelItem => item.Action)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ActionStatus)
+                <span class="label @label">
+                    @actionStatus
+                </span>
+            </td>
+            <td>
+                <span class="label @(item.Exception.Length == 0 ? "label-success" : "label-danger")">
+                    @(item.Exception.Length == 0 ? "No" : "Yes")
+                </span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 <div class="pull-right">
-                    <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.ID, '@Url.Action("Details")');" data-toggle="modal" data-target="#myModal">Details</button>
+                    <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.ID, '@Url.Action("EventDetails")');" data-toggle="modal" data-target="#modalDetails">Details</button>
                 </div>
             </td>
         </tr>
@@ -48,3 +88,17 @@
 {
     <div class="no-items-found">No events recorded yet!</div>
 }
+
+<!-- Modal Details -->
+<div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

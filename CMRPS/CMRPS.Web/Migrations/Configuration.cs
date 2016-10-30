@@ -36,6 +36,8 @@ namespace CMRPS.Web.Migrations
                     RebootMessage = "Rebooting in 2 minutes by CMRPS.",
                     RebootTimeout = 120,
                     PingInterval = 1,
+                    CleanLogs = true,
+                    KeepLogsFor = 90,   // 3 Months
                 }
             );
 

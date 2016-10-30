@@ -7,9 +7,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
+using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
+using Action = System.Action;
 
 namespace CMRPS.Web.Controllers
 {
@@ -70,11 +73,18 @@ namespace CMRPS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Added color: " + colorModel.Name;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 db.Colors.Add(colorModel);
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
-
             return View(colorModel);
         }
 
@@ -110,6 +120,13 @@ namespace CMRPS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Edited color: " + colorModel.Name;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 db.Entry(colorModel).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -150,6 +167,14 @@ namespace CMRPS.Web.Controllers
         public ActionResult Delete(int id)
         {
             ColorModel colorModel = db.Colors.Find(id);
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Enums.Action.Info;
+            ev.Description = "Deleted color: " + colorModel.Name;
+            ev.ActionStatus = ActionStatus.OK;
+            LogsController.AddEvent(ev, User.Identity.GetUserId());
+
+            
             db.Colors.Remove(colorModel);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -217,6 +242,13 @@ namespace CMRPS.Web.Controllers
                         return View(model);
                     }
                 }
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Imported colors";
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
 
                 return RedirectToAction("Index");
             }
@@ -299,6 +331,13 @@ namespace CMRPS.Web.Controllers
                 }
 
                 DateTime date = DateTime.Now;
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Exported colors";
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
 
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 Response.AddHeader("content-disposition", "attachment;  filename=ColorsExport_" + date.ToShortDateString() + ".xlsx");

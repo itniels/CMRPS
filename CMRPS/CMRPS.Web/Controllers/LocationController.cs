@@ -7,8 +7,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
+using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
 
 namespace CMRPS.Web.Controllers
@@ -70,6 +72,13 @@ namespace CMRPS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Created location: " + locationModel.Location;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 db.Locations.Add(locationModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -110,6 +119,13 @@ namespace CMRPS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Edited location: " + locationModel.Location;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 db.Entry(locationModel).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -149,6 +165,13 @@ namespace CMRPS.Web.Controllers
         public ActionResult Delete(int id)
         {
             LocationModel locationModel = db.Locations.Find(id);
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Enums.Action.Info;
+            ev.Description = "Deleted location: " + locationModel.Location;
+            ev.ActionStatus = ActionStatus.OK;
+            LogsController.AddEvent(ev, User.Identity.GetUserId());
+
             db.Locations.Remove(locationModel);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -214,6 +237,13 @@ namespace CMRPS.Web.Controllers
                         return View(model);
                     }
                 }
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Imported locations";
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
 
                 return RedirectToAction("Index");
             }
@@ -282,6 +312,13 @@ namespace CMRPS.Web.Controllers
                 }
 
                 DateTime date = DateTime.Now;
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Exported locations";
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
 
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 Response.AddHeader("content-disposition", "attachment;  filename=LocationsExport_" + date.ToShortDateString() + ".xlsx");

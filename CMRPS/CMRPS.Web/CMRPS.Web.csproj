@@ -224,6 +224,14 @@
     <Compile Include="Migrations\201610291546144_m2.Designer.cs">
       <DependentUpon>201610291546144_m2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610301311029_m3.cs" />
+    <Compile Include="Migrations\201610301311029_m3.Designer.cs">
+      <DependentUpon>201610301311029_m3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610301431021_m4.cs" />
+    <Compile Include="Migrations\201610301431021_m4.Designer.cs">
+      <DependentUpon>201610301431021_m4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
@@ -359,6 +367,7 @@
     <Content Include="Views\Location\Import.cshtml" />
     <Content Include="Views\Color\Import.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\Logs\EventDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -379,6 +388,12 @@
     <EmbeddedResource Include="Migrations\201610291546144_m2.resx">
       <DependentUpon>201610291546144_m2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610301311029_m3.resx">
+      <DependentUpon>201610301311029_m3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610301431021_m4.resx">
+      <DependentUpon>201610301431021_m4.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -398,7 +413,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8550/</IISUrl>
+          <IISUrl>http://localhost:8650/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

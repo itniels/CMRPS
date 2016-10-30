@@ -5,10 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CMPRS.Web.Models;
+using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using Hangfire;
 using Hangfire.Common;
 using Hangfire.Server;
+using Microsoft.AspNet.Identity;
+using Action = CMRPS.Web.Enums.Action;
 
 namespace CMRPS.Web.Controllers
 {
@@ -28,6 +31,11 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index(SettingsModel model)
         {
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Action.Settings;
+            ev.Description = "Updated system settings";
+
             if (ModelState.IsValid)
             {
                 // Check for changed settings we need to reflect here and now.
@@ -36,14 +44,21 @@ namespace CMRPS.Web.Controllers
                 {
                     // Reset Hangfires recurring ping job.
                     var manager = new RecurringJobManager();
-                    manager.AddOrUpdate("Ping", Job.FromExpression(() => JobsController.Ping()), Cron.MinuteInterval(model.PingInterval));
+                    manager.AddOrUpdate("GetInfo", Job.FromExpression(() => JobsController.GetComputerInfo()), Cron.MinuteInterval(model.PingInterval));
                 }
 
                 // Save to database
                 db.Settings.AddOrUpdate(model);
                 db.SaveChanges();
+                
+                
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+                
                 return RedirectToAction("Index", "Home");
             }
+            ev.ActionStatus = ActionStatus.Error;
+            LogsController.AddEvent(ev, User.Identity.GetUserId());
             return View(model);
         }
     }

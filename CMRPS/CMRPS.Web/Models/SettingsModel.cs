@@ -59,5 +59,11 @@ namespace CMPRS.Web.Models
         // HangFire
         [Display(Name = "Interval in minutes to ping")]
         public int PingInterval { get; set; }
+
+        [Display(Name = "Keep logs clean")]
+        public bool CleanLogs { get; set; }
+
+        [Display(Name = "Keep for (days)")]
+        public int KeepLogsFor { get; set; }
     }
 }

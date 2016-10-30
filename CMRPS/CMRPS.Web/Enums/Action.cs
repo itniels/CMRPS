@@ -11,6 +11,7 @@ namespace CMRPS.Web.Enums
         Info,
         Login,
         Power,
-        AutoTask
+        AutoTask,
+        Settings
     }
 }

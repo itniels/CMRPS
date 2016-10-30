@@ -17,13 +17,17 @@ using System.Web.Mvc;
 using CMPRS.Web.App_Start;
 using CMPRS.Web.Enums;
 using CMPRS.Web.Models;
+using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
+using Microsoft.AspNet.Identity;
+using Action = CMRPS.Web.Enums.Action;
 
 namespace CMRPS.Web.Controllers
 {
     public class ActionController : Controller
     {
         //private static ApplicationDbContext db = new ApplicationDbContext();
+        private static string exception = "";
 
         // Declarations of imports
         [DllImport("iphlpapi.dll", ExactSpelling = true)]
@@ -58,15 +62,28 @@ namespace CMRPS.Web.Controllers
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool Ping(string hostname)
         {
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Action.Power;
+            ev.Description = "Pinged: " + hostname;
+
             Ping pinger = new Ping();
             try
             {
                 // Ping computer
                 PingReply reply = pinger.Send(hostname);
+
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 return reply.Status == IPStatus.Success;
             }
-            catch (PingException)
+            catch (PingException ex)
             {
+                ev.ActionStatus = ActionStatus.Error;
+                ev.Exception = ex.ToString();
+                exception = "";
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
                 return false;
             }
         }
@@ -78,19 +95,40 @@ namespace CMRPS.Web.Controllers
             ApplicationDbContext db = new ApplicationDbContext();
             ComputerModel model = db.Computers.Single(x => x.Id == id);
             SettingsModel settings = db.Settings.FirstOrDefault();
+
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Action.Power;
+            ev.Description = "Powered on: " + model.Name;
+            
+
             try
             {
                 if (settings.StartupMethod == StartupMethod.Winwake)
                 {
-                    return WakeupWinwake(model.MAC);
+                    bool result = WakeupWinwake(model.MAC);
+                    ev.ActionStatus = result ? ActionStatus.OK : ActionStatus.Error;
+                    ev.Exception = exception.ToString();
+                    exception = "";
+                    LogsController.AddEvent(ev, User.Identity.GetUserId());
+                    return result;
                 }
-                else if (settings.StartupMethod == StartupMethod.Packet)
+                if (settings.StartupMethod == StartupMethod.Packet)
                 {
-                    return WakeupPacket(model.MAC);
+                    bool result = WakeupPacket(model.MAC);
+                    ev.ActionStatus = result ? ActionStatus.OK : ActionStatus.Error;
+                    ev.Exception = exception.ToString();
+                    exception = "";
+                    LogsController.AddEvent(ev, User.Identity.GetUserId());
+                    return result;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ev.ActionStatus = ActionStatus.Error;
+                ev.Exception = ex.ToString();
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+                exception = "";
                 return false;
             }
 
@@ -104,6 +142,12 @@ namespace CMRPS.Web.Controllers
             ApplicationDbContext db = new ApplicationDbContext();
             ComputerModel model = db.Computers.Single(x => x.Id == id);
             SettingsModel settings = db.Settings.FirstOrDefault();
+
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Action.Power;
+            ev.Description = "Powered off: " + model.Name;
+
             try
             {
                 if (settings.ShutdownMethod == ShutdownMethod.CMD)
@@ -140,12 +184,19 @@ namespace CMRPS.Web.Controllers
                         settings.AdminDomain
                         );
                 }
+
+                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ev.ActionStatus = ActionStatus.Error;
+                ev.Exception = ex.ToString();
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+                exception = "";
                 return false;
             }
-
+            ev.ActionStatus = ActionStatus.OK;
+            LogsController.AddEvent(ev, User.Identity.GetUserId());
             return true;
         }
 
@@ -156,6 +207,12 @@ namespace CMRPS.Web.Controllers
             ApplicationDbContext db = new ApplicationDbContext();
             ComputerModel model = db.Computers.Single(x => x.Id == id);
             SettingsModel settings = db.Settings.FirstOrDefault();
+
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Action.Power;
+            ev.Description = "Rebooted: " + model.Name;
+
             try
             {
                 if (settings.RebootMethod == RebootMethod.CMD)
@@ -193,11 +250,17 @@ namespace CMRPS.Web.Controllers
                         );
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ev.ActionStatus = ActionStatus.Error;
+                ev.Exception = ex.ToString();
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+                exception = "";
                 return false;
             }
 
+            ev.ActionStatus = ActionStatus.OK;
+            LogsController.AddEvent(ev, User.Identity.GetUserId());
             return true;
         }
 
@@ -295,7 +358,10 @@ namespace CMRPS.Web.Controllers
                 Process.Start(path, args);
                 return true;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
 
         }
@@ -341,8 +407,9 @@ namespace CMRPS.Web.Controllers
                     bool length = returnValue == bytes.Length;
                     return true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    exception = ex.ToString();
                     return false;
                 }
             }
@@ -365,7 +432,10 @@ namespace CMRPS.Web.Controllers
                 string args = String.Format("-s -m \\\\{0} -t {1} {2} {3}", hostname, timeout, useForce, useMessage);
                 Process.Start("shutdown", args);
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
         }
 
@@ -404,7 +474,10 @@ namespace CMRPS.Web.Controllers
 
                 return true;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
         }
 
@@ -445,7 +518,10 @@ namespace CMRPS.Web.Controllers
                 }
                 return true;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
         }
 
@@ -461,7 +537,10 @@ namespace CMRPS.Web.Controllers
                 string args = String.Format("-r -m \\\\{0} -t {1} {2} {3}", hostname, timeout, useForce, useMessage);
                 Process.Start("shutdown", args);
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
         }
 
@@ -500,7 +579,10 @@ namespace CMRPS.Web.Controllers
 
                 return true;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
         }
 
@@ -541,7 +623,10 @@ namespace CMRPS.Web.Controllers
                 }
                 return true;
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                exception = ex.ToString();
+            }
             return false;
         }
     }

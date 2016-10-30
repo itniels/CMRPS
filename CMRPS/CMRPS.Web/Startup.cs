@@ -29,13 +29,13 @@ namespace CMRPS.Web
             var manager = new RecurringJobManager();
             if (settings != null)
             {
-                manager.AddOrUpdate("Ping", Job.FromExpression(() => JobsController.Ping()), Cron.MinuteInterval(settings.PingInterval));
-                //RecurringJob.AddOrUpdate(() => JobsController.Ping(), Cron.MinuteInterval(settings.PingInterval));
+                manager.AddOrUpdate("GetInfo", Job.FromExpression(() => JobsController.GetComputerInfo()), Cron.MinuteInterval(settings.PingInterval));
+                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => JobsController.CleanLogs()), Cron.HourInterval(1));
             }
             else
             {
-                manager.AddOrUpdate("Ping", Job.FromExpression(() => JobsController.Ping()), Cron.Minutely());
-                //RecurringJob.AddOrUpdate(() => "Ping", JobsController.Ping(), Cron.Minutely);
+                manager.AddOrUpdate("GetInfo", Job.FromExpression(() => JobsController.GetComputerInfo()), Cron.Minutely());
+                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => JobsController.CleanLogs()), Cron.HourInterval(1));
             }
             
         }

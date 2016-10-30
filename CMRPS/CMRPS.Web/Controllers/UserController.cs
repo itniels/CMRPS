@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
 using Microsoft.AspNet.Identity;
@@ -16,7 +17,6 @@ namespace CMRPS.Web.Controllers
     public class UserController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private ApplicationUserManager manager;
 
         /// <summary>
         /// GET | List of users.
@@ -93,6 +93,14 @@ namespace CMRPS.Web.Controllers
                 // Delete user
                 db.Users.Remove(user);
                 db.SaveChanges();
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Deleted user: " + user.UserName;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 return RedirectToAction("Index", "User");
             }
             return RedirectToAction("Index", "User");
@@ -127,6 +135,13 @@ namespace CMRPS.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Edited User: " + user.UserName;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
                 db.Users.AddOrUpdate(user);
                 db.SaveChanges();
                 return RedirectToAction("Index", "User");

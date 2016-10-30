@@ -52,3 +52,9 @@ textarea {
 .error-text {
     color: red;
 }
+
+.exception-details-textarea {
+    width: 380px;
+    height: 200px;
+    font-size: 12px;
+}
