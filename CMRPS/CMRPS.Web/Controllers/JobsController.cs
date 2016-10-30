@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,9 +22,36 @@ namespace CMRPS.Web.Controllers
         public static void GetComputerInfo()
         {
             List<ComputerModel> computers = db.Computers.ToList();
+            SettingsModel settings = db.Settings.First();
             foreach (ComputerModel computer in computers)
             {
-                BackgroundJob.Enqueue(() => ActionController.UpdateComputer(computer.Id));
+                // Check if it has expired and needs to be queued again.
+                try
+                {
+                    if (computer.isBusy)
+                    {
+                        
+                        //DateTime expired = DateTime.Now.AddMinutes(-(settings.PingInterval + 5));
+                        TimeSpan ts = DateTime.Now - computer.Enqueued;
+                        computer.isBusy = ts.Minutes < 5;
+                    }
+                }
+                catch (Exception)
+                {
+                    computer.isBusy = false;
+                }
+                
+
+                // Make sure they do not get enqueued twice!
+                if (!computer.isBusy)
+                {
+                    computer.isBusy = true;
+                    computer.Enqueued = DateTime.Now;
+                    db.Computers.AddOrUpdate(computer);
+                    db.SaveChanges();
+                    // Enqueue
+                    BackgroundJob.Enqueue(() => ActionController.UpdateComputer(computer.Id));
+                }
             }
         }
 

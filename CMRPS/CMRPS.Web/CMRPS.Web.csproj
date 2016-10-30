@@ -232,6 +232,14 @@
     <Compile Include="Migrations\201610301431021_m4.Designer.cs">
       <DependentUpon>201610301431021_m4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610302056103_m5.cs" />
+    <Compile Include="Migrations\201610302056103_m5.Designer.cs">
+      <DependentUpon>201610302056103_m5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610302119177_m6.cs" />
+    <Compile Include="Migrations\201610302119177_m6.Designer.cs">
+      <DependentUpon>201610302119177_m6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
@@ -242,7 +250,6 @@
     <Compile Include="Models\ColorModel.cs" />
     <Compile Include="Models\ComputerModel.cs" />
     <Compile Include="Models\ComputerTypeModel.cs" />
-    <Compile Include="Models\EventLogModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -393,6 +400,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610301431021_m4.resx">
       <DependentUpon>201610301431021_m4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610302056103_m5.resx">
+      <DependentUpon>201610302056103_m5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610302119177_m6.resx">
+      <DependentUpon>201610302119177_m6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

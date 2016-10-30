@@ -18,11 +18,18 @@ namespace CMRPS.Web
         {
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
 
+            // Hangfire settings
+            BackgroundJobServerOptions opt = new BackgroundJobServerOptions();
+            opt.WorkerCount = 30;
+
             Site.SettingsLoad();
             ConfigureAuth(app);
             app.MapSignalR();
             app.UseHangfireDashboard();
-            app.UseHangfireServer();
+            app.UseHangfireServer(opt);
+
+            
+
 
             // Add hangfire jobs
             SettingsModel settings = db.Settings.SingleOrDefault(x => x.Id == 1);

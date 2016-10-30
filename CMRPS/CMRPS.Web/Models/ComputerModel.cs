@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace CMRPS.Web.Models
 {
+    [Table(name: "Computers")]
     public class ComputerModel
     {
         public int Id { get; set; }
+
+        // HangFire
+        public bool isBusy { get; set; }
+        public DateTime Enqueued { get; set; }
 
         [Display(Name = "Friendly Name")]
         public string Name { get; set; }

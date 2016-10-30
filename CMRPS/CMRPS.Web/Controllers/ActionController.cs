@@ -53,6 +53,8 @@ namespace CMRPS.Web.Controllers
                 // Get Info
                 computer.IP = GetIP(computer);
                 computer.MAC = GetMAC(computer);
+                // Set completed
+                computer.isBusy = false;
                 // Update Database
                 db.Computers.AddOrUpdate(computer);
                 db.SaveChanges();
