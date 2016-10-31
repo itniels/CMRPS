@@ -17,7 +17,7 @@ namespace CMRPS.Web.Controllers
         private static ApplicationDbContext db = new ApplicationDbContext();
 
         /// <summary>
-        /// HangFire | Pings all computers and gets info from online devices.
+        /// HangFire | Pings all computers and gets info from online devices (IP/MAC).
         /// </summary>
         public static void GetComputerInfo()
         {
@@ -25,7 +25,7 @@ namespace CMRPS.Web.Controllers
             SettingsModel settings = db.Settings.First();
             foreach (ComputerModel computer in computers)
             {
-                // Check if it has expired and needs to be queued again.
+                // Check if it has expired and needs to be queued again (lost in system)
                 try
                 {
                     if (computer.isBusy)
@@ -41,7 +41,6 @@ namespace CMRPS.Web.Controllers
                     computer.isBusy = false;
                 }
                 
-
                 // Make sure they do not get enqueued twice!
                 if (!computer.isBusy)
                 {

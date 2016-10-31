@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CMRPS.Web")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Computer Manager and Remote Power System")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("NovaKitty Software")]
 [assembly: AssemblyProduct("CMRPS.Web")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
