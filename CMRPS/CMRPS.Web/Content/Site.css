@@ -81,3 +81,36 @@ textarea {
     max-width: 100%;
     margin-bottom: 5px;
 }
+
+/* Overview Well */
+.well-online {
+    background-color: lightgreen;
+    height: 48px;
+    margin-top: -15px;
+}
+.well-offline {
+    background-color: lightcoral;
+    height: 48px;
+    margin-top: -15px;
+}
+.well-menu-button {
+    margin-left: 5px;
+}
+.well-header-text {
+    font-size: 12px;
+}
+
+/* Power menu buttons */
+.power-menu-info {
+    background: lightskyblue;
+}
+.power-menu-poweron {
+    background: lightgreen;
+}
+.power-menu-poweroff {
+    background: lightcoral;
+}
+.power-menu-reboot {
+    background: lightsalmon;
+}
+

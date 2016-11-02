@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -57,6 +58,9 @@ namespace CMRPS.Web.Controllers
                     qid++;
             }
 
+            // Flush the local DNS before resolving hostnames
+            ActionController.FlushDNS();
+
             // Update queues in database.
             foreach (WorkerQueue wq in workerQueues)
             {
@@ -78,7 +82,7 @@ namespace CMRPS.Web.Controllers
             }
         }
 
-        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+
         private static void ExecuteQueue(WorkerQueue wq)
         {
             // Check if ready

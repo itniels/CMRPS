@@ -12,10 +12,13 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public static void AddEvent(SysEvent model, string uid)
+        public static void AddEvent(SysEvent model, string uid = null)
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            model.User = db.Users.SingleOrDefault(x => x.Id == uid);
+            if (uid != null)
+            {
+                model.User = db.Users.SingleOrDefault(x => x.Id == uid);
+            }
             model.Timestamp = DateTime.Now;
 
             if (model.Exception == null)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Globalization;
@@ -12,15 +10,12 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using CMPRS.Web.App_Start;
 using CMPRS.Web.Enums;
 using CMPRS.Web.Models;
 using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using Microsoft.AspNet.Identity;
-using Action = CMRPS.Web.Enums.Action;
 
 namespace CMRPS.Web.Controllers
 {
@@ -30,12 +25,35 @@ namespace CMRPS.Web.Controllers
         private static string exception = "";
 
         // Declarations of imports
+        // ARP
         [DllImport("iphlpapi.dll", ExactSpelling = true)]
         public static extern int SendARP(int DestIP, int SrcIP, [Out] byte[] pMacAddr, ref int PhyAddrLen);
+
+        // Flush DNS
+        [DllImport("dnsapi.dll", EntryPoint = "DnsFlushResolverCache")]
+        private static extern UInt32 DnsFlushResolverCache();
 
         // =======================================================================================
         // Public Methods
         // =======================================================================================
+
+        public static void FlushDNS()
+        {
+            try { var flush = DnsFlushResolverCache(); }
+            catch (Exception ex)
+            {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Power;
+                ev.Description = "Flush DNS";
+                ev.ActionStatus = Enums.ActionStatus.Error;
+                ev.Exception = ex.ToString();
+                ev.Username = "Sys";
+                ev.Name = "System";
+                LogsController.AddEvent(ev);
+            }
+        }
+
         /// <summary>
         /// HangFire | Called to update computer info.
         /// </summary>
@@ -53,8 +71,16 @@ namespace CMRPS.Web.Controllers
                 // Get Info (but only if it is online)
                 if (computer.Status)
                 {
+                    computer.LastSeen = DateTime.Now;
                     computer.IP = GetIP(computer);
                     computer.MAC = GetMAC(computer);
+                }
+                else
+                {
+                    if (computer.LastSeen.Year < 1990)
+                    {
+                        computer.LastSeen = computer.PurchaseDate;
+                    }
                 }
                 // Update Database
                 db.Computers.AddOrUpdate(computer);
@@ -67,7 +93,7 @@ namespace CMRPS.Web.Controllers
         {
             // Event
             SysEvent ev = new SysEvent();
-            ev.Action = Action.Power;
+            ev.Action = Enums.Action.Power;
             ev.Description = "Pinged: " + hostname;
 
             Ping pinger = new Ping();
@@ -101,9 +127,9 @@ namespace CMRPS.Web.Controllers
 
             // Event
             SysEvent ev = new SysEvent();
-            ev.Action = Action.Power;
+            ev.Action = Enums.Action.Power;
             ev.Description = "Powered on: " + model.Name;
-            
+
 
             try
             {
@@ -148,7 +174,7 @@ namespace CMRPS.Web.Controllers
 
             // Event
             SysEvent ev = new SysEvent();
-            ev.Action = Action.Power;
+            ev.Action = Enums.Action.Power;
             ev.Description = "Powered off: " + model.Name;
 
             try
@@ -188,7 +214,7 @@ namespace CMRPS.Web.Controllers
                         );
                 }
 
-                
+
             }
             catch (Exception ex)
             {
@@ -213,7 +239,7 @@ namespace CMRPS.Web.Controllers
 
             // Event
             SysEvent ev = new SysEvent();
-            ev.Action = Action.Power;
+            ev.Action = Enums.Action.Power;
             ev.Description = "Rebooted: " + model.Name;
 
             try
@@ -277,10 +303,6 @@ namespace CMRPS.Web.Controllers
             {
                 // Ping computer
                 PingReply reply = pinger.Send(computer.Hostname);
-                if (reply.Status == IPStatus.Success)
-                {
-                    var brk = 0;
-                }
                 return reply.Status == IPStatus.Success;
             }
             catch (PingException ex)

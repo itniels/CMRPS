@@ -95,6 +95,13 @@ namespace CMRPS.Web.Controllers
             model.Computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
             model.Computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
 
+            // Make sure hostname looks ok!
+            string hostname = model.Computer.Hostname.Replace(" ", "").Replace(Environment.NewLine, "");
+            model.Computer.Hostname = hostname;
+
+            // Set Last Seen
+            model.Computer.LastSeen = DateTime.Now;
+
             // Set the friendly name if not supplied.
             if (model.Computer.Name == null)
                 model.Computer.Name = model.Computer.Hostname.ToUpper();
@@ -149,6 +156,9 @@ namespace CMRPS.Web.Controllers
 
             // Get array of computers to create
             string[] hostnames = model.Computer.Hostname.Split(',');
+
+            // Set Last Seen
+            model.Computer.LastSeen = DateTime.Now;
 
             if (ModelState.IsValid)
             {

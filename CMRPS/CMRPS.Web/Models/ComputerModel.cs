@@ -21,6 +21,9 @@ namespace CMRPS.Web.Models
         [Display(Name = "MAC Address")]
         public string MAC { get; set; }
 
+        [Display(Name = "Last Seen")]
+        public DateTime LastSeen { get; set; }
+
         [Required]
         [Display(Name = "Computername")]
         public string Hostname { get; set; }
