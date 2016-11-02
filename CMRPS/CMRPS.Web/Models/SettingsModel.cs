@@ -60,6 +60,9 @@ namespace CMPRS.Web.Models
         [Display(Name = "Interval in minutes to ping")]
         public int PingInterval { get; set; }
 
+        [Display(Name = "Worker Queues")]
+        public int WorkerQueues { get; set; }
+
         [Display(Name = "Keep logs clean")]
         public bool CleanLogs { get; set; }
 

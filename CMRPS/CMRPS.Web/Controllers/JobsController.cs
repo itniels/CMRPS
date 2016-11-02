@@ -29,10 +29,11 @@ namespace CMRPS.Web.Controllers
             // Set startup variables.
             List<ComputerModel> computers = db.Computers.ToList();
             List<WorkerQueue> workerQueues = new List<WorkerQueue>();
+            SettingsModel settings = db.Settings.First();
 
             // Options
             //TODO = Make this adjustable in DB settings
-            int queues = 10;
+            int queues = settings.WorkerQueues;
 
             // Create new queues.
             for (int i = 0; i < queues; i++)

@@ -114,3 +114,13 @@ textarea {
     background: lightsalmon;
 }
 
+/* Login Page */
+.loginpage-appname {
+    font-size: 30px;
+    margin-left: 40px;
+}
+
+/* Logo */
+.navbar-logo {
+    margin-top: 9px;
+}

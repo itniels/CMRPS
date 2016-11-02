@@ -36,7 +36,7 @@ namespace CMRPS.Web
             app.UseHangfireServer(opt);
 
             // Add hangfire jobs
-            SettingsModel settings = db.Settings.SingleOrDefault(x => x.Id == 1);
+            SettingsModel settings = db.Settings.First();
             var manager = new RecurringJobManager();
             if (settings != null)
             {

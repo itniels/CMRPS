@@ -306,6 +306,7 @@ namespace CMRPS.Web.Controllers
                                 string locationName = sheet.Cells[i, 6].Value.ToString();
                                 
                                 // Properties
+                                // We have to check for NULL on all the optional ones!
                                 item.Name = sheet.Cells[i, 2].Value.ToString();
                                 item.Hostname = sheet.Cells[i, 3].Value.ToString();
                                 item.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == typeName);

@@ -14,20 +14,24 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
+
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
+                <img class="navbar-left navbar-logo" src="../../Content/Images/icon.png" width="30" />
                 @Html.ActionLink("CMRPS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Views <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
                                 <li>@Html.ActionLink("Quick Overview", "Overview", "Status", null, new { title = "See status overview" })</li>
                                 <li>@Html.ActionLink("List View", "ListView", "Status", null, new { title = "See status list view" })</li>
@@ -36,7 +40,8 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li>@Html.ActionLink("Computers", "Index", "Computer", null, new { title = "Manage Computers" })</li>
+                                <li>@Html.ActionLink("Computers", "Index", "Computer", null, new {title = "Manage Computers"})</li>
+                                <li>@Html.ActionLink("Schedules", "Index", "Home", null, new { title = "Schedule WOL and Shutdown of computers." })</li>
                                 <li role="separator" class="divider"></li>
                                 <li>@Html.ActionLink("Colors", "Index", "Color", null, new { title = "Manage Computer Colors" })</li>
                                 <li>@Html.ActionLink("Locations", "Index", "Location", null, new { title = "Manage Computer Locations" })</li>
@@ -46,17 +51,23 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li>@Html.ActionLink("Network Tools", "NetworkTools", "Tools", null, new {title = "Network Tools (Ping, WOL, Shutdown, etc.)"})</li>
+                                <li>@Html.ActionLink("Network Tools", "NetworkTools", "Tools", null, new { title = "Network Tools (Ping, WOL, Shutdown, etc.)" })</li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
-                                <li>@Html.ActionLink("Events", "Events", "Logs", null, new {title = "View event logs"})</li>
+                                <li>@Html.ActionLink("Events", "Events", "Logs", null, new { title = "View event logs" })</li>
                                 <li>@Html.ActionLink("Logins", "Logins", "Logs", null, new { title = "View logins" })</li>
                             </ul>
                         </li>
-                        <li>@Html.ActionLink("Scheduler", "Index", "Home", null, new { title = "Schedule WOL and Shutdown of computers." })</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Lists <span class="caret"></span></a>
+                            <ul class="dropdown-menu navbar-inverse">
+                                <li>@Html.ActionLink("Purchase List", "PurchaseDateList", "Lists", null, new { title = "Get computers based on purchase date." })</li>
+                            </ul>
+                        </li>
+                        
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -82,23 +93,23 @@
 </html>
 
 @*<script>
-    function connectionStateChanged(state) {
-        var stateConversion = { 0: 'connecting', 1: 'connected', 2: 'reconnecting', 4: 'disconnected' };
-        console.log('SignalR state changed from: ' + stateConversion[state.oldState]
-         + ' to: ' + stateConversion[state.newState]);
+        function connectionStateChanged(state) {
+            var stateConversion = { 0: 'connecting', 1: 'connected', 2: 'reconnecting', 4: 'disconnected' };
+            console.log('SignalR state changed from: ' + stateConversion[state.oldState]
+             + ' to: ' + stateConversion[state.newState]);
 
-        // Show warning
-        if (state != 1) {
-            $("#server-warning").hidden = false;
-            $("#server-warning").val('server is ' + stateConversion + '!');
-        } else {
-            $("#server-warning").hidden = true;
+            // Show warning
+            if (state != 1) {
+                $("#server-warning").hidden = false;
+                $("#server-warning").val('server is ' + stateConversion + '!');
+            } else {
+                $("#server-warning").hidden = true;
+            }
         }
-    }
 
-    $.connection.hub.start
-    connection = $.connection(ConnectedHub);
-    connection.stateChanged(connectionStateChanged);
-    connection.start({ waitForPageLoad: false });
+        $.connection.hub.start
+        connection = $.connection(ConnectedHub);
+        connection.stateChanged(connectionStateChanged);
+        connection.start({ waitForPageLoad: false });
 
-</script>*@
+    </script>*@
