@@ -13,6 +13,8 @@
     @Html.HiddenFor(x => x.Computer.IP)
     @Html.HiddenFor(x => x.Computer.MAC)
     @Html.HiddenFor(x => x.Computer.Status)
+    @Html.HiddenFor(x => x.Computer.LastSeen)
+
     <div class="error-text">@Html.ValidationSummary()</div>
 
     <div class="row">
