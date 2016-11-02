@@ -53,7 +53,7 @@
                     @Html.LabelFor(x => x.Computer.MAC)
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.MAC, new { @disabled = "disabled" })
+                    @Html.TextBoxFor(x => x.Computer.MAC, new {@disabled = "disabled"})
                 </div>
             </div>
         </div>
@@ -89,10 +89,10 @@
             <br />
             <div class="row">
                 <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.Status)
+                    @Html.LabelFor(x => x.Computer.PurchaseDate)
                 </div>
                 <div class="col-md-6">
-                    <span class="label label-info">UNKNOWN</span>
+                    @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
                 </div>
             </div>
             <br />
@@ -105,15 +105,6 @@
             <hr />
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.PurchaseDate)
-                </div>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
-                </div>
-            </div>
-            <br />
             <div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(x => x.Computer.Manufacturer)

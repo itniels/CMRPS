@@ -12,7 +12,7 @@ namespace CMPRS.Web.App_Start
     public static class Site
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
-        public static SettingsModel Settings = new SettingsModel();
+        private static SettingsModel Settings = new SettingsModel();
 
         public static bool SettingsLoad()
         {

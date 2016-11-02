@@ -12,10 +12,6 @@ namespace CMRPS.Web.Models
     {
         public int Id { get; set; }
 
-        // HangFire
-        public bool isBusy { get; set; }
-        public DateTime Enqueued { get; set; }
-
         [Display(Name = "Friendly Name")]
         public string Name { get; set; }
 

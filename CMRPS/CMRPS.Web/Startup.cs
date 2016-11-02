@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using CMPRS.Web.App_Start;
 using CMPRS.Web.Models;
 using CMRPS.Web.Controllers;
 using CMRPS.Web.Models;
 using Hangfire;
 using Hangfire.Common;
+using Hangfire.Dashboard;
 using Microsoft.Owin;
 using Owin;
 
@@ -20,31 +23,46 @@ namespace CMRPS.Web
 
             // Hangfire settings
             BackgroundJobServerOptions opt = new BackgroundJobServerOptions();
-            opt.WorkerCount = 30;
+            opt.WorkerCount = 20;
+            opt.Queues = new[] {"critical", "default"};
 
             Site.SettingsLoad();
             ConfigureAuth(app);
             app.MapSignalR();
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                AuthorizationFilters = new[] { new MyRestrictiveAuthorizationFilter() }
+            });
             app.UseHangfireServer(opt);
-
-            
-
 
             // Add hangfire jobs
             SettingsModel settings = db.Settings.SingleOrDefault(x => x.Id == 1);
             var manager = new RecurringJobManager();
             if (settings != null)
             {
-                manager.AddOrUpdate("GetInfo", Job.FromExpression(() => JobsController.GetComputerInfo()), Cron.MinuteInterval(settings.PingInterval));
-                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => JobsController.CleanLogs()), Cron.HourInterval(1));
+                manager.AddOrUpdate("UpdateComputers", Job.FromExpression(() => JobsController.Enqueue()), Cron.MinuteInterval(settings.PingInterval), new RecurringJobOptions {QueueName = "default"});
+                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => JobsController.CleanLogs()), Cron.HourInterval(1), new RecurringJobOptions { QueueName = "critical" });
             }
             else
             {
-                manager.AddOrUpdate("GetInfo", Job.FromExpression(() => JobsController.GetComputerInfo()), Cron.Minutely());
-                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => JobsController.CleanLogs()), Cron.HourInterval(1));
+                manager.AddOrUpdate("UpdateComputers", Job.FromExpression(() => JobsController.Enqueue()), Cron.Minutely(), new RecurringJobOptions { QueueName = "default" });
+                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => JobsController.CleanLogs()), Cron.HourInterval(1), new RecurringJobOptions { QueueName = "critical" });
             }
             
         }
+    }
+}
+
+
+public class MyRestrictiveAuthorizationFilter : IAuthorizationFilter
+{
+    public bool Authorize(IDictionary<string, object> owinEnvironment)
+    {
+        // In case you need an OWIN context, use the next line,
+        // `OwinContext` class is the part of the `Microsoft.Owin` package.
+        var context = new OwinContext(owinEnvironment);
+
+        // Allow all authenticated users to see the Dashboard (potentially dangerous).
+        return context.Authentication.User.Identity.IsAuthenticated;
     }
 }

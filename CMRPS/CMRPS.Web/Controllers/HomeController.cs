@@ -25,7 +25,7 @@ namespace CMRPS.Web.Controllers
             model.DevicesOnlinePercentage = ((double)model.DevicesOnline / (double)model.DevicesTotal) * 100;
             model.DevicesOfflinePercentage = ((double)model.DevicesOffline / (double)model.DevicesTotal) * 100;
             // Lists
-            model.Events = db.Events.OrderByDescending(x => x.Timestamp).Take(10).ToList();
+            model.Events = db.Events.Include(c => c.User).OrderByDescending(x => x.Timestamp).Take(10).ToList();
             model.Logins = db.Logins.Include(c => c.User).OrderByDescending(x => x.Timestamp).Take(10).ToList();
 
             // Make View Model

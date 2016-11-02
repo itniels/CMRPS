@@ -50,11 +50,12 @@ namespace CMRPS.Web.Controllers
             {
                 // Ping computer
                 computer.Status = Ping(computer);
-                // Get Info
-                computer.IP = GetIP(computer);
-                computer.MAC = GetMAC(computer);
-                // Set completed
-                computer.isBusy = false;
+                // Get Info (but only if it is online)
+                if (computer.Status)
+                {
+                    computer.IP = GetIP(computer);
+                    computer.MAC = GetMAC(computer);
+                }
                 // Update Database
                 db.Computers.AddOrUpdate(computer);
                 db.SaveChanges();
@@ -276,9 +277,13 @@ namespace CMRPS.Web.Controllers
             {
                 // Ping computer
                 PingReply reply = pinger.Send(computer.Hostname);
+                if (reply.Status == IPStatus.Success)
+                {
+                    var brk = 0;
+                }
                 return reply.Status == IPStatus.Success;
             }
-            catch (PingException)
+            catch (PingException ex)
             {
                 return false;
             }

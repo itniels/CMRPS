@@ -196,7 +196,7 @@ namespace CMRPS.Web.Controllers
                     ev.Action = Enums.Action.Info;
                     ev.Description = "Created user: " + model.Username;
                     ev.ActionStatus = ActionStatus.OK;
-                    LogsController.AddEvent(ev, User.Identity.GetUserId());
+                    LogsController.AddEvent(ev, user.Id);
 
                     return RedirectToAction("Index", "Home");
                 }

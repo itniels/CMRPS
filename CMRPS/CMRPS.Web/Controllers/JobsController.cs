@@ -3,54 +3,97 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CMPRS.Web.Models;
 using CMRPS.Web.Models;
 using Hangfire;
 using Hangfire.Common;
+using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 
 namespace CMRPS.Web.Controllers
 {
     public class JobsController : Controller
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
-
         /// <summary>
         /// HangFire | Pings all computers and gets info from online devices (IP/MAC).
         /// </summary>
-        public static void GetComputerInfo()
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [DisableConcurrentExecution(50)]
+        public static void Enqueue()
         {
+            // Set startup variables.
             List<ComputerModel> computers = db.Computers.ToList();
-            SettingsModel settings = db.Settings.First();
+            List<WorkerQueue> workerQueues = new List<WorkerQueue>();
+
+            // Options
+            //TODO = Make this adjustable in DB settings
+            int queues = 10;
+
+            // Create new queues.
+            for (int i = 0; i < queues; i++)
+            {
+                WorkerQueue item = new WorkerQueue();
+                item.Computers = new List<int>();
+                item.Name = "Q" + i;
+                item.Computers = new List<int>();
+                workerQueues.Add(item);
+            }
+
+            // Add computer IDs to queues.
+            int qid = 0;
             foreach (ComputerModel computer in computers)
             {
-                // Check if it has expired and needs to be queued again (lost in system)
-                try
+                var queue = workerQueues.SingleOrDefault(x => x.Name == "Q" + qid);
+                queue.Computers.Add(computer.Id);
+
+                // Itterate through the queues to spread the load.
+                if (qid == queues - 1)
+                    qid = 0;
+                else
+                    qid++;
+            }
+
+            // Update queues in database.
+            foreach (WorkerQueue wq in workerQueues)
+            {
+                var thread = new Thread(new ThreadStart(() => ExecuteQueue(wq)));
+                thread.Name = wq.Name;
+                thread.Start();
+            }
+
+            // Make sure we don't quit untill we are done!
+            bool completed = false;
+            while (!completed)
+            {
+                completed = true;
+                foreach (WorkerQueue wq in workerQueues)
                 {
-                    if (computer.isBusy)
-                    {
-                        
-                        //DateTime expired = DateTime.Now.AddMinutes(-(settings.PingInterval + 5));
-                        TimeSpan ts = DateTime.Now - computer.Enqueued;
-                        computer.isBusy = ts.Minutes < 5;
-                    }
+                    if (wq.isEnqueued)
+                        completed = false;
                 }
-                catch (Exception)
+            }
+        }
+
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        private static void ExecuteQueue(WorkerQueue wq)
+        {
+            // Check if ready
+            if (wq != null && wq.Computers.Count > 0)
+            {
+                // Tell the rest of the world we are working really hard!
+                wq.isEnqueued = true;
+
+                // Work the queue.
+                foreach (int id in wq.Computers)
                 {
-                    computer.isBusy = false;
+                    ActionController.UpdateComputer(id);
                 }
-                
-                // Make sure they do not get enqueued twice!
-                if (!computer.isBusy)
-                {
-                    computer.isBusy = true;
-                    computer.Enqueued = DateTime.Now;
-                    db.Computers.AddOrUpdate(computer);
-                    db.SaveChanges();
-                    // Enqueue
-                    BackgroundJob.Enqueue(() => ActionController.UpdateComputer(computer.Id));
-                }
+                // Tell the world we are done.
+                wq.isEnqueued = false;
             }
         }
 

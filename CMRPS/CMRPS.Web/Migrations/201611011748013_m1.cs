@@ -8,7 +8,7 @@ namespace CMRPS.Web.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.ColorModels",
+                "dbo.Colors",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -19,7 +19,7 @@ namespace CMRPS.Web.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.ComputerModels",
+                "dbo.Computers",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -46,15 +46,15 @@ namespace CMRPS.Web.Migrations
                         Type_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ColorModels", t => t.Color_Id)
-                .ForeignKey("dbo.LocationModels", t => t.Location_Id)
-                .ForeignKey("dbo.ComputerTypeModels", t => t.Type_Id)
+                .ForeignKey("dbo.Colors", t => t.Color_Id)
+                .ForeignKey("dbo.Locations", t => t.Location_Id)
+                .ForeignKey("dbo.ComputerTypes", t => t.Type_Id)
                 .Index(t => t.Color_Id)
                 .Index(t => t.Location_Id)
                 .Index(t => t.Type_Id);
             
             CreateTable(
-                "dbo.LocationModels",
+                "dbo.Locations",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -63,7 +63,7 @@ namespace CMRPS.Web.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.ComputerTypeModels",
+                "dbo.ComputerTypes",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -81,7 +81,10 @@ namespace CMRPS.Web.Migrations
                         Timestamp = c.DateTime(nullable: false),
                         Action = c.Int(nullable: false),
                         ActionStatus = c.Int(nullable: false),
+                        Name = c.String(),
+                        Username = c.String(),
                         Description = c.String(),
+                        Exception = c.String(),
                         User_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.ID)
@@ -154,6 +157,8 @@ namespace CMRPS.Web.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Timestamp = c.DateTime(nullable: false),
+                        Name = c.String(),
+                        Username = c.String(),
                         Success = c.Boolean(nullable: false),
                         User_Id = c.String(maxLength: 128),
                     })
@@ -189,6 +194,8 @@ namespace CMRPS.Web.Migrations
                         RebootMessage = c.String(),
                         StartupMethod = c.Int(nullable: false),
                         PingInterval = c.Int(nullable: false),
+                        CleanLogs = c.Boolean(nullable: false),
+                        KeepLogsFor = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -202,9 +209,9 @@ namespace CMRPS.Web.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.ComputerModels", "Type_Id", "dbo.ComputerTypeModels");
-            DropForeignKey("dbo.ComputerModels", "Location_Id", "dbo.LocationModels");
-            DropForeignKey("dbo.ComputerModels", "Color_Id", "dbo.ColorModels");
+            DropForeignKey("dbo.Computers", "Type_Id", "dbo.ComputerTypes");
+            DropForeignKey("dbo.Computers", "Location_Id", "dbo.Locations");
+            DropForeignKey("dbo.Computers", "Color_Id", "dbo.Colors");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Logins", new[] { "User_Id" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
@@ -213,9 +220,9 @@ namespace CMRPS.Web.Migrations
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.Events", new[] { "User_Id" });
-            DropIndex("dbo.ComputerModels", new[] { "Type_Id" });
-            DropIndex("dbo.ComputerModels", new[] { "Location_Id" });
-            DropIndex("dbo.ComputerModels", new[] { "Color_Id" });
+            DropIndex("dbo.Computers", new[] { "Type_Id" });
+            DropIndex("dbo.Computers", new[] { "Location_Id" });
+            DropIndex("dbo.Computers", new[] { "Color_Id" });
             DropTable("dbo.SiteSettings");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Logins");
@@ -224,10 +231,10 @@ namespace CMRPS.Web.Migrations
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.Events");
-            DropTable("dbo.ComputerTypeModels");
-            DropTable("dbo.LocationModels");
-            DropTable("dbo.ComputerModels");
-            DropTable("dbo.ColorModels");
+            DropTable("dbo.ComputerTypes");
+            DropTable("dbo.Locations");
+            DropTable("dbo.Computers");
+            DropTable("dbo.Colors");
         }
     }
 }

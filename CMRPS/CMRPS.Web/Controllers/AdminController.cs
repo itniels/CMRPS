@@ -44,7 +44,7 @@ namespace CMRPS.Web.Controllers
                 {
                     // Reset Hangfires recurring ping job.
                     var manager = new RecurringJobManager();
-                    manager.AddOrUpdate("GetInfo", Job.FromExpression(() => JobsController.GetComputerInfo()), Cron.MinuteInterval(model.PingInterval));
+                    manager.AddOrUpdate("Enqueue", Job.FromExpression(() => JobsController.Enqueue()), Cron.MinuteInterval(model.PingInterval));
                 }
 
                 // Save to database

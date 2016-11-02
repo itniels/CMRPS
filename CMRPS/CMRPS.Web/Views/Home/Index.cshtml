@@ -35,33 +35,37 @@
         {
             <span class="no-items-found">No event to show</span>
         }
-        @foreach (var item in @Model.Events)
+        else
         {
-            var label = "label-default";
+            foreach (var item in @Model.Events)
+             {
+                 var label = "label-default";
 
-            switch (item.ActionStatus)
-            {
-                case ActionStatus.None:
-                    label = "label-info";
-                    break;
-                case ActionStatus.OK:
-                    label = "label-success";
-                    break;
-                case ActionStatus.Warning:
-                    label = "label-warning";
-                    break;
-                case ActionStatus.Error:
-                    label = "label-danger";
-                    break;
-                default:
-                    label = "label-default";
-                    break;
-            }
+                 switch (item.ActionStatus)
+                 {
+                     case ActionStatus.None:
+                         label = "label-info";
+                         break;
+                     case ActionStatus.OK:
+                         label = "label-success";
+                         break;
+                     case ActionStatus.Warning:
+                         label = "label-warning";
+                         break;
+                     case ActionStatus.Error:
+                         label = "label-danger";
+                         break;
+                     default:
+                         label = "label-default";
+                         break;
+                 }
 
-            <span class="label @label">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span>
-            @item.User.UserName.ToUpper()
-            <br />
-            <span class="text-primary">@item.Description</span><br />
+                 <span class="label @label">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span>
+                 @item.User.UserName.ToUpper()
+                 <br/>
+                 <span class="text-primary">@item.Description</span>
+                 <br/>
+             }
         }
 
     </div>
@@ -72,18 +76,22 @@
         {
             <span class="no-items-found">No logins to show</span>
         }
-        @foreach (var item in Model.Logins)
+        else
         {
-            if (item.Success)
-            {
-                <p><span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())</p>
-            }
-            else
-            {
-                <p><span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())</p>
-            }
+            foreach (var item in Model.Logins)
+             {
+                 if (item.Success)
+                 {
+                     <p><span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())
+                     </p>
+                 }
+                 else
+                 {
+                     <p><span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> @(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())
+                     </p>
+                 }
+             }
         }
-
 
     </div>
 </div>

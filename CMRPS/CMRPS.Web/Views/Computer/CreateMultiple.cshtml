@@ -23,28 +23,11 @@
             <hr />
             <div class="row">
                 <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.Hostname)
+                    <span class="form-text">Computernames</span><br/>
+                    <span class="form-text-light">(name1,name2,name3...)</span>
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.Hostname)
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.IP)
-                </div>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.IP, new { @disabled = "disabled" })
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.MAC)
-                </div>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.MAC, new { @disabled = "disabled" })
+                    @Html.TextAreaFor(x => x.Computer.Hostname, new {@class = "textarea-computer-names"})
                 </div>
             </div>
         </div>
@@ -80,10 +63,10 @@
             <br />
             <div class="row">
                 <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.Status)
+                    @Html.LabelFor(x => x.Computer.PurchaseDate)
                 </div>
                 <div class="col-md-6">
-                    <span class="label label-info">UNKNOWN</span>
+                    @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
                 </div>
             </div>
             <br />
@@ -96,15 +79,6 @@
             <hr />
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.PurchaseDate)
-                </div>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
-                </div>
-            </div>
-            <br />
             <div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(x => x.Computer.Manufacturer)

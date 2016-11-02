@@ -61,6 +61,10 @@
       <HintPath>..\packages\Hangfire.Core.1.6.6\lib\net45\Hangfire.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hangfire.Dashboard.Authorization, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Dashboard.Authorization.2.1.0\lib\net45\Hangfire.Dashboard.Authorization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hangfire.SqlServer, Version=1.6.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.SqlServer.1.6.6\lib\net45\Hangfire.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -222,29 +226,9 @@
     </Compile>
     <Compile Include="Hubs\Connected.cs" />
     <Compile Include="Hubs\HomeHub.cs" />
-    <Compile Include="Migrations\201610281057431_m1.cs" />
-    <Compile Include="Migrations\201610281057431_m1.Designer.cs">
-      <DependentUpon>201610281057431_m1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610291546144_m2.cs" />
-    <Compile Include="Migrations\201610291546144_m2.Designer.cs">
-      <DependentUpon>201610291546144_m2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610301311029_m3.cs" />
-    <Compile Include="Migrations\201610301311029_m3.Designer.cs">
-      <DependentUpon>201610301311029_m3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610301431021_m4.cs" />
-    <Compile Include="Migrations\201610301431021_m4.Designer.cs">
-      <DependentUpon>201610301431021_m4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610302056103_m5.cs" />
-    <Compile Include="Migrations\201610302056103_m5.Designer.cs">
-      <DependentUpon>201610302056103_m5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610302119177_m6.cs" />
-    <Compile Include="Migrations\201610302119177_m6.Designer.cs">
-      <DependentUpon>201610302119177_m6.cs</DependentUpon>
+    <Compile Include="Migrations\201611011748013_m1.cs" />
+    <Compile Include="Migrations\201611011748013_m1.Designer.cs">
+      <DependentUpon>201611011748013_m1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
@@ -262,6 +246,7 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SysEvent.cs" />
     <Compile Include="Models\SysLogin.cs" />
+    <Compile Include="Models\WorkerQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -381,6 +366,7 @@
     <Content Include="Views\Color\Import.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\Logs\EventDetails.cshtml" />
+    <Content Include="Views\Computer\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -395,23 +381,8 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610281057431_m1.resx">
-      <DependentUpon>201610281057431_m1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610291546144_m2.resx">
-      <DependentUpon>201610291546144_m2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610301311029_m3.resx">
-      <DependentUpon>201610301311029_m3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610301431021_m4.resx">
-      <DependentUpon>201610301431021_m4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610302056103_m5.resx">
-      <DependentUpon>201610302056103_m5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610302119177_m6.resx">
-      <DependentUpon>201610302119177_m6.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611011748013_m1.resx">
+      <DependentUpon>201611011748013_m1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -435,7 +406,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8650/</IISUrl>
+          <IISUrl>http://localhost:8750/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

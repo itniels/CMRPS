@@ -5,15 +5,18 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
+using Microsoft.AspNet.Identity;
+using OfficeOpenXml;
 
 namespace CMRPS.Web.Controllers
 {
     public class ComputerController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        
+
         /// <summary>
         /// GET | Gets the list of computers in teh system.
         /// </summary>
@@ -103,7 +106,7 @@ namespace CMRPS.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", "Computer");
             }
-            
+
             // If NOT valid
             // Send lists of items for dropdowns.
             ViewBag.Colors = db.Colors.ToList();
@@ -152,13 +155,18 @@ namespace CMRPS.Web.Controllers
                 // Save to db if valid
                 foreach (string hostname in hostnames)
                 {
-                    model.Computer.Hostname = hostname;
-                    model.Computer.Name = hostname.ToUpper();
-                    db.Computers.Add(model.Computer);
-                    db.SaveChanges();
+                    // Make sure name/hostname is OK.
+                    string cname = hostname.Replace(" ", "").Replace(Environment.NewLine, "");
+                    model.Computer.Hostname = cname;
+                    model.Computer.Name = cname.ToUpper();
+                    if (model.Computer.Hostname.Length > 0 && model.Computer.Name.Length > 0)
+                    {
+                        db.Computers.Add(model.Computer);
+                        db.SaveChanges();
+                    }
                 }
                 
-                
+
                 return RedirectToAction("Index", "Computer");
             }
 
@@ -229,6 +237,170 @@ namespace CMRPS.Web.Controllers
             ViewBag.Types = db.ComputerTypes.ToList();
             // Return model with errors.
             return View(model);
+        }
+
+        // =================================================================================
+        // IMPORT
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Get the import view.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        public ActionResult Import()
+        {
+            ImportViewModel model = new ImportViewModel();
+            return View(model);
+        }
+
+        /// <summary>
+        /// POST | Import locations to database.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public ActionResult Import(ImportViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.File != null)
+                {
+                    try
+                    {
+                        ExcelPackage package = new ExcelPackage(model.File.InputStream);
+                        ExcelWorksheet sheet = package.Workbook.Worksheets[1];
+                        int rows = sheet.Dimension.Rows;
+                        for (int i = 1; i <= rows; i++)
+                        {
+                            if (i > 1)
+                            {
+                                ComputerModel item = new ComputerModel();
+                                // ID
+                                int id = -1;
+                                try
+                                {
+                                    int.TryParse(sheet.Cells[i, 1].Value.ToString(), out id);
+                                }
+                                catch (Exception) { }
+
+                                if (id >= 0)
+                                    item.Id = id;
+                                // Properties
+                                item.Name = sheet.Cells[i, 2].Value.ToString();
+                                //TODO
+                                db.Computers.AddOrUpdate(item);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return View(model);
+                    }
+                }
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Imported Computers";
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
+        // =================================================================================
+        // EXPORT
+        // =================================================================================
+
+        /// <summary>
+        /// DOWNLOAD | Get an empty template.
+        /// </summary>
+        [Authorize]
+        public void EmptyExport()
+        {
+            try
+            {
+                ExcelPackage package = new ExcelPackage();
+                ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Computers");
+
+                // Header text
+                sheet.Cells[1, 1].Value = "Id";
+                sheet.Cells[1, 2].Value = "Name";
+                //TODO
+                // Format cells
+                sheet.Cells[1, 1].Style.Font.Bold = true;
+                sheet.Cells[1, 2].Style.Font.Bold = true;
+                sheet.Cells[1, 3].Style.Font.Bold = true;
+                sheet.Cells[1, 4].Style.Font.Bold = true;
+                sheet.Column(2).Width = 25;
+                sheet.Column(3).Width = 25;
+                sheet.Column(4).Width = 25;
+
+                DateTime date = DateTime.Now;
+
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;  filename=Computers_" + date.ToShortDateString() + ".xlsx");
+                Response.BinaryWrite(package.GetAsByteArray());
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        [Authorize]
+        public void Export()
+        {
+            List<ColorModel> model = db.Colors.ToList();
+            try
+            {
+                ExcelPackage package = new ExcelPackage();
+                ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Computers");
+
+                // Header text
+                sheet.Cells[1, 1].Value = "Id";
+                sheet.Cells[1, 2].Value = "Name";
+                //TODO
+                // Format cells
+                sheet.Cells[1, 1].Style.Font.Bold = true;
+                sheet.Cells[1, 2].Style.Font.Bold = true;
+                sheet.Cells[1, 3].Style.Font.Bold = true;
+                sheet.Cells[1, 4].Style.Font.Bold = true;
+                sheet.Column(2).Width = 25;
+                sheet.Column(3).Width = 25;
+                sheet.Column(4).Width = 25;
+
+                // Add data
+                int row = 2;    // Start after headers
+                foreach (ColorModel item in model)
+                {
+                    sheet.Cells[row, 1].Value = item.Id;
+                    sheet.Cells[row, 2].Value = item.Name;
+                    row++;
+                }
+
+                DateTime date = DateTime.Now;
+
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Exported colors";
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;  filename=Computers_" + date.ToShortDateString() + ".xlsx");
+                Response.BinaryWrite(package.GetAsByteArray());
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

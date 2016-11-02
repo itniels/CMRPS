@@ -10,6 +10,9 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.Computer.Id)
+    @Html.HiddenFor(x => x.Computer.IP)
+    @Html.HiddenFor(x => x.Computer.MAC)
+    @Html.HiddenFor(x => x.Computer.Status)
     <div class="error-text">@Html.ValidationSummary()</div>
 
     <div class="row">
@@ -90,10 +93,10 @@
             <br />
             <div class="row">
                 <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.Status)
+                    @Html.LabelFor(x => x.Computer.PurchaseDate)
                 </div>
                 <div class="col-md-6">
-                    <span class="label label-info">UNKNOWN</span>
+                    @Html.EditorFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
                 </div>
             </div>
             <br />
@@ -106,15 +109,6 @@
             <hr />
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.PurchaseDate)
-                </div>
-                <div class="col-md-6">
-                    @Html.EditorFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
-                </div>
-            </div>
-            <br />
             <div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(x => x.Computer.Manufacturer)
