@@ -27,7 +27,18 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult ListView()
         {
-            return View();
+            ViewBag.Colors = db.Colors.ToList();
+            ViewBag.Locations = db.Locations.ToList();
+            ViewBag.Types = db.ComputerTypes.ToList();
+            ViewBag.Status = new List<string>() {"Online", "Offline"};
+
+            List<ComputerModel> model = db.Computers
+                .Include(x => x.Color)
+                .Include(x => x.Location)
+                .Include(x => x.Type)
+                .ToList();
+
+            return View(model);
         }
     }
 }

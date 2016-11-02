@@ -34,4 +34,9 @@ namespace CMRPS.Web.ModelsView
         public string SelectedLocation { get; set; }
         
     }
+
+    public class ListviewComputerViewModel
+    {
+        
+    }
 }

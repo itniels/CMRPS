@@ -10,3 +10,57 @@
 
 </script>
 
+<h2>Listview</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="well">
+            <h4>Filtering</h4>
+            <hr/>
+            <div class="row">
+                <div>Name:</div>
+                @Html.TextBox("NameFilter", null, new {@class = "form-control", placeholder = "All"})
+            </div>
+            <div class="row">
+                <div>hostname:</div>
+                @Html.TextBox("HostnameFilter", null, new {@class = "form-control", placeholder = "All"})
+            </div>
+            <div class="row">
+                <div>Status:</div>
+                @Html.DropDownList("StatusFilter", new SelectList(ViewBag.Status), "All", new {@class = "form-control"})
+            </div>
+            <div class="row">
+                <div>Type:</div>
+                @Html.DropDownList("TypeFilter", new SelectList(ViewBag.Types), "All", new {@class = "form-control"})
+            </div>
+            <div class="row">
+                <div>Color:</div>
+                @Html.DropDownList("ColorFilter", new SelectList(ViewBag.Colors), "All", new {@class = "form-control"})
+            </div>
+            <div class="row">
+                <div>Location:</div>
+                @Html.DropDownList("LocationFilter", new SelectList(ViewBag.Locations), "All", new {@class = "form-control"})
+            </div>
+            <br/>
+            <div class="row">
+                <button class="btn btn-xs btn-warning">Clear</button>
+                <span class="pull-right">
+                    <button class="btn btn-xs btn-success">Filter</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-9">
+        <div class="well well-sm">
+            <h4>Computers</h4>
+        </div>
+        <div class="well well-sm">
+            @Html.Partial("_ListViewComputers", Model)
+        </div>
+    </div>
+
+
+</div>

@@ -124,3 +124,24 @@ textarea {
 .navbar-logo {
     margin-top: 9px;
 }
+
+/* ListView */
+.well-listview {
+    margin-left: 12px;
+    margin-right: 22px;
+    margin-top: 1px;
+    margin-bottom: -15px;
+}
+
+.listview-menu-button {
+    margin-top: -2px;
+    margin-bottom: -3px;
+    margin-right: -6px;
+}
+
+.tablerow-online {
+    background-color: lightgreen;
+}
+.tablerow-offline {
+    background-color: lightcoral;
+}
