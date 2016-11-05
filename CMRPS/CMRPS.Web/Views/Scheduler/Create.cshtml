@@ -5,6 +5,8 @@
     ViewBag.Title = "Create Schedule";
 }
 
+@Html.ActionLink("◄ Go Back", "Index")
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -22,7 +24,8 @@
         </div>
         <div class="col-md-2">
             <div class="pull-right">
-                <input type="submit" value="Create" class="btn btn-sm btn-success" />
+                
+                <input type="submit" value="Create" class="btn btn-sm btn-success"/>
             </div>
         </div>
     </div>
@@ -37,13 +40,6 @@
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="row form-group">
-                @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.Active)
-                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-3">
                     <span class="control-label">Time:</span>
@@ -54,9 +50,17 @@
                             <span>@Html.DropDownListFor(x => x.Hour, new SelectList(ViewBag.Hours), "Hour", new {@class = "form-control"})</span>
                         </div>
                         <div class="col-md-5">
-                            <span>@Html.DropDownListFor(x => x.Minute, new SelectList(ViewBag.Minutes), "Minute", new { @class = "form-control" })</span>
+                            <span>@Html.DropDownListFor(x => x.Minute, new SelectList(ViewBag.Minutes), "Minute", new {@class = "form-control"})</span>
                         </div>
                     </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

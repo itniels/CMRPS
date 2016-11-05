@@ -4,6 +4,8 @@
     ViewBag.Title = "Admin Settings";
 }
 
+@Html.ActionLink("◄ Go Back", "Index", "Home")
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()

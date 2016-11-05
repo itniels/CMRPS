@@ -58,7 +58,10 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            return View();
+            ColorModel model = new ColorModel();
+            model.ColorText = "#202020";
+            model.ColorLabel = "#ffffff";
+            return View(model);
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace CMRPS.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ColorLabel,ColorText")] ColorModel colorModel)
+        public ActionResult Create(ColorModel colorModel)
         {
             if (ModelState.IsValid)
             {

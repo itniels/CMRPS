@@ -4,6 +4,8 @@
     ViewBag.Title = "Create Computer Type";
 }
 
+@Html.ActionLink("◄ Go Back", "Index")
+
 <h2>Create Computer Type</h2>
 
 @using (Html.BeginForm("Create", "ComputerType", FormMethod.Post, new { enctype = "multipart/form-data" }))

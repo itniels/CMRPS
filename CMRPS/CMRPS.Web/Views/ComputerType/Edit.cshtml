@@ -4,6 +4,8 @@
     ViewBag.Title = "Edit";
 }
 
+@Html.ActionLink("◄ Go Back", "Index")
+
 <h2>Edit</h2>
 
 @using (Html.BeginForm("Edit", "ComputerType", FormMethod.Post, new { enctype = "multipart/form-data" }))
