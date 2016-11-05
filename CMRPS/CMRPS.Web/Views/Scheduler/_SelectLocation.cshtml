@@ -1,0 +1,29 @@
+﻿@using CMRPS.Web.Models
+@model List<CMRPS.Web.Models.LocationModel>
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var list = "";
+        foreach (ComputerModel computer in item.Computers)
+        {
+            list += computer.Name + "<br/>";
+        }
+        @Html.Hidden("ColorTargetList", list, new { id = "tlist-" + @item.Id })
+        <tr>
+            <td>
+                <span>@Html.RadioButton("Location", @item.Id, new { id = "c-" + @item.Id, @onclick = "scheduleLocationSelectChanged();", @class = "radiobutton-location-select" })</span>
+                <span> @item.Location</span>
+            </td>
+        </tr>
+
+    }
+
+
+</table>

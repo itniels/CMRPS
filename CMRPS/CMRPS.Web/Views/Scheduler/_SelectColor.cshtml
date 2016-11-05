@@ -1,0 +1,48 @@
+﻿@using CMRPS.Web.Models
+@model List<CMRPS.Web.Models.ColorModel>
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Label Color
+        </th>
+        <th>
+            Text Color
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var list = "";
+        foreach (ComputerModel computer in item.Computers)
+        {
+            list += computer.Name + "<br/>";
+        }
+        @Html.Hidden("ColorTargetList", list, new {id = "tlist-" + @item.Id})
+        <tr>
+            <td>
+                <span>@Html.RadioButton("Color", @item.Id, new {id = "c-" + @item.Id, @onclick = "scheduleColorSelectChanged();", @class = "radiobutton-color-select"})</span>
+                <span id="color-label-@item.Id"> @item.Name</span>
+            </td>
+            <td>
+                <span>@item.ColorLabel</span>
+            </td>
+            <td>
+                <span>@item.ColorText</span>
+            </td>
+        </tr>
+
+    }
+
+
+</table>
+
+@foreach (var item in Model)
+{
+    <script>
+        colorLabel(@item.Id, '@item.ColorText', '@item.ColorLabel');
+    </script>
+}

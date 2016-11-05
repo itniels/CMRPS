@@ -122,5 +122,65 @@ namespace CMRPS.Web.Controllers
             }
         }
 
+        [AutomaticRetry(Attempts = 0, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
+        [DisableConcurrentExecution(50)]
+        public static void Scheduler()
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            List<ScheduledModel> Schedules = context.Schedules.ToList();
+            DayOfWeek currentDay = DateTime.Now.DayOfWeek;
+
+            foreach (ScheduledModel schedule in Schedules)
+            {
+                bool isToday = false;
+                bool hasRun = schedule.LastRun.DayOfWeek == DateTime.Now.DayOfWeek;
+                bool isTime = false;
+                if (schedule.Active)
+                {
+                    // Is it today
+                    switch (currentDay)
+                    {
+                        case DayOfWeek.Monday:
+                            isToday = schedule.DayMonday;
+                            break;
+                        case DayOfWeek.Tuesday:
+                            isToday = schedule.DayTuesday;
+                            break;
+                        case DayOfWeek.Wednesday:
+                            isToday = schedule.DayWednsday;
+                            break;
+                        case DayOfWeek.Thursday:
+                            isToday = schedule.DayThursday;
+                            break;
+                        case DayOfWeek.Friday:
+                            isToday = schedule.DayFriday;
+                            break;
+                        case DayOfWeek.Saturday:
+                            isToday = schedule.DaySaturday;
+                            break;
+                        case DayOfWeek.Sunday:
+                            isToday = schedule.DaySunday;
+                            break;
+                    }
+
+
+                    DateTime runTime = DateTime.Today;
+                    runTime = runTime.AddHours(schedule.Hour);
+                    runTime = runTime.AddMinutes(schedule.Minute);
+
+                    TimeSpan ts = DateTime.Now - runTime;
+                    isTime = ts.TotalSeconds >= 0;
+
+                    if (isToday && !hasRun && isTime)
+                    {
+                        // Execute schedule
+                        ActionController.ScheduleExecute(schedule.Id);
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

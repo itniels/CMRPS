@@ -1,0 +1,29 @@
+﻿@using CMRPS.Web.Models
+@model List<CMRPS.Web.Models.ComputerTypeModel>
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var list = "";
+        foreach (ComputerModel computer in item.Computers)
+        {
+            list += computer.Name + "<br/>";
+        }
+        @Html.Hidden("ColorTargetList", list, new { id = "tlist-" + @item.Id })
+        <tr>
+            <td>
+                <span>@Html.RadioButton("Type", @item.Id, new { id = "c-" + @item.Id, @onclick = "scheduleTypeSelectChanged();", @class = "radiobutton-type-select" })</span>
+                <span> @item.Name</span>
+            </td>
+        </tr>
+
+    }
+
+
+</table>

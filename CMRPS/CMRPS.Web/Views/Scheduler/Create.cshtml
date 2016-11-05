@@ -1,0 +1,122 @@
+﻿@using CMRPS.Web.Enums
+@model CMRPS.Web.Models.ScheduledModel
+
+@{
+    ViewBag.Title = "Create Schedule";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.ColorId, new { id = "hidden-color-id" })
+    @Html.HiddenFor(x => x.LocationId, new { id = "hidden-location-id" })
+    @Html.HiddenFor(x => x.TypeId, new { id = "hidden-type-id" })
+    @Html.HiddenFor(x => x.JsonComputerList, new { id = "hidden-computer-list" })
+
+    <div class="error-text">@Html.ValidationSummary()</div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <h3>Create Schedule</h3>
+        </div>
+        <div class="col-md-2">
+            <div class="pull-right">
+                <input type="submit" value="Create" class="btn btn-sm btn-success" />
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control fixed-width-textarea" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <span class="control-label">Time:</span>
+                </div>
+                <div class="col-md-2">
+                    <div class="row form-group">
+                        @*@Html.LabelFor(model => model.Schedule.Hour, htmlAttributes: new {@class = "control-label col-md-3"})*@
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.Hour, new SelectList(ViewBag.Hours), "Hour")
+                            @*@Html.ValidationMessageFor(model => model.Schedule.Hour, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row form-group">
+                        @*@Html.LabelFor(model => model.Schedule.Minute, htmlAttributes: new {@class = "control-label col-md-3"})*@
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(x => x.Minute, new SelectList(ViewBag.Minutes), "Minute")
+                            @*@Html.ValidationMessageFor(model => model.Schedule.Minute, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+        </div>
+        <div class="col-md-4">
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Action, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EnumDropDownListFor(model => model.Action, htmlAttributes: new { @class = "form-control fixed-width-textarea" })
+                    @Html.ValidationMessageFor(model => model.Action, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { id = "select-type", onchange = "scheduleTypeChanged();", @class = "form-control fixed-width-textarea" })
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            @*<span class="control-label">Weekdays:</span><br />*@
+            @Html.EditorFor(x => x.DayMonday)<span class="control-label"> Monday </span><br />
+            @Html.EditorFor(x => x.DayTuesday)<span class="control-label"> Tuesday </span><br />
+            @Html.EditorFor(x => x.DayWednsday)<span class="control-label"> Wedensday </span><br />
+            @Html.EditorFor(x => x.DayThursday)<span class="control-label"> Thursday </span><br />
+            @Html.EditorFor(x => x.DayFriday)<span class="control-label"> Friday </span><br />
+            @Html.EditorFor(x => x.DaySaturday)<span class="control-label"> Saturday </span><br />
+            @Html.EditorFor(x => x.DaySunday)<span class="control-label"> Sunday </span>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Select</h4>
+            <span id="ScheduleSelectContent">
+                
+            </span>
+        </div>
+        <div class="col-md-4">
+            <h4>Computers targeted</h4>
+            <div class="well well-sm">
+                <span id="ScheduleTargedList">
+                    None!
+                </span>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    // Load the correct view on page load.
+    $.document.ready(scheduleTypeChanged());
+</script>

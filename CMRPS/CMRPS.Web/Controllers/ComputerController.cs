@@ -97,7 +97,7 @@ namespace CMRPS.Web.Controllers
 
             // Make sure hostname looks ok!
             string hostname = model.Computer.Hostname.Replace(" ", "").Replace(Environment.NewLine, "");
-            model.Computer.Hostname = hostname;
+            model.Computer.Hostname = hostname.ToLower();
 
             // Set Last Seen
             model.Computer.LastSeen = DateTime.Now;
@@ -167,7 +167,7 @@ namespace CMRPS.Web.Controllers
                 {
                     // Make sure name/hostname is OK.
                     string cname = hostname.Replace(" ", "").Replace(Environment.NewLine, "");
-                    model.Computer.Hostname = cname;
+                    model.Computer.Hostname = cname.ToLower();
                     model.Computer.Name = cname.ToUpper();
                     if (model.Computer.Hostname.Length > 0 && model.Computer.Name.Length > 0)
                     {

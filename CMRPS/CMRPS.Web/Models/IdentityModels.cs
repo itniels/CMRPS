@@ -48,5 +48,6 @@ namespace CMRPS.Web.Models
         public DbSet<ComputerTypeModel> ComputerTypes { get; set; }
         public DbSet<SysEvent> Events { get; set; }
         public DbSet<SysLogin> Logins { get; set; }
+        public DbSet<ScheduledModel> Schedules { get; set; }
     }
 }

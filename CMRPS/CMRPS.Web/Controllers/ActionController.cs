@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Globalization;
@@ -16,6 +17,7 @@ using CMPRS.Web.Models;
 using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace CMRPS.Web.Controllers
 {
@@ -88,6 +90,189 @@ namespace CMRPS.Web.Controllers
             }
         }
 
+        public static void ScheduleExecute(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ScheduledModel schedule = db.Schedules.SingleOrDefault(x => x.Id == id);
+            List<int> computerIds = new List<int>();
+
+            if (schedule.Type == ScheduledType.Individual)
+            {
+                computerIds = JsonConvert.DeserializeObject<List<int>>(schedule.JsonComputerList);
+            }
+            else if (schedule.Type == ScheduledType.Color)
+            {
+                computerIds = db.Colors.SingleOrDefault(x => x.Id == schedule.ColorId).Computers.Select(x => x.Id).ToList();
+            }
+            else if (schedule.Type == ScheduledType.Location)
+            {
+                computerIds = db.Locations.SingleOrDefault(x => x.Id == schedule.LocationId).Computers.Select(x => x.Id).ToList();
+            }
+            else if (schedule.Type == ScheduledType.Type)
+            {
+                computerIds = db.ComputerTypes.SingleOrDefault(x => x.Id == schedule.TypeId).Computers.Select(x => x.Id).ToList();
+            }
+
+            foreach (int cid in computerIds)
+            {
+                try
+                {
+                    if (schedule.Action == ScheduledAction.Wakeup)
+                    {
+                        SchedulerPowerOn(cid);
+                    }
+                    else if (schedule.Action == ScheduledAction.Reboot)
+                    {
+                        SchedulerPowerRecycle(cid);
+                    }
+                    else if (schedule.Action == ScheduledAction.Shutdown)
+                    {
+                        SchedulerPowerOff(cid);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var brk = 0;
+                }
+                
+            }
+
+            schedule.LastRun = DateTime.Now;
+            db.Schedules.AddOrUpdate(schedule);
+            db.SaveChanges();
+        }
+
+        // ======================================================================================
+        // System Methods
+        // ======================================================================================
+        public static bool SchedulerPowerOn(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            SettingsModel settings = db.Settings.FirstOrDefault();
+
+            try
+            {
+                if (settings.StartupMethod == StartupMethod.Winwake)
+                {
+                    return WakeupWinwake(model.MAC);
+                }
+                if (settings.StartupMethod == StartupMethod.Packet)
+                {
+                    return WakeupPacket(model.MAC);
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool SchedulerPowerRecycle(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            SettingsModel settings = db.Settings.FirstOrDefault();
+
+            try
+            {
+                if (settings.RebootMethod == RebootMethod.CMD)
+                {
+                    if (settings.AdminUsername.Length > 0 && settings.AdminPassword.Length > 0)
+                    {
+                        RestartCMDCredentials(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage,
+                            settings.AdminUsername,
+                            settings.AdminPassword,
+                            settings.AdminDomain
+                            );
+                    }
+                    else
+                    {
+                        RestartCMD(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage
+                            );
+                    }
+                }
+                else if (settings.RebootMethod == RebootMethod.WMI)
+                {
+                    RestartWMI(
+                        model.Hostname,
+                        settings.ShutdownForce,
+                        settings.AdminUsername,
+                        settings.AdminPassword,
+                        settings.AdminDomain
+                        );
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool SchedulerPowerOff(int id)
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ComputerModel model = db.Computers.Single(x => x.Id == id);
+            SettingsModel settings = db.Settings.FirstOrDefault();
+
+            try
+            {
+                if (settings.ShutdownMethod == ShutdownMethod.CMD)
+                {
+                    if (settings.AdminUsername.Length > 0 && settings.AdminPassword.Length > 0)
+                    {
+                        ShutdownCMDCredentials(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage,
+                            settings.AdminUsername,
+                            settings.AdminPassword,
+                            settings.AdminDomain
+                            );
+                    }
+                    else
+                    {
+                        ShutdownCMD(
+                            model.Hostname,
+                            settings.ShutdownTimeout,
+                            settings.ShutdownForce,
+                            settings.ShutdownMessage
+                            );
+                    }
+                }
+                else if (settings.ShutdownMethod == ShutdownMethod.WMI)
+                {
+                    ShutdownWMI(
+                        model.Hostname,
+                        settings.ShutdownForce,
+                        settings.AdminUsername,
+                        settings.AdminPassword,
+                        settings.AdminDomain
+                        );
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // ======================================================================================
+        // User Methods
+        // ======================================================================================
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool Ping(string hostname)
         {

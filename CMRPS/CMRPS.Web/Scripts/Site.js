@@ -119,6 +119,7 @@ function colorLabel(id, textColor, labelColor) {
 }
 
 function demoColors() {
+    console.log("demoColors");
     var textColor = $('#color-text').val();
     var labelColor = $('#color-label').val();
     $('#text-example').css('color', textColor);
@@ -217,4 +218,152 @@ function toolsPing() {
             $("#ping-data").html('ERROR!');
         }
     });
+}
+
+// =====================================================
+// Tools / Network Tools
+// =====================================================
+function schedulerClearLists() {
+    // Target list
+    $("#ScheduleTargedList").html("None!");
+    // Hidden Fields
+    //$("#hidden-computer-list").val("");
+    //$("#hidden-color-id").val("");
+    //$("#hidden-location-id").val("");
+    //$("#hidden-type-id").val("");
+}
+
+
+function scheduleTypeChanged() {
+    schedulerClearLists();
+    $("#ScheduleSelectContent").html("Loading please wait...");
+    var selectedType = $("#select-type").val();
+    console.log("Type: " + selectedType);
+    var action = "/Scheduler/SelectView/";
+    $.ajax({
+        type: 'GET',
+        url: action,
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        data: { type: selectedType },
+        success: function (result) {
+            $("#ScheduleSelectContent").html(result);
+        },
+        error: function () {
+            $("#ScheduleSelectContent").html("Oops.. Something went wrong! :-(");
+        }
+    });
+}
+
+$(document).ready(function scheduleOnLoad() {
+    $("#ScheduleSelectContent").html("Loading please wait...");
+    var selectedType = $("#select-type").val();
+    console.log("Type: " + selectedType);
+    var action = "/Scheduler/SelectView/";
+    $.ajax({
+        type: 'GET',
+        url: action,
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        data: { type: selectedType },
+        success: function(result) {
+            $("#ScheduleSelectContent").html(result);
+        },
+        error: function() {
+            $("#ScheduleSelectContent").html("Oops.. Something went wrong! :-(");
+        }
+    });
+});
+
+function scheduleSelectionChanged() {
+    console.log("The selection changed!");
+    // Clear the list
+    $("#ScheduleTargedList").html("");
+
+    // Create list from selected items
+    var none = true;
+    var computerList = "|";
+    $('.checkbox-individual-select').each(function (i, obj) {
+        if (obj.checked) {
+            none = false;
+            var id = obj.id.replace("c-", "");
+            var computerName = $("#n-" + id).html();
+            computerList += "," + id;
+            console.log(computerList);
+            $("#ScheduleTargedList").append(computerName + "<br/>");
+        }
+    });
+
+    // Show if there is none.
+    if (none) {
+        schedulerClearLists();
+    } else {
+        $("#hidden-computer-list").val(computerList);
+    }
+}
+
+function scheduleColorSelectChanged() {
+    console.log("Color changed!");
+    // Clear list
+    schedulerClearLists();
+    var id = "";
+    var list = "";
+    // Get Selected
+    $(".radiobutton-color-select").each(function (i, obj) {
+        if (obj.checked) {
+            id = obj.id.replace("c-", "");
+            console.log("ID: " + id);
+            list = $("#tlist-" + id).val();
+            console.log("List: " + list);
+            $("#ScheduleTargedList").html(list);
+        }
+    });
+    $("#hidden-color-id").val(id);
+    if (list === "") {
+        schedulerClearLists();
+    }
+}
+
+function scheduleLocationSelectChanged() {
+    console.log("Location changed!");
+    // Clear list
+    schedulerClearLists();
+    var id = "";
+    var list = "";
+    // Get Selected
+    $(".radiobutton-location-select").each(function (i, obj) {
+        if (obj.checked) {
+            id = obj.id.replace("c-", "");
+            console.log("ID: " + id);
+            list = $("#tlist-" + id).val();
+            console.log("List: " + list);
+            $("#ScheduleTargedList").html(list);
+        }
+    });
+    $("#hidden-location-id").val(id);
+    if (list === "") {
+        schedulerClearLists();
+    }
+}
+
+function scheduleTypeSelectChanged() {
+    console.log("Type changed!");
+    // Clear list
+    schedulerClearLists();
+    var id = "";
+    var list = "";
+    // Get Selected
+    $(".radiobutton-type-select").each(function (i, obj) {
+        if (obj.checked) {
+            id = obj.id.replace("c-", "");
+            console.log("ID: " + id);
+            list = $("#tlist-" + id).val();
+            console.log("List: " + list);
+            $("#ScheduleTargedList").html(list);
+        }
+    });
+    $("#hidden-type-id").val(id);
+    if (list === "") {
+        schedulerClearLists();
+    }
 }

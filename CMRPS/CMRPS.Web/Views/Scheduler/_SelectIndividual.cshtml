@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CMRPS.Web.Models.ComputerModel>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Color
+        </th>
+        <th>
+            Location
+        </th>
+        <th>
+            Type
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <span>@Html.CheckBox("Selected", new {id = "c-" + @item.Id, onchange = "scheduleSelectionChanged();", @class = "checkbox-individual-select"})</span>
+                <span id="n-@item.Id"> @item.Name</span>
+            </td>
+            <td>
+                <span id="color-label-@item.Id">@item.Color.Name</span>
+            </td>
+            <td>
+                <span>@item.Location.Location</span>
+            </td>
+            <td>
+                <span>@item.Type.Name</span>
+            </td>
+        </tr>
+
+    }
+
+
+</table>
+
+@foreach (var item in Model)
+{
+    <script>
+        colorLabel(@item.Id, '@item.Color.ColorText', '@item.Color.ColorLabel');
+    </script>
+}

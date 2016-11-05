@@ -218,6 +218,8 @@
     <Compile Include="Enums\Action.cs" />
     <Compile Include="Enums\ActionStatus.cs" />
     <Compile Include="Enums\RebootMethod.cs" />
+    <Compile Include="Enums\ScheduledAction.cs" />
+    <Compile Include="Enums\ScheduledType.cs" />
     <Compile Include="Enums\ShutdownMethod.cs" />
     <Compile Include="Enums\StartupMethod.cs" />
     <Compile Include="Enums\ComputerStatus.cs" />
@@ -238,11 +240,24 @@
     <Compile Include="Migrations\201611021604058_m3.Designer.cs">
       <DependentUpon>201611021604058_m3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611031003074_m4.cs" />
+    <Compile Include="Migrations\201611031003074_m4.Designer.cs">
+      <DependentUpon>201611031003074_m4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611031507009_m5.cs" />
+    <Compile Include="Migrations\201611031507009_m5.Designer.cs">
+      <DependentUpon>201611031507009_m5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611041513099_m6.cs" />
+    <Compile Include="Migrations\201611041513099_m6.Designer.cs">
+      <DependentUpon>201611041513099_m6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
     <Compile Include="ModelsView\HomeViewModels.cs" />
     <Compile Include="ModelsView\ImportViewModels.cs" />
+    <Compile Include="ModelsView\ScheduleViewModels.cs" />
     <Compile Include="ModelsView\UserViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ColorModel.cs" />
@@ -251,6 +266,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ScheduledModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SysEvent.cs" />
     <Compile Include="Models\SysLogin.cs" />
@@ -377,6 +393,12 @@
     <Content Include="Views\Logs\EventDetails.cshtml" />
     <Content Include="Views\Computer\Import.cshtml" />
     <Content Include="Views\Status\_ListViewComputers.cshtml" />
+    <Content Include="Views\Scheduler\Index.cshtml" />
+    <Content Include="Views\Scheduler\Create.cshtml" />
+    <Content Include="Views\Scheduler\_SelectIndividual.cshtml" />
+    <Content Include="Views\Scheduler\_SelectColor.cshtml" />
+    <Content Include="Views\Scheduler\_SelectLocation.cshtml" />
+    <Content Include="Views\Scheduler\_SelectType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -399,6 +421,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611021604058_m3.resx">
       <DependentUpon>201611021604058_m3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611031003074_m4.resx">
+      <DependentUpon>201611031003074_m4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611031507009_m5.resx">
+      <DependentUpon>201611031507009_m5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611041513099_m6.resx">
+      <DependentUpon>201611041513099_m6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
