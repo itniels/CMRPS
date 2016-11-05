@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 
 namespace CMRPS.Web.Controllers
@@ -60,16 +62,63 @@ namespace CMRPS.Web.Controllers
             return null;
         }
 
+        /// <summary>
+        /// GET | Details for a schedule.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DetailsScheduleViewModel model = new DetailsScheduleViewModel();
+            model.Individual = new List<ComputerModel>();
+            model.Schedule = db.Schedules.Single(x => x.Id == id);
+
+            if (model.Schedule.Type == ScheduledType.Individual)
+            {
+                List<int> IDs = JsonConvert.DeserializeObject<List<int>>(model.Schedule.JsonComputerList);
+                foreach (int i in IDs)
+                {
+                    ComputerModel c = db.Computers.SingleOrDefault(x => x.Id == i);
+                    model.Individual.Add(c);
+                }
+            }
+            else if (model.Schedule.Type == ScheduledType.Color)
+            {
+                model.Color = db.Colors
+                    .Include(x => x.Computers)
+                    .SingleOrDefault(x => x.Id == model.Schedule.ColorId);
+            }
+            else if (model.Schedule.Type == ScheduledType.Location)
+            {
+                model.Location = db.Locations
+                    .Include(x => x.Computers)
+                    .SingleOrDefault(x => x.Id == model.Schedule.LocationId);
+            }
+            else if (model.Schedule.Type == ScheduledType.Type)
+            {
+                model.ComputerType = db.ComputerTypes
+                    .Include(x => x.Computers)
+                    .SingleOrDefault(x => x.Id == model.Schedule.TypeId);
+            }
+
+            if (model.Schedule == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_PartialDetails", model);
+        }
+
         [HttpGet]
         [Authorize]
         public ActionResult Create()
         {
             ScheduledModel model = new ScheduledModel();
-            //model.Computers = db.Computers
-            //    .Include(c => c.Color)
-            //    .Include(c => c.Location)
-            //    .Include(c => c.Type)
-            //    .ToList();
 
             ViewBag.Hours = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
             ViewBag.Minutes = new List<int>()
@@ -83,6 +132,7 @@ namespace CMRPS.Web.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ScheduledModel model)
         {
             ModelState.Clear();
@@ -93,32 +143,43 @@ namespace CMRPS.Web.Controllers
                 ModelState.AddModelError(String.Empty, "Name cannot be empty.");
             }
 
+
             if (model.Type == ScheduledType.Individual)
             {
+
                 try
                 {
-                    string jqlist = model.JsonComputerList.Replace("|,", "");
-                    var list = jqlist.Split(',');
-                    List<int> IDs = new List<int>();
-                    foreach (string s in list)
-                    {
-                        try
-                        {
-                            IDs.Add(Convert.ToInt32(s));
-                        }
-                        catch (Exception) { }
-
-                    }
-
-                    if (IDs.Count == 0)
+                    List<int> clist = JsonConvert.DeserializeObject<List<int>>(model.JsonComputerList);
+                    if (clist.Count == 0)
                     {
                         ModelState.AddModelError(String.Empty, "The computer list cannot be empty.");
                         valid = false;
                     }
+                        
 
-                    model.JsonComputerList = JsonConvert.SerializeObject(IDs);
 
-                    
+                    //string jqlist = model.JsonComputerList.Replace("|,", "");
+                    //var list = jqlist.Split(',');
+                    //List<int> IDs = new List<int>();
+                    //foreach (string s in list)
+                    //{
+                    //    try
+                    //    {
+                    //        IDs.Add(Convert.ToInt32(s));
+                    //    }
+                    //    catch (Exception) { }
+
+                    //}
+
+                    //if (IDs.Count == 0)
+                    //{
+                    //    ModelState.AddModelError(String.Empty, "The computer list cannot be empty.");
+                    //    valid = false;
+                    //}
+
+                    //model.JsonComputerList = JsonConvert.SerializeObject(IDs);
+
+
                 }
                 catch (Exception)
                 {
@@ -177,8 +238,107 @@ namespace CMRPS.Web.Controllers
                 //.ToList();
                 return View(model);
             }
+        }
+
+        /// <summary>
+        /// GET | Edit a color.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ScheduledModel model = db.Schedules.Find(id);
+
+            ViewBag.Hours = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+            ViewBag.Minutes = new List<int>()
+            {
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,
+                41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
+            };
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// POST | Edit a color.
+        /// </summary>
+        /// <param name="colorModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(ScheduledModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Event
+                SysEvent ev = new SysEvent();
+                ev.Action = Enums.Action.Info;
+                ev.Description = "Edited schedule: " + model.Name;
+                ev.ActionStatus = ActionStatus.OK;
+                LogsController.AddEvent(ev, User.Identity.GetUserId());
+
+                db.Entry(model).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
 
 
+        /// <summary>
+        /// GET | Delete a Schedule.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ScheduledModel model = db.Schedules.Find(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("Delete", model);
+        }
+
+        /// <summary>
+        /// POST | Delete a Schedule.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult Delete(int id)
+        {
+            ScheduledModel model = db.Schedules.Find(id);
+            // Event
+            SysEvent ev = new SysEvent();
+            ev.Action = Enums.Action.Info;
+            ev.Description = "Deleted schedule: " + model.Name;
+            ev.ActionStatus = ActionStatus.OK;
+            LogsController.AddEvent(ev, User.Identity.GetUserId());
+
+
+            db.Schedules.Remove(model);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

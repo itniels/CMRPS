@@ -15,10 +15,10 @@
         {
             list += computer.Name + "<br/>";
         }
-        @Html.Hidden("ColorTargetList", list, new { id = "tlist-" + @item.Id })
+        @Html.Hidden("ColorTargetList", list, new {id = "tlist-" + @item.Id})
         <tr>
             <td>
-                <span>@Html.RadioButton("Type", @item.Id, new { id = "c-" + @item.Id, @onclick = "scheduleTypeSelectChanged();", @class = "radiobutton-type-select" })</span>
+                <span>@Html.RadioButton("Type", @item.Id, new {id = "c-" + @item.Id, @onclick = "scheduleTypeSelectChanged();", @class = "radiobutton-type-select"})</span>
                 <span> @item.Name</span>
             </td>
         </tr>
@@ -27,3 +27,7 @@
 
 
 </table>
+
+<script>
+    $(document).ready(scheduleOnEdit());
+</script>

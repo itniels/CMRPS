@@ -1,0 +1,166 @@
+﻿@using CMRPS.Web.Enums
+@using CMRPS.Web.Models
+@model CMRPS.Web.ModelsView.DetailsScheduleViewModel
+
+@{
+    TimeSpan lastRun = DateTime.Now - Model.Schedule.LastRun;
+
+    var actionColor = "label-default";
+
+    switch (Model.Schedule.Action)
+    {
+        case ScheduledAction.Wakeup:
+            actionColor = "label-success";
+            break;
+        case ScheduledAction.Reboot:
+            actionColor = "label-warning";
+            break;
+        case ScheduledAction.Shutdown:
+            actionColor = "label-danger";
+            break;
+        default:
+            actionColor = "label-default";
+            break;
+    }
+
+    var Name = "";
+    var Computers = new List<ComputerModel>();
+    switch (Model.Schedule.Type)
+    {
+        case ScheduledType.Individual:
+            Computers = Model.Individual;
+            break;
+        case ScheduledType.Color:
+            Computers = Model.Color.Computers;
+            Name = "(" + Model.Color.Name + ")";
+            break;
+        case ScheduledType.Location:
+            Computers = Model.Location.Computers;
+            Name = "(" + Model.Location.Location + ")";
+            break;
+        case ScheduledType.Type:
+            Computers = Model.ComputerType.Computers;
+            Name = "(" + Model.ComputerType.Name + ")";
+            break;
+    }
+
+
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                Name:
+            </div>
+            <div class="col-md-10">
+                @Model.Schedule.Name
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                Active:
+            </div>
+            <div id="label" class="col-md-10">
+                <span class="label @(Model.Schedule.Active ? "label-success" : "label-danger")">
+                    @(Model.Schedule.Active ? "Yes" : "No")
+                </span>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-2">
+                Action:
+            </div>
+            <div id="text" class="col-md-10">
+                <span class="label @actionColor">@Model.Schedule.Action</span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                Type:
+            </div>
+            <div id="label" class="col-md-10">
+                <span>@Model.Schedule.Type </span>
+                <span id="color-label">@Name</span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                Time:
+            </div>
+            <div id="label" class="col-md-10">
+                @Model.Schedule.Hour.ToString("00"):@Model.Schedule.Minute.ToString("00")
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                Days:
+            </div>
+            <div id="label" class="col-md-10">
+                <span class="label @(Model.Schedule.DayMonday ? "label-info" : "label-default")">M</span>
+                <span class="label @(Model.Schedule.DayTuesday ? "label-info" : "label-default")">T</span>
+                <span class="label @(Model.Schedule.DayWednsday ? "label-info" : "label-default")">W</span>
+                <span class="label @(Model.Schedule.DayThursday ? "label-info" : "label-default")">T</span>
+                <span class="label @(Model.Schedule.DayFriday ? "label-info" : "label-default")">F</span>
+                <span class="label @(Model.Schedule.DaySaturday ? "label-info" : "label-default")">S</span>
+                <span class="label @(Model.Schedule.DaySunday ? "label-info":"label-default")">S</span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                Last Run:
+            </div>
+            <div id="text" class="col-md-10">
+                @if (lastRun.TotalDays < 18250)
+                {
+                    <span>@Model.Schedule.LastRun.ToShortDateString() </span>
+                    <span>@Model.Schedule.LastRun.ToShortTimeString()</span>
+                }
+                else
+                {
+                    <span>Never</span>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<hr />
+
+<h4>Targeted Computers:</h4>
+
+@{
+    
+}
+
+@if (Computers != null && Computers.Count > 0)
+{
+    foreach (var item in Computers)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                @item.Name
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="row">
+        <div class="no-items-found">No computers found..</div>
+    </div>
+}
+
+@if (Model.Schedule.Type == ScheduledType.Color)
+{
+    <script>
+        colorLabelDetails('@Model.Color.ColorText', '@Model.Color.ColorLabel');
+    </script>
+}

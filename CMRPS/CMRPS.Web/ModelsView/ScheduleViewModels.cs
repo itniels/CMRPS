@@ -6,11 +6,12 @@ using CMRPS.Web.Models;
 
 namespace CMRPS.Web.ModelsView
 {
-    public class CreateScheduleViewModel
+    public class DetailsScheduleViewModel
     {
         public ScheduledModel Schedule { get; set; }
-        public List<ComputerModel> Computers { get; set; }
-
-
+        public List<ComputerModel> Individual { get; set; }
+        public ColorModel Color { get; set; }
+        public LocationModel Location { get; set; }
+        public ComputerTypeModel ComputerType { get; set; }
     }
 }

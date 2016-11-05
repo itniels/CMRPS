@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CMRPS.Web.Models.ScheduledModel>
+﻿@using CMRPS.Web.Enums
+@using Newtonsoft.Json
+@model IEnumerable<CMRPS.Web.Models.ScheduledModel>
 
 @{
     ViewBag.Title = "Schedules";
@@ -35,6 +37,12 @@
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
+            Time
+        </th>
+        <th>
+            Days
+        </th>
+        <th>
             Last run
         </th>
         <th></th>
@@ -44,7 +52,7 @@
     {
         // Get days since last run
         TimeSpan lastRun = DateTime.Now - item.LastRun;
-        
+
         <tr>
             <td>
                 <span>@Html.DisplayFor(modelItem => item.Name)</span>
@@ -61,10 +69,22 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
+                @item.Hour.ToString("00"):@item.Minute.ToString("00")
+            </td>
+            <td>
+                <span class="label label-xs @(item.DayMonday ? "label-info" : "label-default")">M</span>
+                <span class="label label-xs @(item.DayTuesday ? "label-info" : "label-default")">T</span>
+                <span class="label label-xs @(item.DayWednsday ? "label-info" : "label-default")">W</span>
+                <span class="label label-xs @(item.DayThursday ? "label-info" : "label-default")">T</span>
+                <span class="label label-xs @(item.DayFriday ? "label-info" : "label-default")">F</span>
+                <span class="label label-xs @(item.DaySaturday ? "label-info" : "label-default")">S</span>
+                <span class="label label-xs @(item.DaySunday ? "label-info":"label-default")">S</span>
+            </td>
+            <td>
                 @if (lastRun.TotalDays < 18250)
                 {
-                    @item.LastRun.ToShortDateString()
-                    @item.LastRun.ToShortTimeString()
+                    <span>@item.LastRun.ToShortDateString() </span>
+                    <span>@item.LastRun.ToShortTimeString()</span>
                 }
                 else
                 {

@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Action = CMRPS.Web.Enums.Action;
 
 namespace CMRPS.Web.Models
 {
+    [Table(name:"Schedules")]
     public class ScheduledModel
     {
         public int Id { get; set; }
 
-        [Display(Name = "Name:")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Active:")]
+        [Display(Name = "Active")]
         public bool Active { get; set; }
 
-        [Display(Name = "Action:")]
+        [Display(Name = "Action")]
         public Enums.ScheduledAction Action { get; set; }
 
-        [Display(Name = "Select:")]
+        [Display(Name = "Select")]
         public Enums.ScheduledType Type { get; set; }
 
         public DateTime LastRun { get; set; }

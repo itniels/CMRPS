@@ -2,17 +2,20 @@
 @model CMRPS.Web.Models.ScheduledModel
 
 @{
-    ViewBag.Title = "Create Schedule";
+    ViewBag.Title = "Edit Schedule";
 }
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    @Html.HiddenFor(x => x.Id);
+    @Html.HiddenFor(x => x.LastRun);
     @Html.HiddenFor(x => x.ColorId, new { id = "hidden-color-id" })
     @Html.HiddenFor(x => x.LocationId, new { id = "hidden-location-id" })
     @Html.HiddenFor(x => x.TypeId, new { id = "hidden-type-id" })
     @Html.HiddenFor(x => x.JsonComputerList, new { id = "hidden-computer-list" })
+    <span id="hidden-selectedType" class="hidden">@Model.Type</span>
 
     <div class="error-text">@Html.ValidationSummary()</div>
 
@@ -22,7 +25,7 @@
         </div>
         <div class="col-md-2">
             <div class="pull-right">
-                <input type="submit" value="Create" class="btn btn-sm btn-success" />
+                <input type="submit" value="Update" class="btn btn-sm btn-success" />
             </div>
         </div>
     </div>
@@ -51,7 +54,7 @@
                 <div class="col-md-9">
                     <div class="row">
                         <div class="col-md-5">
-                            <span>@Html.DropDownListFor(x => x.Hour, new SelectList(ViewBag.Hours), "Hour", new {@class = "form-control"})</span>
+                            <span>@Html.DropDownListFor(x => x.Hour, new SelectList(ViewBag.Hours), "Hour", new { @class = "form-control" })</span>
                         </div>
                         <div class="col-md-5">
                             <span>@Html.DropDownListFor(x => x.Minute, new SelectList(ViewBag.Minutes), "Minute", new { @class = "form-control" })</span>
@@ -69,10 +72,10 @@
                 </div>
             </div>
             <div class="row form-group">
-                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.LabelFor(model => model.Type, htmlAttributes: new {@class = "control-label col-md-3"})
                 <div class="col-md-9">
-                    @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { id = "select-type", onchange = "scheduleTypeChanged();", @class = "form-control fixed-width-textarea" })
-                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                    @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new {id = "select-type", onchange = "scheduleTypeChanged();", @class = "form-control fixed-width-textarea"})
+                    @Html.ValidationMessageFor(model => model.Type, "", new {@class = "text-danger"})
                 </div>
             </div>
         </div>
@@ -92,7 +95,7 @@
         <div class="col-md-8">
             <h4>Select</h4>
             <span id="ScheduleSelectContent">
-                
+
             </span>
         </div>
         <div class="col-md-4">
@@ -108,5 +111,5 @@
 
 <script>
     // Load the correct view on page load.
-    $.document.ready(scheduleTypeChanged());
+    $(document).ready(scheduleTypeChanged());
 </script>

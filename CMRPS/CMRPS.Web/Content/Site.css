@@ -145,3 +145,9 @@ textarea {
 .tablerow-offline {
     background-color: lightcoral;
 }
+
+/* Scheduler */
+.label-xs {
+    padding-left: 4px;
+    padding-right: 4px;
+}

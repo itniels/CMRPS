@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201611041513099_m6.Designer.cs">
       <DependentUpon>201611041513099_m6.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611051321175_m7.cs" />
+    <Compile Include="Migrations\201611051321175_m7.Designer.cs">
+      <DependentUpon>201611051321175_m7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
@@ -399,12 +403,14 @@
     <Content Include="Views\Scheduler\_SelectColor.cshtml" />
     <Content Include="Views\Scheduler\_SelectLocation.cshtml" />
     <Content Include="Views\Scheduler\_SelectType.cshtml" />
+    <Content Include="Views\Scheduler\Delete.cshtml" />
+    <Content Include="Views\Scheduler\Edit.cshtml" />
+    <Content Include="Views\Scheduler\_PartialDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Jobs\" />
     <Folder Include="Views\Power\" />
-    <Folder Include="Views\Schedule\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -430,6 +436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611041513099_m6.resx">
       <DependentUpon>201611041513099_m6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611051321175_m7.resx">
+      <DependentUpon>201611051321175_m7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

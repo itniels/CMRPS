@@ -221,18 +221,11 @@ function toolsPing() {
 }
 
 // =====================================================
-// Tools / Network Tools
+// Scheduler
 // =====================================================
 function schedulerClearLists() {
-    // Target list
     $("#ScheduleTargedList").html("None!");
-    // Hidden Fields
-    //$("#hidden-computer-list").val("");
-    //$("#hidden-color-id").val("");
-    //$("#hidden-location-id").val("");
-    //$("#hidden-type-id").val("");
 }
-
 
 function scheduleTypeChanged() {
     schedulerClearLists();
@@ -289,15 +282,17 @@ function scheduleSelectionChanged() {
             var id = obj.id.replace("c-", "");
             var computerName = $("#n-" + id).html();
             computerList += "," + id;
-            console.log(computerList);
             $("#ScheduleTargedList").append(computerName + "<br/>");
         }
     });
-
+    computerList += "]";
+    computerList = computerList.replace("|,", "[");
+    console.log(computerList);
     // Show if there is none.
     if (none) {
         schedulerClearLists();
     } else {
+
         $("#hidden-computer-list").val(computerList);
     }
 }
@@ -351,7 +346,7 @@ function scheduleTypeSelectChanged() {
     // Clear list
     schedulerClearLists();
     var id = "";
-    var list = "";
+    
     // Get Selected
     $(".radiobutton-type-select").each(function (i, obj) {
         if (obj.checked) {
@@ -366,4 +361,48 @@ function scheduleTypeSelectChanged() {
     if (list === "") {
         schedulerClearLists();
     }
+}
+
+function scheduleOnEdit() {
+    console.log("On Edit exec");
+    var selectedType = $("#hidden-selectedType").html();
+    var currentType = $("#select-type option:selected").text();
+
+    console.log(selectedType + " | " + currentType);
+
+    if (selectedType === currentType) {
+        console.log("Match!");
+        // Individual
+        if (selectedType == "Individual") {
+            var list = $("#hidden-computer-list").val();
+            // Check list
+            $(JSON.parse(list)).each(function(i, id) {
+                $("#c-" + id).prop('checked', true);
+            });
+            scheduleSelectionChanged();
+        }
+        // Color
+        if (selectedType == "Color") {
+            var colorId = $("#hidden-color-id").val();
+            console.log("Color ID: " + colorId);
+            $("#c-" + colorId).prop('checked', true);
+            scheduleColorSelectChanged();
+        }
+        // Location
+        if (selectedType == "Location") {
+            var locationId = $("#hidden-location-id").val();
+            $("#c-" + locationId).prop('checked', true);
+            scheduleLocationSelectChanged();
+        }
+        // Computer Type
+        if (selectedType == "Type") {
+            var computertypeId = $("#hidden-type-id").val();
+            $("#c-" + computertypeId).prop('checked', true);
+            scheduleTypeSelectChanged();
+        }
+    } else {
+        //schedulerClearLists();
+    }
+
+
 }
