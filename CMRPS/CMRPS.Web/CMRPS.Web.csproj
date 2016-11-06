@@ -409,7 +409,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Jobs\" />
     <Folder Include="Views\Power\" />
   </ItemGroup>
   <ItemGroup>
