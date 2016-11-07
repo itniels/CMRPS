@@ -43,9 +43,9 @@
             </td>
             <td>
                 <div class="pull-right">
-                <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#myModal">Details</button>
+                <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails">Details</button>
                     <button class="btn btn-xs btn-warning" onclick="location.href='@Url.Action("Edit", "Computer", new {id = item.Id})'">Edit</button>
-                    <button class="btn btn-xs btn-danger" onclick="location.href='@Url.Action("Delete", "Computer", new {id = item.Id})'">Delete</button>
+                    <button class="btn btn-xs btn-danger" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete">Delete</button>
                 </div>
             </td>
         </tr>
@@ -53,16 +53,5 @@
 
 </table>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div id="modal-body" class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+@Html.Partial("_PartialModalDetails")
+@Html.Partial("_PartialModalDelete")

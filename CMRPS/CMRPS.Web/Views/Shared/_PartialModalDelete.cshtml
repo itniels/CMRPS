@@ -1,0 +1,16 @@
+﻿<!-- Modal Delete -->
+<span id="delete-item-id" hidden="hidden"></span>
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div id="modal-body-delete" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deleteItem('@Url.Action("Delete")');" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Back to safety</button>
+            </div>
+        </div>
+    </div>
+</div>

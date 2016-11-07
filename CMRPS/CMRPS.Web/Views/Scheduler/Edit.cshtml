@@ -17,6 +17,8 @@
     @Html.HiddenFor(x => x.LocationId, new { id = "hidden-location-id" })
     @Html.HiddenFor(x => x.TypeId, new { id = "hidden-type-id" })
     @Html.HiddenFor(x => x.JsonComputerList, new { id = "hidden-computer-list" })
+    @Html.HiddenFor(x => x.ComputerListNames, new { id = "hidden-computer-list-names" })
+
     <span id="hidden-selectedType" class="hidden">@Model.Type</span>
 
     <div class="error-text">@Html.ValidationSummary()</div>

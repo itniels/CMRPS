@@ -256,6 +256,10 @@
     <Compile Include="Migrations\201611051321175_m7.Designer.cs">
       <DependentUpon>201611051321175_m7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611071345075_m8.cs" />
+    <Compile Include="Migrations\201611071345075_m8.Designer.cs">
+      <DependentUpon>201611071345075_m8.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
@@ -406,6 +410,9 @@
     <Content Include="Views\Scheduler\Delete.cshtml" />
     <Content Include="Views\Scheduler\Edit.cshtml" />
     <Content Include="Views\Scheduler\_PartialDetails.cshtml" />
+    <Content Include="Views\Shared\_PartialModalDelete.cshtml" />
+    <Content Include="Views\Shared\_PartialModalDetails.cshtml" />
+    <Content Include="Views\Computer\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -438,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611051321175_m7.resx">
       <DependentUpon>201611051321175_m7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611071345075_m8.resx">
+      <DependentUpon>201611071345075_m8.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

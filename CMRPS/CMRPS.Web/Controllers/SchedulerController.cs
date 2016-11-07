@@ -146,7 +146,6 @@ namespace CMRPS.Web.Controllers
 
             if (model.Type == ScheduledType.Individual)
             {
-
                 try
                 {
                     List<int> clist = JsonConvert.DeserializeObject<List<int>>(model.JsonComputerList);
@@ -155,31 +154,20 @@ namespace CMRPS.Web.Controllers
                         ModelState.AddModelError(String.Empty, "The computer list cannot be empty.");
                         valid = false;
                     }
-                        
 
+                    try
+                    {
+                        string names = "|";
+                        foreach (var id in clist)
+                        {
+                            names += ", " + db.Computers.SingleOrDefault(x => x.Id == id).Name;
+                        }
+                        model.ComputerListNames = names.Replace("|, ", "");
+                    }
+                    catch (Exception)
+                    {
 
-                    //string jqlist = model.JsonComputerList.Replace("|,", "");
-                    //var list = jqlist.Split(',');
-                    //List<int> IDs = new List<int>();
-                    //foreach (string s in list)
-                    //{
-                    //    try
-                    //    {
-                    //        IDs.Add(Convert.ToInt32(s));
-                    //    }
-                    //    catch (Exception) { }
-
-                    //}
-
-                    //if (IDs.Count == 0)
-                    //{
-                    //    ModelState.AddModelError(String.Empty, "The computer list cannot be empty.");
-                    //    valid = false;
-                    //}
-
-                    //model.JsonComputerList = JsonConvert.SerializeObject(IDs);
-
-
+                    }
                 }
                 catch (Exception)
                 {
@@ -196,6 +184,21 @@ namespace CMRPS.Web.Controllers
                     ModelState.AddModelError(String.Empty, "Plese select a color.");
                     valid = false;
                 }
+
+                try
+                {
+                    string names = "|";
+                    ColorModel item = db.Colors.Include(x => x.Computers).SingleOrDefault(x => x.Id == model.ColorId);
+                    foreach (var computer in item.Computers)
+                    {
+                        names += ", " + computer.Name;
+                    }
+                    model.ComputerListNames = names.Replace("|, ", "");
+                }
+                catch (Exception)
+                {
+
+                }
             }
             if (model.Type == ScheduledType.Location)
             {
@@ -205,6 +208,21 @@ namespace CMRPS.Web.Controllers
                     ModelState.AddModelError(String.Empty, "Plese select a location.");
                     valid = false;
                 }
+
+                try
+                {
+                    string names = "|";
+                    LocationModel item = db.Locations.Include(x => x.Computers).SingleOrDefault(x => x.Id == model.LocationId);
+                    foreach (var computer in item.Computers)
+                    {
+                        names += ", " + computer.Name;
+                    }
+                    model.ComputerListNames = names.Replace("|, ", "");
+                }
+                catch (Exception)
+                {
+
+                }
             }
             if (model.Type == ScheduledType.Type)
             {
@@ -213,6 +231,21 @@ namespace CMRPS.Web.Controllers
                 {
                     ModelState.AddModelError(String.Empty, "Plese select a Computer Type.");
                     valid = false;
+                }
+
+                try
+                {
+                    string names = "|";
+                    ComputerTypeModel item = db.ComputerTypes.Include(x => x.Computers).SingleOrDefault(x => x.Id == model.TypeId);
+                    foreach (var computer in item.Computers)
+                    {
+                        names += ", " + computer.Name;
+                    }
+                    model.ComputerListNames = names.Replace("|, ", "");
+                }
+                catch (Exception)
+                {
+
                 }
             }
 
@@ -280,16 +313,133 @@ namespace CMRPS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Event
-                SysEvent ev = new SysEvent();
-                ev.Action = Enums.Action.Info;
-                ev.Description = "Edited schedule: " + model.Name;
-                ev.ActionStatus = ActionStatus.OK;
-                LogsController.AddEvent(ev, User.Identity.GetUserId());
+                bool valid = true;
+                // Get info
+                if (model.Type == ScheduledType.Individual)
+                {
+                    try
+                    {
+                        List<int> clist = JsonConvert.DeserializeObject<List<int>>(model.JsonComputerList);
+                        if (clist.Count == 0)
+                        {
+                            ModelState.AddModelError(String.Empty, "The computer list cannot be empty.");
+                            valid = false;
+                        }
 
-                db.Entry(model).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                        try
+                        {
+                            string names = "|";
+                            foreach (var id in clist)
+                            {
+                                names += ", " + db.Computers.SingleOrDefault(x => x.Id == id).Name;
+                            }
+                            model.ComputerListNames = names.Replace("|, ", "");
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError(String.Empty, "The computer list cannot be empty.");
+                        valid = false;
+                    }
+
+                }
+                if (model.Type == ScheduledType.Color)
+                {
+                    model.JsonComputerList = "";
+                    if (model.ColorId == 0)
+                    {
+                        ModelState.AddModelError(String.Empty, "Plese select a color.");
+                        valid = false;
+                    }
+
+                    try
+                    {
+                        string names = "|";
+                        ColorModel item = db.Colors.Include(x => x.Computers).SingleOrDefault(x => x.Id == model.ColorId);
+                        foreach (var computer in item.Computers)
+                        {
+                            names += ", " + computer.Name;
+                        }
+                        model.ComputerListNames = names.Replace("|, ", "");
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                if (model.Type == ScheduledType.Location)
+                {
+                    model.JsonComputerList = "";
+                    if (model.LocationId == 0)
+                    {
+                        ModelState.AddModelError(String.Empty, "Plese select a location.");
+                        valid = false;
+                    }
+
+                    try
+                    {
+                        string names = "|";
+                        LocationModel item = db.Locations.Include(x => x.Computers).SingleOrDefault(x => x.Id == model.LocationId);
+                        foreach (var computer in item.Computers)
+                        {
+                            names += ", " + computer.Name;
+                        }
+                        model.ComputerListNames = names.Replace("|, ", "");
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                if (model.Type == ScheduledType.Type)
+                {
+                    model.JsonComputerList = "";
+                    if (model.TypeId == 0)
+                    {
+                        ModelState.AddModelError(String.Empty, "Plese select a Computer Type.");
+                        valid = false;
+                    }
+
+                    try
+                    {
+                        string names = "|";
+                        ComputerTypeModel item = db.ComputerTypes.Include(x => x.Computers).SingleOrDefault(x => x.Id == model.TypeId);
+                        foreach (var computer in item.Computers)
+                        {
+                            names += ", " + computer.Name;
+                        }
+                        model.ComputerListNames = names.Replace("|, ", "");
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+
+
+                
+
+                if (valid)
+                {
+                    // Event
+                    SysEvent ev = new SysEvent();
+                    ev.Action = Enums.Action.Info;
+                    ev.Description = "Edited schedule: " + model.Name;
+                    ev.ActionStatus = ActionStatus.OK;
+                    LogsController.AddEvent(ev, User.Identity.GetUserId());
+
+                    db.Entry(model).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(model);
+                }
             }
             return View(model);
         }

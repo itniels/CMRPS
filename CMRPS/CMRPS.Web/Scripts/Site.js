@@ -248,7 +248,7 @@ function scheduleTypeChanged() {
     });
 }
 
-$(document).ready(function scheduleOnLoad() {
+function scheduleOnLoad() {
     $("#ScheduleSelectContent").html("Loading please wait...");
     var selectedType = $("#select-type").val();
     console.log("Type: " + selectedType);
@@ -266,7 +266,7 @@ $(document).ready(function scheduleOnLoad() {
             $("#ScheduleSelectContent").html("Oops.. Something went wrong! :-(");
         }
     });
-});
+};
 
 function scheduleSelectionChanged() {
     console.log("The selection changed!");
@@ -276,6 +276,7 @@ function scheduleSelectionChanged() {
     // Create list from selected items
     var none = true;
     var computerList = "|";
+
     $('.checkbox-individual-select').each(function (i, obj) {
         if (obj.checked) {
             none = false;
@@ -287,12 +288,11 @@ function scheduleSelectionChanged() {
     });
     computerList += "]";
     computerList = computerList.replace("|,", "[");
-    console.log(computerList);
+
     // Show if there is none.
     if (none) {
         schedulerClearLists();
     } else {
-
         $("#hidden-computer-list").val(computerList);
     }
 }

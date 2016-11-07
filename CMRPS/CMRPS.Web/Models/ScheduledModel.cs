@@ -27,6 +27,9 @@ namespace CMRPS.Web.Models
 
         public DateTime LastRun { get; set; }
 
+        // For Title popup
+        public string ComputerListNames { get; set; }
+
         // By ID
         public string JsonComputerList { get; set; }
 

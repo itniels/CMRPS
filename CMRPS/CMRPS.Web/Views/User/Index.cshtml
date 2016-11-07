@@ -50,26 +50,4 @@
 
 </table>
 
-<!-- Modal Delete -->
-<span id="delete-item-id" hidden="hidden"></span>
-<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div id="modal-body-delete" class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <div class="pull-left">
-                    <span title="This will remove all the LOGINS with this user. Otherwise they will be kept and shown as deleted user in the logs.">@Html.CheckBox("RemoveLogins", new { @class = "", id = "delete-item-logins" }) <span class="text-primary"> Remove Logins</span></span> <br />
-                    <span title="This will remove all the EVENTS with this user. Otherwise they will be kept and shown as deleted user in the logs.">@Html.CheckBox("RemoveEvents", new { @class = "", id = "delete-item-events" }) <span class="text-primary"> Remove Events</span></span><br/>
-                    <div class="pull-left">
-                    </div>
-                </div>
-                
-                <button type="button" class="btn btn-danger" onclick="deleteUser('@Url.Action("Delete")');" data-dismiss="modal">Delete</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Back to safety</button>
-            </div>
-        </div>
-    </div>
-</div>
+@Html.Partial("_PartialModalDelete")

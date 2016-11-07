@@ -15,6 +15,7 @@
     @Html.HiddenFor(x => x.LocationId, new { id = "hidden-location-id" })
     @Html.HiddenFor(x => x.TypeId, new { id = "hidden-type-id" })
     @Html.HiddenFor(x => x.JsonComputerList, new { id = "hidden-computer-list" })
+    @Html.HiddenFor(x => x.ComputerListNames, new { id = "hidden-computer-list-names" })
 
     <div class="error-text">@Html.ValidationSummary()</div>
 
@@ -112,5 +113,5 @@
 
 <script>
     // Load the correct view on page load.
-    $.document.ready(scheduleTypeChanged());
+    $(document).ready(scheduleTypeChanged());
 </script>

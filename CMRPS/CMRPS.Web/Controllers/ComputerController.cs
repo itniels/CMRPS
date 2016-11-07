@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CMRPS.Web.Enums;
@@ -55,6 +56,28 @@ namespace CMRPS.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ComputerModel model = db.Computers.Find(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("Delete", model);
+        }
+
+        /// <summary>
+        /// GET | Delete a Computer in the system.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
         [Authorize]
         public ActionResult Delete(int id)
         {
