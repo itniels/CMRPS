@@ -19,11 +19,11 @@
             <h4>Filtering</h4>
             <hr/>
             <div class="row">
-                <div>Name:</div>
+                <div>Name contains:</div>
                 @Html.TextBox("NameFilter", null, new {@class = "form-control", placeholder = "All"})
             </div>
             <div class="row">
-                <div>hostname:</div>
+                <div>Hostname contains:</div>
                 @Html.TextBox("HostnameFilter", null, new {@class = "form-control", placeholder = "All"})
             </div>
             <div class="row">
@@ -44,7 +44,7 @@
             </div>
             <br/>
             <div class="row">
-                <button class="btn btn-xs btn-warning">Clear</button>
+                <button class="btn btn-xs btn-warning">Clear filters</button>
                 <span class="pull-right">
                     <button class="btn btn-xs btn-success">Filter</button>
                 </span>
@@ -54,9 +54,6 @@
 
 
     <div class="col-md-9">
-        <div class="well well-sm">
-            <h4>Computers</h4>
-        </div>
         <div class="well well-sm">
             @Html.Partial("_ListViewComputers", Model)
         </div>
