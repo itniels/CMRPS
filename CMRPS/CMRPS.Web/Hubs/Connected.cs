@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using CMRPS.Web.Models;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace CMRPS.Web.Hubs
 {
-    [HubName("ConnectedHub")]
+    [HubName("TimeHub")]
     public class Connected : Hub
     {
-        public void isConnected()
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        public void CurrentTime()
         {
-            Clients.All.hello();
+            Clients.All.Updated(DateTime.Now.ToLongTimeString());
         }
     }
 }

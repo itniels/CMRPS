@@ -8,10 +8,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CMPRS.Web.Models;
+using CMRPS.Web.Hubs;
 using CMRPS.Web.Models;
 using Hangfire;
 using Hangfire.Common;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 
 namespace CMRPS.Web.Controllers
@@ -32,7 +34,6 @@ namespace CMRPS.Web.Controllers
             SettingsModel settings = db.Settings.First();
 
             // Options
-            //TODO = Make this adjustable in DB settings
             int queues = settings.WorkerQueues;
 
             // Create new queues.

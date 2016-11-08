@@ -27,7 +27,7 @@
         <b>Status:</b>
     </div>
     <div class="col-md-@col2">
-        <span class="label @(Model.Status ? "label-success" : "label-danger")">@(Model.Status ? "ONLINE" : "OFFLINE")</span>
+        <span id="computer-details-id-@Model.Id" class="label @(Model.Status ? "label-success" : "label-danger")">@(Model.Status ? "ONLINE" : "OFFLINE")</span>
     </div>
 </div>
 

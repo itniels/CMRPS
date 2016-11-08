@@ -31,15 +31,19 @@
                 @Html.DisplayFor(modelItem => item.Hostname)
             </td>
             <td>
-                <span class="label @(item.Status ? "label-success":"label-danger")">
+                <span id="computer-id-@item.Id" class="label @(item.Status ? "label-success":"label-danger")">
                     @(item.Status ? "ONLINE" : "OFFLINE")
                 </span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IP)
+                <span id="computer-ip-@item.Id">
+                    @Html.DisplayFor(modelItem => item.IP)
+                </span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MAC)
+                <span id="computer-mac-@item.Id">
+                    @Html.DisplayFor(modelItem => item.MAC)
+                </span>
             </td>
             <td>
                 <div class="pull-right">

@@ -15,8 +15,10 @@ using System.Web.Mvc;
 using CMPRS.Web.Enums;
 using CMPRS.Web.Models;
 using CMRPS.Web.Enums;
+using CMRPS.Web.Hubs;
 using CMRPS.Web.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 
 namespace CMRPS.Web.Controllers
@@ -87,6 +89,12 @@ namespace CMRPS.Web.Controllers
                 // Update Database
                 db.Computers.AddOrUpdate(computer);
                 db.SaveChanges();
+
+                // Call SignalR
+                var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
+                context.Clients.All.UpdateListView(id, computer.Status, computer.IP, computer.MAC);
+                context.Clients.All.UpdateOverview(id, computer.Status, computer.IP, computer.MAC);
+                context.Clients.All.UpdateComputers(id, computer.Status, computer.IP, computer.MAC);
             }
         }
 
@@ -302,7 +310,7 @@ namespace CMRPS.Web.Controllers
             }
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool PowerOn(int id)
         {
@@ -349,7 +357,7 @@ namespace CMRPS.Web.Controllers
             return true;
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool PowerOff(int id)
         {
@@ -414,7 +422,7 @@ namespace CMRPS.Web.Controllers
             return true;
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool PowerRecycle(int id)
         {

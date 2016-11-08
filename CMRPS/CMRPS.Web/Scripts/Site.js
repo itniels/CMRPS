@@ -373,7 +373,7 @@ function scheduleOnEdit() {
     if (selectedType === currentType) {
         console.log("Match!");
         // Individual
-        if (selectedType == "Individual") {
+        if (selectedType === "Individual") {
             var list = $("#hidden-computer-list").val();
             // Check list
             $(JSON.parse(list)).each(function (i, id) {
@@ -382,20 +382,20 @@ function scheduleOnEdit() {
             scheduleSelectionChanged();
         }
         // Color
-        if (selectedType == "Color") {
+        if (selectedType === "Color") {
             var colorId = $("#hidden-color-id").val();
             console.log("Color ID: " + colorId);
             $("#c-" + colorId).prop('checked', true);
             scheduleColorSelectChanged();
         }
         // Location
-        if (selectedType == "Location") {
+        if (selectedType === "Location") {
             var locationId = $("#hidden-location-id").val();
             $("#c-" + locationId).prop('checked', true);
             scheduleLocationSelectChanged();
         }
         // Computer Type
-        if (selectedType == "Type") {
+        if (selectedType === "Type") {
             var computertypeId = $("#hidden-type-id").val();
             $("#c-" + computertypeId).prop('checked', true);
             scheduleTypeSelectChanged();
@@ -456,3 +456,69 @@ function listViewClearFilters() {
     // Load without filters
     filterListView();
 }
+
+// =====================================================
+// SignalR
+// =====================================================
+
+// View/Overview
+function srUpdateOveriew() {
+    // Ref the hub
+    var myhub = $.connection.liveUpdatesHub;
+    // Event handler(s)
+    myhub.client.updateOverview = function (id, status, ip, mac) {
+        if (status) {
+            $("#overview-well-" + id).removeClass("well-offline");
+            $("#overview-well-" + id).addClass("well-online");
+        } else {
+            $("#overview-well-" + id).removeClass("well-online");
+            $("#overview-well-" + id).addClass("well-offline");
+        }
+        // IP and MAC
+        $("#overview-popup-" + id).prop("title", "IP: " + ip + " | MAC: " + mac);
+
+    }
+    $.connection.hub.start();
+};
+
+// View/ListView
+function srUpdateListView() {
+    // Ref the hub
+    var myhub = $.connection.liveUpdatesHub;
+    // Event handler(s)
+    myhub.client.updateListView = function (id, status, ip, mac) {
+        if (status) {
+            $("#tr-id-" + id).removeClass("tablerow-offline");
+            $("#tr-id-" + id).addClass("tablerow-online");
+        } else {
+            $("#tr-id-" + id).removeClass("tablerow-online");
+            $("#tr-id-" + id).addClass("tablerow-offline");
+        }
+        // IP and MAC
+        $("#listview-popup-" + id).prop("title", "IP: " + ip + " | MAC: " + mac);
+        //filterListView(); // Disruptive!
+    }
+    $.connection.hub.start();
+};
+
+// Manage/Computers
+function srUpdateComputers() {
+    // Ref the hub
+    var myhub = $.connection.liveUpdatesHub;
+    // Event handler(s)
+    myhub.client.UpdateComputers = function (id, status, ip, mac) {
+        if (status) {
+            $("#computer-id-" + id).removeClass("label-danger");
+            $("#computer-id-" + id).addClass("label-success");
+            $("#computer-id-" + id).html("ONLINE");
+        } else {
+            $("#computer-id-" + id).removeClass("label-success");
+            $("#computer-id-" + id).addClass("label-danger");
+            $("#computer-id-" + id).html("OFFLINE");
+        }
+        // IP and MAC
+        $("#computer-ip-" + id).html(ip);
+        $("#computer-mac-" + id).html(mac);
+    }
+    $.connection.hub.start();
+};

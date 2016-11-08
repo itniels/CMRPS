@@ -12,27 +12,27 @@
         <div class="well">
             <div class="row">
                 <div>Name contains:</div>
-                @Html.TextBox("NameFilter", null, new {@class = "form-control", placeholder = "All", onchange = "filterListView();" })
+                @Html.TextBox("NameFilter", null, new {@class = "form-control", placeholder = "All", onchange = "filterListView();"})
             </div>
             <div class="row">
                 <div>Hostname contains:</div>
-                @Html.TextBox("HostnameFilter", null, new {@class = "form-control", placeholder = "All", onchange = "filterListView();" })
+                @Html.TextBox("HostnameFilter", null, new {@class = "form-control", placeholder = "All", onchange = "filterListView();"})
             </div>
             <div class="row">
                 <div>Status:</div>
-                @Html.DropDownList("StatusFilter", new SelectList(ViewBag.Status), "All", new {@class = "form-control", onchange = "filterListView();" })
+                @Html.DropDownList("StatusFilter", new SelectList(ViewBag.Status), "All", new {@class = "form-control", onchange = "filterListView();"})
             </div>
             <div class="row">
                 <div>Type:</div>
-                @Html.DropDownList("TypeFilter", new SelectList(ViewBag.Types), "All", new {@class = "form-control", onchange = "filterListView();" })
+                @Html.DropDownList("TypeFilter", new SelectList(ViewBag.Types), "All", new {@class = "form-control", onchange = "filterListView();"})
             </div>
             <div class="row">
                 <div>Color:</div>
-                @Html.DropDownList("ColorFilter", new SelectList(ViewBag.Colors), "All", new {@class = "form-control", onchange = "filterListView();" })
+                @Html.DropDownList("ColorFilter", new SelectList(ViewBag.Colors), "All", new {@class = "form-control", onchange = "filterListView();"})
             </div>
             <div class="row">
                 <div>Location:</div>
-                @Html.DropDownList("LocationFilter", new SelectList(ViewBag.Locations), "All", new {@class = "form-control", onchange = "filterListView();" })
+                @Html.DropDownList("LocationFilter", new SelectList(ViewBag.Locations), "All", new {@class = "form-control", onchange = "filterListView();"})
             </div>
             <br/>
             <div class="row">
@@ -59,3 +59,5 @@
 
 
 </div>
+
+<script>$(document).ready(srUpdateListView());</script>

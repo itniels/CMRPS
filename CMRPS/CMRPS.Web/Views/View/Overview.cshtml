@@ -17,11 +17,11 @@
         @foreach (var item in Model.Skip(i).Take(4))
         {
             <div id="item-id-@item.Id" class="col-md-3">
-                <div class="well well-sm @(item.Status ? "well-online" : "well-offline")">
+                <div id="overview-well-@item.Id" class="well well-sm @(item.Status ? "well-online" : "well-offline")">
                     <div class="well-header-text">
                         <div class="row">
                             <div class="col-md-10">
-                                <span title="IP: @item.IP | MAC: @item.MAC">
+                                <span id="overview-popup-@item.Id" title="IP: @item.IP | MAC: @item.MAC">
                                     <img src="@item.Type.ImagePath" width="25" height="25" /><b> @item.Name</b>
                                 </span>
                             </div>
@@ -32,7 +32,7 @@
                                         @*<span class="caret"></span>*@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li class="power-menu-info"><a href="#" onclick="showDetailsModal(@item.Id, '@Url.Action("Details", "Computer")');" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span> Info</a></li>
+                                        <li class="power-menu-info"><a href="#" onclick="showDetailsModal(@item.Id, '@Url.Action("Details", "Computer")');" data-toggle="modal" data-target="#modalDetails"><span class="glyphicon glyphicon-info-sign"></span> Info</a></li>
                                         @*<li role="separator" class="divider"></li>*@
                                         <li class="power-menu-poweron"><a href="#" onclick="computerActionStartup(@item.Id);"><span class="glyphicon glyphicon-play"></span> Power On</a></li>
                                         <li class="power-menu-poweroff"><a href="#" onclick="computerActionShutdown(@item.Id);"><span class="glyphicon glyphicon-stop"></span> Power Off</a></li>
@@ -48,16 +48,6 @@
     </div>
 }
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div id="modal-body" class="modal-body">
+@Html.Partial("_PartialModalDetails")
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+<script>$(document).ready(srUpdateOveriew());</script>

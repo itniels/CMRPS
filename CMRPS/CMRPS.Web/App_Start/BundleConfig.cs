@@ -28,7 +28,8 @@ namespace CMRPS.Web
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/Bundles/Site").Include(
-                "~/Scripts/Site.js"));
+                "~/Scripts/Site.js",
+                "~/Scripts/jquery.signalR-*"));
         }
     }
 }

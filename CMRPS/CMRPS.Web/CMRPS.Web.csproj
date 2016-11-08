@@ -228,6 +228,7 @@
     </Compile>
     <Compile Include="Hubs\Connected.cs" />
     <Compile Include="Hubs\HomeHub.cs" />
+    <Compile Include="Hubs\LiveUpdatesHub.cs" />
     <Compile Include="Migrations\201611011748013_m1.cs" />
     <Compile Include="Migrations\201611011748013_m1.Designer.cs">
       <DependentUpon>201611011748013_m1.cs</DependentUpon>
