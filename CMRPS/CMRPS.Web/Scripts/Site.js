@@ -259,10 +259,10 @@ function scheduleOnLoad() {
         contentType: "application/json; charset=utf-8",
         datatype: "json",
         data: { type: selectedType },
-        success: function(result) {
+        success: function (result) {
             $("#ScheduleSelectContent").html(result);
         },
-        error: function() {
+        error: function () {
             $("#ScheduleSelectContent").html("Oops.. Something went wrong! :-(");
         }
     });
@@ -346,7 +346,7 @@ function scheduleTypeSelectChanged() {
     // Clear list
     schedulerClearLists();
     var id = "";
-    
+
     // Get Selected
     $(".radiobutton-type-select").each(function (i, obj) {
         if (obj.checked) {
@@ -376,7 +376,7 @@ function scheduleOnEdit() {
         if (selectedType == "Individual") {
             var list = $("#hidden-computer-list").val();
             // Check list
-            $(JSON.parse(list)).each(function(i, id) {
+            $(JSON.parse(list)).each(function (i, id) {
                 $("#c-" + id).prop('checked', true);
             });
             scheduleSelectionChanged();
@@ -403,6 +403,56 @@ function scheduleOnEdit() {
     } else {
         //schedulerClearLists();
     }
+}
 
+// =====================================================
+// List View
+// =====================================================
+function filterListView() {
+    $("#filtering-wait").show();
+    // get filter values
+    var name = $("#NameFilter").val().toUpperCase();
+    var hostname = $("#HostnameFilter").val().toUpperCase();
+    var status = $("#StatusFilter").val().toUpperCase();
+    var type = $("#TypeFilter").val().toUpperCase();
+    var color = $("#ColorFilter").val().toUpperCase();
+    var location = $("#LocationFilter").val().toUpperCase();
 
+    // Ajax
+    var action = '/View/GetFilterList';
+    $.ajax({
+        type: 'GET',
+        url: action,
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        data: {
+            name: name,
+            hostname: hostname,
+            status: status,
+            type: type,
+            color: color,
+            location: location,
+        },
+        success: function (result) {
+            $("#listview-list").html(result);
+            $("#filtering-wait").hide();
+        },
+        error: function () {
+            $("#listview-list").html('Oops.. Something went wrong! :-(');
+            $("#filtering-wait").hide();
+        }
+    });
+}
+
+function listViewClearFilters() {
+    // Clear Filters
+    $("#NameFilter").val("");
+    $("#HostnameFilter").val("");
+    $("#StatusFilter").val("");
+    $("#TypeFilter").val("");
+    $("#ColorFilter").val("");
+    $("#LocationFilter").val("");
+
+    // Load without filters
+    filterListView();
 }

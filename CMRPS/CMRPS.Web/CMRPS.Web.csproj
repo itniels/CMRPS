@@ -212,7 +212,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
-    <Compile Include="Controllers\StatusController.cs" />
+    <Compile Include="Controllers\ViewController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Enums\Action.cs" />
@@ -387,8 +387,8 @@
     <Content Include="Views\ComputerType\_PartialDetails.cshtml" />
     <Content Include="Views\Color\_PartialDetails.cshtml" />
     <Content Include="Views\Computer\CreateMultiple.cshtml" />
-    <Content Include="Views\Status\ListView.cshtml" />
-    <Content Include="Views\Status\Overview.cshtml" />
+    <Content Include="Views\View\ListView.cshtml" />
+    <Content Include="Views\View\Overview.cshtml" />
     <Content Include="Views\Tools\NetworkTools.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
@@ -400,7 +400,7 @@
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\Logs\EventDetails.cshtml" />
     <Content Include="Views\Computer\Import.cshtml" />
-    <Content Include="Views\Status\_ListViewComputers.cshtml" />
+    <Content Include="Views\View\_ListViewComputers.cshtml" />
     <Content Include="Views\Scheduler\Index.cshtml" />
     <Content Include="Views\Scheduler\Create.cshtml" />
     <Content Include="Views\Scheduler\_SelectIndividual.cshtml" />

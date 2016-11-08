@@ -1,0 +1,61 @@
+﻿@model List<CMRPS.Web.Models.ComputerModel>
+
+@{
+    ViewBag.Title = "List View";
+}
+
+<h2>Listview</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="well">
+            <div class="row">
+                <div>Name contains:</div>
+                @Html.TextBox("NameFilter", null, new {@class = "form-control", placeholder = "All", onchange = "filterListView();" })
+            </div>
+            <div class="row">
+                <div>Hostname contains:</div>
+                @Html.TextBox("HostnameFilter", null, new {@class = "form-control", placeholder = "All", onchange = "filterListView();" })
+            </div>
+            <div class="row">
+                <div>Status:</div>
+                @Html.DropDownList("StatusFilter", new SelectList(ViewBag.Status), "All", new {@class = "form-control", onchange = "filterListView();" })
+            </div>
+            <div class="row">
+                <div>Type:</div>
+                @Html.DropDownList("TypeFilter", new SelectList(ViewBag.Types), "All", new {@class = "form-control", onchange = "filterListView();" })
+            </div>
+            <div class="row">
+                <div>Color:</div>
+                @Html.DropDownList("ColorFilter", new SelectList(ViewBag.Colors), "All", new {@class = "form-control", onchange = "filterListView();" })
+            </div>
+            <div class="row">
+                <div>Location:</div>
+                @Html.DropDownList("LocationFilter", new SelectList(ViewBag.Locations), "All", new {@class = "form-control", onchange = "filterListView();" })
+            </div>
+            <br/>
+            <div class="row">
+                <button class="btn btn-xs btn-warning" onclick="listViewClearFilters();">Clear filters</button>
+                <span class="pull-right">
+                    <button class="btn btn-xs btn-success" onclick="filterListView();">Filter</button>
+                </span>
+            </div>
+            <br/>
+            <div class="row">
+                <span id="filtering-wait" class="text-danger" style="display: none;">
+                    <span>Please wait filtering...</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-9">
+        <div id="listview-list" class="well well-sm">
+            @Html.Partial("_ListViewComputers", Model)
+        </div>
+    </div>
+
+
+</div>
