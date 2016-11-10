@@ -432,6 +432,7 @@ namespace CMRPS.Web.Controllers
                     ev.ActionStatus = ActionStatus.OK;
                     LogsController.AddEvent(ev, User.Identity.GetUserId());
 
+                    model.LastRun = DateTime.Now.AddYears(-100);
                     db.Entry(model).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");

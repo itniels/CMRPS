@@ -16,6 +16,21 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            return View(GetHomeViewModel());
+        }
+
+        [HttpGet]
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult UpdateData()
+        {
+            return PartialView("_HomeContent", GetHomeViewModel());
+        }
+
+
+
+        private HomeIndexViewModels GetHomeViewModel()
+        {
             // Get data
             HomeIndexViewModels model = new HomeIndexViewModels();
             model.DevicesTotal = db.Computers.ToList().Count;
@@ -28,8 +43,7 @@ namespace CMRPS.Web.Controllers
             model.Events = db.Events.Include(c => c.User).OrderByDescending(x => x.Timestamp).Take(10).ToList();
             model.Logins = db.Logins.Include(c => c.User).OrderByDescending(x => x.Timestamp).Take(10).ToList();
 
-            // Make View Model
-            return View(model);
+            return model;
         }
     }
 }

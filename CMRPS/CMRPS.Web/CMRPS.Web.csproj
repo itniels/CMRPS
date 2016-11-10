@@ -414,6 +414,7 @@
     <Content Include="Views\Shared\_PartialModalDelete.cshtml" />
     <Content Include="Views\Shared\_PartialModalDetails.cshtml" />
     <Content Include="Views\Computer\Delete.cshtml" />
+    <Content Include="Views\Home\_HomeContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

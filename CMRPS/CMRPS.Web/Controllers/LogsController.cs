@@ -4,7 +4,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CMRPS.Web.Hubs;
 using CMRPS.Web.Models;
+using Microsoft.AspNet.SignalR;
 
 namespace CMRPS.Web.Controllers
 {
@@ -26,17 +28,21 @@ namespace CMRPS.Web.Controllers
 
             db.Events.Add(model);
             db.SaveChanges();
+
+            // Call SignalR
+            var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
+            context.Clients.All.UpdateHomePage();
         }
 
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public ActionResult Events()
         {
             List<SysEvent> model = db.Events.Include(c => c.User).OrderByDescending(x => x.Timestamp).ToList();
             return View(model);
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult EventDetails(int id)
         {
@@ -44,7 +50,7 @@ namespace CMRPS.Web.Controllers
             return PartialView("EventDetails", model);
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public ActionResult Logins()
         {
             List<SysLogin> model = db.Logins.Include(c => c.User).OrderByDescending(x => x.Timestamp).ToList();

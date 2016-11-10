@@ -1,0 +1,79 @@
+﻿@model CMRPS.Web.ModelsView.HomeIndexViewModels
+@using CMRPS.Web.Enums
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Devices</h2>
+        <p>Total Devices: @Model.DevicesTotal</p>
+        <p style="color: green;">Online Devices: @Model.DevicesOnline | @Model.DevicesOnlinePercentage.ToString("0.00")%</p>
+        <p style="color: red;">Offline Devices: @Model.DevicesOffline | @Model.DevicesOfflinePercentage.ToString("0.00")%</p>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Last 10 Events</h2>
+        @if (Model.Events.Count == 0)
+        {
+            <span class="no-items-found">No event to show</span>
+        }
+        else
+        {
+            foreach (var item in @Model.Events)
+            {
+                var label = "label-default";
+
+                switch (item.ActionStatus)
+                {
+                    case ActionStatus.None:
+                        label = "label-info";
+                        break;
+                    case ActionStatus.OK:
+                        label = "label-success";
+                        break;
+                    case ActionStatus.Warning:
+                        label = "label-warning";
+                        break;
+                    case ActionStatus.Error:
+                        label = "label-danger";
+                        break;
+                    default:
+                        label = "label-default";
+                        break;
+                }
+
+                <span class="label @label">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span>
+                @item.User.UserName.ToUpper()
+                <br />
+                <span class="text-primary">@item.Description</span>
+                <br />
+            }
+        }
+
+    </div>
+
+    <div class="col-md-4">
+        <h2>Last 10 Logins</h2>
+        @if (Model.Logins.Count == 0)
+        {
+            <span class="no-items-found">No logins to show</span>
+        }
+        else
+        {
+            foreach (var item in Model.Logins)
+            {
+                if (item.Success)
+                {
+                    <p>
+                        <span class="label label-success">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <span class="text-primary">@(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())</span>
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        <span class="label label-danger">@item.Timestamp.ToShortDateString() @item.Timestamp.ToShortTimeString()</span> <span class="text-primary">@(item.User?.UserName.ToUpper() ?? item.Username.ToUpper())</span>
+</p>
+                }
+            }
+        }
+
+    </div>
+</div>

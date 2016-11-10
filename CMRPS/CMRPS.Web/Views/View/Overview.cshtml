@@ -16,12 +16,14 @@
     <div class="row">
         @foreach (var item in Model.Skip(i).Take(4))
         {
+            var title = "IP: " + item.IP + Environment.NewLine + "MAC: " + item.MAC + Environment.NewLine + "Last Seen: " + item.LastSeen.ToShortDateString() + " " + item.LastSeen.ToShortTimeString();
+
             <div id="item-id-@item.Id" class="col-md-3">
                 <div id="overview-well-@item.Id" class="well well-sm @(item.Status ? "well-online" : "well-offline")">
                     <div class="well-header-text">
                         <div class="row">
                             <div class="col-md-10">
-                                <span id="overview-popup-@item.Id" title="IP: @item.IP | MAC: @item.MAC">
+                                <span id="overview-popup-@item.Id" title="@title">
                                     <img src="@item.Type.ImagePath" width="25" height="25" /><b> @item.Name</b>
                                 </span>
                             </div>

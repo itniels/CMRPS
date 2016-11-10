@@ -92,9 +92,10 @@ namespace CMRPS.Web.Controllers
 
                 // Call SignalR
                 var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
-                context.Clients.All.UpdateListView(id, computer.Status, computer.IP, computer.MAC);
-                context.Clients.All.UpdateOverview(id, computer.Status, computer.IP, computer.MAC);
-                context.Clients.All.UpdateComputers(id, computer.Status, computer.IP, computer.MAC);
+                string lastSeen = computer.LastSeen.ToShortDateString() + " " + computer.LastSeen.ToShortTimeString();
+                context.Clients.All.UpdateListView(id, computer.Status, computer.IP, computer.MAC, lastSeen);
+                context.Clients.All.UpdateOverview(id, computer.Status, computer.IP, computer.MAC, lastSeen);
+                context.Clients.All.UpdateComputers(id, computer.Status, computer.IP, computer.MAC, lastSeen);
             }
         }
 
@@ -138,16 +139,29 @@ namespace CMRPS.Web.Controllers
                         SchedulerPowerOff(cid);
                     }
                 }
-                catch (Exception ex)
-                {
-                    var brk = 0;
-                }
+                catch (Exception){}
                 
             }
 
+            // Update database
             schedule.LastRun = DateTime.Now;
             db.Schedules.AddOrUpdate(schedule);
             db.SaveChanges();
+
+            // Call SignalR
+            var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
+            context.Clients.All.UpdateSchedules(id, schedule.LastRun);
+            TimeSpan ts = DateTime.Now - schedule.LastRun;
+            if (ts.TotalDays < 18250)
+            {
+                string lastRun = schedule.LastRun.ToShortDateString() + " " + schedule.LastRun.ToShortTimeString();
+                context.Clients.All.UpdateSchedules(id, lastRun);
+            }
+            else
+            {
+                string lastRun = "Never";
+                context.Clients.All.UpdateSchedules(id, lastRun);
+            }
         }
 
         // ======================================================================================
@@ -170,7 +184,7 @@ namespace CMRPS.Web.Controllers
                     return WakeupPacket(model.MAC);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -498,7 +512,7 @@ namespace CMRPS.Web.Controllers
                 PingReply reply = pinger.Send(computer.Hostname);
                 return reply.Status == IPStatus.Success;
             }
-            catch (PingException ex)
+            catch (PingException)
             {
                 return false;
             }

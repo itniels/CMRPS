@@ -15,8 +15,8 @@
     <div class="col-md-11">
         <div class="pull-right">
             @*<button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Import", "Scheduler")'">Import</button>
-            <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Export", "Scheduler")'">Export</button>
-            <button class="btn btn-xs btn-info" onclick="location.href = '@Url.Action("EmptyExport", "Scheduler")'">Excel template</button>*@
+                <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Export", "Scheduler")'">Export</button>
+                <button class="btn btn-xs btn-info" onclick="location.href = '@Url.Action("EmptyExport", "Scheduler")'">Excel template</button>*@
         </div>
     </div>
 </div>
@@ -63,13 +63,13 @@
                 </span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Action)
+                <span>@Html.DisplayFor(modelItem => item.Action)</span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type)
+                <span>@Html.DisplayFor(modelItem => item.Type)</span>
             </td>
             <td>
-                @item.Hour.ToString("00"):@item.Minute.ToString("00")
+                <span>@item.Hour.ToString("00"):@item.Minute.ToString("00")</span>
             </td>
             <td>
                 <span class="label label-xs @(item.DayMonday ? "label-info" : "label-default")">M</span>
@@ -81,15 +81,17 @@
                 <span class="label label-xs @(item.DaySunday ? "label-info":"label-default")">S</span>
             </td>
             <td>
-                @if (lastRun.TotalDays < 18250)
+                <span id="schedule-lastRun-@item.Id">
+                    @if (lastRun.TotalDays < 18250)
                 {
-                    <span>@item.LastRun.ToShortDateString() </span>
-                    <span>@item.LastRun.ToShortTimeString()</span>
-                }
-                else
-                {
-                    <span>Never</span>
-                }
+                        <span>@item.LastRun.ToShortDateString() </span>
+                        <span>@item.LastRun.ToShortTimeString()</span>
+                    }
+                    else
+                    {
+                        <span>Never</span>
+                    }
+                </span>
             </td>
             <td>
                 <div class="pull-right">
@@ -112,3 +114,5 @@
 {
     <div class="no-items-found">No Schedules created yet!</div>
 }
+
+<script>$(document).ready(srUpdateSchedules());</script>

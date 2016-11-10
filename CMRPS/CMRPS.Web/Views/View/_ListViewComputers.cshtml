@@ -13,7 +13,7 @@
 
     @foreach (ComputerModel item in Model)
     {
-
+        var title = "IP: " + item.IP + Environment.NewLine + "MAC: " + item.MAC + Environment.NewLine + "Last Seen: " + item.LastSeen.ToShortDateString() + " " + item.LastSeen.ToShortTimeString();
 
         <tr id="tr-id-@item.Id" class="computer-row @(item.Status ? "tablerow-online" : "tablerow-offline")">
             <td>
@@ -26,7 +26,7 @@
                 <span id="hidden-location" class="hidden">@item.Location.Location</span>
             </td>
             <td>
-                <span id="listview-popup-@item.Id" title="IP: @item.IP | MAC: @item.MAC">
+                <span id="listview-popup-@item.Id" title="@title">
                     <img src="@item.Type.ImagePath" width="20" /> @item.Name
                 </span>
             </td>

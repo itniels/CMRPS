@@ -354,7 +354,7 @@ namespace CMRPS.Web.Controllers
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         return View(model);
                     }
@@ -555,10 +555,7 @@ namespace CMRPS.Web.Controllers
                 Response.AddHeader("content-disposition", "attachment;  filename=Computers_" + date.ToShortDateString() + ".xlsx");
                 Response.BinaryWrite(package.GetAsByteArray());
             }
-            catch (Exception ex)
-            {
-                var brk = 0;
-            }
+            catch (Exception){}
         }
     }
 }

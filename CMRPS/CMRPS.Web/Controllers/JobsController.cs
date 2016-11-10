@@ -82,6 +82,10 @@ namespace CMRPS.Web.Controllers
                         completed = false;
                 }
             }
+
+            // Call SignalR
+            var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
+            context.Clients.All.UpdateHomePage();
         }
 
 
@@ -108,18 +112,24 @@ namespace CMRPS.Web.Controllers
         /// </summary>
         public static void CleanLogs()
         {
-            SettingsModel settings = db.Settings.FirstOrDefault();
+            ApplicationDbContext dbc = new ApplicationDbContext();
+            SettingsModel settings = dbc.Settings.FirstOrDefault();
+
             if (settings.CleanLogs)
             {
                 DateTime target = DateTime.Now.AddDays(-settings.KeepLogsFor);
                 // Logins
-                List<SysLogin> logins = db.Logins.Where(x => x.Timestamp.CompareTo(target) < 0).ToList();
-                db.Logins.RemoveRange(logins);
+                List<SysLogin> logins = dbc.Logins.Where(x => x.Timestamp.CompareTo(target) < 0).ToList();
+                dbc.Logins.RemoveRange(logins);
                 // Events
-                List<SysEvent> events = db.Events.Where(x => x.Timestamp.CompareTo(target) < 0).ToList();
-                db.Events.RemoveRange(events);
+                List<SysEvent> events = dbc.Events.Where(x => x.Timestamp.CompareTo(target) < 0).ToList();
+                dbc.Events.RemoveRange(events);
                 // Commit to DB
-                db.SaveChanges();
+                dbc.SaveChanges();
+
+                // Call SignalR
+                var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
+                context.Clients.All.UpdateHomePage();
             }
         }
 

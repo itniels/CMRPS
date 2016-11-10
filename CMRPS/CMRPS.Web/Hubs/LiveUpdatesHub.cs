@@ -9,19 +9,24 @@ namespace CMRPS.Web.Hubs
 {
     public class LiveUpdatesHub : Hub
     {
-        public void UpdateOverview(string id, string status, string ip, string mac)
+        public void UpdateOverview(string id, string status, string ip, string mac, string lastSeen)
         {
-            Clients.All.UpdateOverview(id, status, ip, mac);
+            Clients.All.UpdateOverview(id, status, ip, mac, lastSeen);
         }
 
-        public void UpdateListView(string id, string status, string ip, string mac)
+        public void UpdateListView(string id, string status, string ip, string mac, string lastSeen)
         {
-            Clients.All.UpdateListView(id, status, ip, mac);
+            Clients.All.UpdateListView(id, status, ip, mac, lastSeen);
         }
 
-        public void UpdateComputers(string id, string status, string ip, string mac)
+        public void UpdateComputers(string id, string status, string ip, string mac, string lastSeen)
         {
-            Clients.All.UpdateComputers(id, status, ip, mac);
+            Clients.All.UpdateComputers(id, status, ip, mac, lastSeen);
+        }
+
+        public void UpdateSchedules(string id, string lastRun)
+        {
+            Clients.All.UpdateSchedules(id, lastRun);
         }
 
         public void UpdateHomePage()

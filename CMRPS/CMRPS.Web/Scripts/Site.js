@@ -266,7 +266,7 @@ function scheduleOnLoad() {
             $("#ScheduleSelectContent").html("Oops.. Something went wrong! :-(");
         }
     });
-};
+}
 
 function scheduleSelectionChanged() {
     console.log("The selection changed!");
@@ -431,7 +431,7 @@ function filterListView() {
             status: status,
             type: type,
             color: color,
-            location: location,
+            location: location
         },
         success: function (result) {
             $("#listview-list").html(result);
@@ -461,12 +461,37 @@ function listViewClearFilters() {
 // SignalR
 // =====================================================
 
+// Home
+function srUpdateHome() {
+    // Ref the hub
+    var myhub = $.connection.liveUpdatesHub;
+    // Event handler(s)
+    myhub.client.updateHomePage = function () {
+        var action = "/Home/UpdateData/";
+        $.ajax({
+            type: 'GET',
+            url: action,
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (result) {
+                $("#homeContent").html(result);
+            },
+            error: function () {
+                $("#homeContent").html("Oops.. Something went wrong! :-(");
+            }
+        });
+    };
+    $.connection.hub.start();
+
+    
+}
+
 // View/Overview
 function srUpdateOveriew() {
     // Ref the hub
     var myhub = $.connection.liveUpdatesHub;
     // Event handler(s)
-    myhub.client.updateOverview = function (id, status, ip, mac) {
+    myhub.client.updateOverview = function(id, status, ip, mac, lastSeen) {
         if (status) {
             $("#overview-well-" + id).removeClass("well-offline");
             $("#overview-well-" + id).addClass("well-online");
@@ -475,18 +500,18 @@ function srUpdateOveriew() {
             $("#overview-well-" + id).addClass("well-offline");
         }
         // IP and MAC
-        $("#overview-popup-" + id).prop("title", "IP: " + ip + " | MAC: " + mac);
+        $("#overview-popup-" + id).prop("title", "IP: " + ip + "\nMAC: " + mac + "\nLast Seen: " + lastSeen);
 
-    }
+    };
     $.connection.hub.start();
-};
+}
 
 // View/ListView
 function srUpdateListView() {
     // Ref the hub
     var myhub = $.connection.liveUpdatesHub;
     // Event handler(s)
-    myhub.client.updateListView = function (id, status, ip, mac) {
+    myhub.client.updateListView = function (id, status, ip, mac, lastSeen) {
         if (status) {
             $("#tr-id-" + id).removeClass("tablerow-offline");
             $("#tr-id-" + id).addClass("tablerow-online");
@@ -495,18 +520,18 @@ function srUpdateListView() {
             $("#tr-id-" + id).addClass("tablerow-offline");
         }
         // IP and MAC
-        $("#listview-popup-" + id).prop("title", "IP: " + ip + " | MAC: " + mac);
+        $("#listview-popup-" + id).prop("title", "IP: " + ip + "\nMAC: " + mac + "\nLast Seen: " + lastSeen);
         //filterListView(); // Disruptive!
-    }
+    };
     $.connection.hub.start();
-};
+}
 
 // Manage/Computers
 function srUpdateComputers() {
     // Ref the hub
     var myhub = $.connection.liveUpdatesHub;
     // Event handler(s)
-    myhub.client.UpdateComputers = function (id, status, ip, mac) {
+    myhub.client.UpdateComputers = function (id, status, ip, mac, lastSeen) {
         if (status) {
             $("#computer-id-" + id).removeClass("label-danger");
             $("#computer-id-" + id).addClass("label-success");
@@ -519,6 +544,19 @@ function srUpdateComputers() {
         // IP and MAC
         $("#computer-ip-" + id).html(ip);
         $("#computer-mac-" + id).html(mac);
-    }
+    };
     $.connection.hub.start();
-};
+}
+
+// Schedules
+function srUpdateSchedules() {
+    // Ref the hub
+    var myhub = $.connection.liveUpdatesHub;
+    // Event handler(s)
+    myhub.client.UpdateSchedules = function (id, lastRun) {
+        // LastRun
+        $("#schedule-lastRun-" + id).html(lastRun);
+
+    };
+    $.connection.hub.start();
+}

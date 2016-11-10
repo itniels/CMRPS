@@ -240,7 +240,7 @@ namespace CMRPS.Web.Controllers
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         return View(model);
                     }
