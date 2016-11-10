@@ -206,7 +206,6 @@
     <Compile Include="Controllers\ComputerController.cs" />
     <Compile Include="Controllers\ComputerTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -215,6 +214,17 @@
     <Compile Include="Controllers\ViewController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Core\Actions\DllImports.cs" />
+    <Compile Include="Core\Actions\FlushDNS.cs" />
+    <Compile Include="Core\Actions\GetIP.cs" />
+    <Compile Include="Core\Actions\GetMAC.cs" />
+    <Compile Include="Core\Actions\Ping.cs" />
+    <Compile Include="Core\Actions\PowerOFF.cs" />
+    <Compile Include="Core\Actions\PowerON.cs" />
+    <Compile Include="Core\Actions\PowerRecycle.cs" />
+    <Compile Include="Core\Jobs\CleanLogs.cs" />
+    <Compile Include="Core\Jobs\Enqueue.cs" />
+    <Compile Include="Core\Jobs\Scheduler.cs" />
     <Compile Include="Enums\Action.cs" />
     <Compile Include="Enums\ActionStatus.cs" />
     <Compile Include="Enums\RebootMethod.cs" />

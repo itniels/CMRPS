@@ -418,30 +418,96 @@ function filterListView() {
     var color = $("#ColorFilter").val().toUpperCase();
     var location = $("#LocationFilter").val().toUpperCase();
 
-    // Ajax
-    var action = '/View/GetFilterList';
-    $.ajax({
-        type: 'GET',
-        url: action,
-        contentType: "application/json; charset=utf-8",
-        datatype: "json",
-        data: {
-            name: name,
-            hostname: hostname,
-            status: status,
-            type: type,
-            color: color,
-            location: location
-        },
-        success: function (result) {
-            $("#listview-list").html(result);
-            $("#filtering-wait").hide();
-        },
-        error: function () {
-            $("#listview-list").html('Oops.. Something went wrong! :-(');
-            $("#filtering-wait").hide();
+    var cTotal = 0;
+    var cShown = 0;
+
+    // Filter the list
+    $(".computer-row").each(function() {
+        var isMatch = true;
+        // get vars
+        var itemId = $(this).find("#hidden-id").html().toUpperCase();
+        var itemName = $(this).find("#hidden-name").html().toUpperCase();
+        var itemHostname = $(this).find("#hidden-hostname").html().toUpperCase();
+        var itemStatus = $(this).find("#hidden-status").html().toUpperCase();
+        var itemType = $(this).find("#hidden-type").html().toUpperCase();
+        var itemColor = $(this).find("#hidden-color").html().toUpperCase();
+        var itemLocation = $(this).find("#hidden-location").html().toUpperCase();
+
+        // Name Contains
+        if (name !== "") {
+            if (itemName.indexOf(name) === -1)
+                isMatch = false;
         }
+
+        // Hostname Contains
+        if (hostname !== "") {
+            if (itemHostname.indexOf(hostname) === -1)
+                isMatch = false;
+        }
+
+        // Status
+        if (status !== "") {
+            if (itemStatus !== status)
+                isMatch = false;
+        }
+
+        // Type
+        if (type !== "") {
+            if (itemType !== type)
+                isMatch = false;
+        }
+
+        // Color
+        if (color !== "") {
+            if (itemColor !== color)
+                isMatch = false;
+        }
+
+        // Location
+        if (location !== "") {
+            if (itemLocation !== location)
+                isMatch = false;
+        }
+
+        cTotal++;
+        // Show or Hide
+        if (isMatch) {
+            $("#tr-id-" + itemId).show();
+            cShown++;
+        } else {
+            $("#tr-id-" + itemId).hide();
+        }
+
+        // Set values
+        $("#filtering-count").html(cShown + " of " + cTotal);
     });
+
+    //// Ajax
+    //var action = '/View/GetFilterList';
+    //$.ajax({
+    //    type: 'GET',
+    //    url: action,
+    //    contentType: "application/json; charset=utf-8",
+    //    datatype: "json",
+    //    data: {
+    //        name: name,
+    //        hostname: hostname,
+    //        status: status,
+    //        type: type,
+    //        color: color,
+    //        location: location
+    //    },
+    //    success: function (result) {
+    //        $("#listview-list").html(result);
+    //        $("#filtering-wait").hide();
+    //    },
+    //    error: function () {
+    //        $("#listview-list").html('Oops.. Something went wrong! :-(');
+    //        $("#filtering-wait").hide();
+    //    }
+    //});
+
+    $("#filtering-wait").hide();
 }
 
 function listViewClearFilters() {
@@ -515,13 +581,16 @@ function srUpdateListView() {
         if (status) {
             $("#tr-id-" + id).removeClass("tablerow-offline");
             $("#tr-id-" + id).addClass("tablerow-online");
+            $("#tr-id-" + id).find("#hidden-status").html("Online");
         } else {
             $("#tr-id-" + id).removeClass("tablerow-online");
             $("#tr-id-" + id).addClass("tablerow-offline");
+            $("#tr-id-" + id).find("#hidden-status").html("Offline");
         }
         // IP and MAC
         $("#listview-popup-" + id).prop("title", "IP: " + ip + "\nMAC: " + mac + "\nLast Seen: " + lastSeen);
-        //filterListView(); // Disruptive!
+        
+        filterListView(); // Possibly Disruptive!
     };
     $.connection.hub.start();
 }

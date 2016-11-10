@@ -41,6 +41,12 @@
                     <button class="btn btn-xs btn-success" onclick="filterListView();">Filter</button>
                 </span>
             </div>
+            <br />
+            <div class="row">
+                <span  class="text-primary">Showing: 
+                    <span id="filtering-count">@Model.Count of @Model.Count</span>
+                </span>
+            </div>
             <br/>
             <div class="row">
                 <span id="filtering-wait" class="text-danger" style="display: none;">
