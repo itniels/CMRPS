@@ -78,5 +78,9 @@ namespace CMRPS.Web.Models
 
         [Display(Name = "Operating System")]
         public string OS { get; set; }
+
+        [Display(Name = "Price")]
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿@using CMRPS.Web.Models
+﻿@using System.Web.UI.WebControls
+@using CMRPS.Web.Models
 @model CMRPS.Web.ModelsView.CreateComputerViewModel
 @{
     ViewBag.Title = "Create";
@@ -28,64 +29,25 @@
                     @Html.LabelFor(x => x.Computer.Hostname)
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.Hostname)
+                    @Html.TextBoxFor(x => x.Computer.Hostname, new { id = "input-name", onkeyup= "FriendlyNamePlaceholder();" })
                 </div>
             </div>
-            <br/>
+            <br />
             <div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(x => x.Computer.Name)
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.Name)
+                    @Html.TextBoxFor(x => x.Computer.Name, new {id= "friendlyname-input", onkeyup = "FriendlyNamePlaceholder();", placeholder="" })
                 </div>
             </div>
             <br />
             <div class="row">
                 <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.IP)
+                    @Html.LabelFor(x => x.Computer.Price)
                 </div>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.IP, new { @disabled = "disabled" })
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Computer.MAC)
-                </div>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(x => x.Computer.MAC, new {@disabled = "disabled"})
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <h4>Physical information (Required)</h4>
-            <hr />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.SelectedType)
-                </div>
-                <div class="col-md-6">
-                    @Html.DropDownListFor(x => x.SelectedType, new SelectList(ViewBag.Types), "Select Type")
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.SelectedColor)
-                </div>
-                <div class="col-md-6">
-                    @Html.DropDownListFor(x => x.SelectedColor, new SelectList(ViewBag.Colors), "Select Color")
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.SelectedLocation)
-                </div>
-                <div class="col-md-6">
-                    @Html.DropDownListFor(x => x.SelectedLocation, new SelectList(ViewBag.Locations), "Select Location")
+                    @Html.TextBoxFor(x => x.Computer.Price, null, new { PlaceHolder = "1000.00" })
                 </div>
             </div>
             <br />
@@ -95,6 +57,38 @@
                 </div>
                 <div class="col-md-6">
                     @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
+        <div class="col-md-6">
+            <h4>Physical information (Required)</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.SelectedType)
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(x => x.SelectedType, new SelectList(ViewBag.Types), "Select Type", new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.SelectedColor)
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(x => x.SelectedColor, new SelectList(ViewBag.Colors), "Select Color", new { id= "ColorFilter", @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.SelectedLocation)
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(x => x.SelectedLocation, new SelectList(ViewBag.Locations), "Select Location", new { @class = "form-control" })
                 </div>
             </div>
             <br />

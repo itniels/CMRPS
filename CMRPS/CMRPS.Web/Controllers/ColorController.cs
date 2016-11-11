@@ -11,6 +11,7 @@ using CMRPS.Web.Enums;
 using CMRPS.Web.Models;
 using CMRPS.Web.ModelsView;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using Action = System.Action;
 
@@ -183,6 +184,22 @@ namespace CMRPS.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public string GetColors(string name)
+        {
+            try
+            {
+                List<string> colors = new List<string>();
+                ColorModel color = db.Colors.SingleOrDefault(x => x.Name == name);
+                colors.Add(color.ColorText);
+                colors.Add(color.ColorLabel);
+                return JsonConvert.SerializeObject(colors);
+            }
+            catch (Exception){}
+            return null;
+        }
         // =================================================================================
         // IMPORT
         // =================================================================================

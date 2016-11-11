@@ -257,6 +257,11 @@ namespace CMRPS.Web.Controllers
                 computer.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == model.SelectedType);
                 computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
                 computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
+
+                // Check friendly name
+                if (model.Computer.Name == null)
+                    computer.Name = model.Computer.Hostname.ToUpper();
+
                 db.Computers.AddOrUpdate(computer);
                 db.SaveChanges();
 

@@ -25,11 +25,11 @@
             <hr />
             <div class="row">
                 <div class="col-md-4">
-                    <span class="form-text">Computernames</span><br/>
+                    <span class="form-text">Computernames</span><br />
                     <span class="form-text-light">(name1,name2,name3...)</span>
                 </div>
                 <div class="col-md-6">
-                    @Html.TextAreaFor(x => x.Computer.Hostname, new {@class = "textarea-computer-names"})
+                    @Html.TextAreaFor(x => x.Computer.Hostname, new { @class = "textarea-computer-names" })
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                     @Html.LabelFor(x => x.SelectedType)
                 </div>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(x => x.SelectedType, new SelectList(ViewBag.Types), "Select Type")
+                    @Html.DropDownListFor(x => x.SelectedType, new SelectList(ViewBag.Types), "Select Type", new { @class = "form-control" })
                 </div>
             </div>
             <br />
@@ -50,7 +50,7 @@
                     @Html.LabelFor(x => x.SelectedColor)
                 </div>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(x => x.SelectedColor, new SelectList(ViewBag.Colors), "Select Color")
+                    @Html.DropDownListFor(x => x.SelectedColor, new SelectList(ViewBag.Colors), "Select Color", new { id = "ColorFilter", @class = "form-control" })
                 </div>
             </div>
             <br />
@@ -59,7 +59,16 @@
                     @Html.LabelFor(x => x.SelectedLocation)
                 </div>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(x => x.SelectedLocation, new SelectList(ViewBag.Locations), "Select Location")
+                    @Html.DropDownListFor(x => x.SelectedLocation, new SelectList(ViewBag.Locations), "Select Location", new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(x => x.Computer.Price)
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(x => x.Computer.Price, null, new { PlaceHolder = "1000.00" })
                 </div>
             </div>
             <br />
@@ -71,7 +80,6 @@
                     @Html.TextBoxFor(x => x.Computer.PurchaseDate, new { @class = "datefield", type = "date" })
                 </div>
             </div>
-            <br />
         </div>
     </div>
     <br />

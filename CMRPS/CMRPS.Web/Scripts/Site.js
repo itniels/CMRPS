@@ -102,6 +102,15 @@ function deleteUser(action) {
 }
 
 // =====================================================
+// Computer
+// =====================================================
+
+function FriendlyNamePlaceholder() {
+    var name = $("#input-name").val();
+    $("#friendlyname-input").attr('placeholder', name);
+}
+
+// =====================================================
 // Color
 // =====================================================
 function colorLabelDetails(textColor, labelColor) {
@@ -124,6 +133,60 @@ function demoColors() {
     var labelColor = $('#color-label').val();
     $('#text-example').css('color', textColor);
     $('#text-example').css('background-color', labelColor);
+}
+
+
+$(document).ready(function dropdownListColors() {
+    var action = '/Color/GetColors';
+    $('#ColorFilter > option').each(function (i, obj) {
+        //if (this.text === "All")
+        //    $(this).css('color', 'green');
+
+        $.ajax({
+            type: 'GET',
+            url: action,
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            data: { name: this.text },
+            success: function (result) {
+                var colors = $.parseJSON(result);
+                console.log("text: " + colors[0] + " Label: " + colors[1]);
+
+                $(obj).css({
+                    "color": colors[0],
+                    "background-color": colors[1]
+                });
+            },
+            error: function () {
+                console.log("Whoops!");
+            }
+        });
+
+        //var colors = GetColorController(this.text);
+        //console.log("Colors: " + colors);
+        //if (colors !== "undefined") {
+        //    $(this).css('color', colors(0));
+        //    $(this).css('background-color', colors(1));
+        //}
+    });
+
+});
+
+function GetColorController(name) {
+    var action = '/Color/GetColors';
+    $.ajax({
+        type: 'GET',
+        url: action,
+        contentType: "application/json; charset=utf-8",
+        datatype: "json",
+        data: { name: name },
+        success: function (result) {
+            return result;
+        },
+        error: function () {
+            return null;
+        }
+    });
 }
 
 // =====================================================
@@ -422,7 +485,7 @@ function filterListView() {
     var cShown = 0;
 
     // Filter the list
-    $(".computer-row").each(function() {
+    $(".computer-row").each(function () {
         var isMatch = true;
         // get vars
         var itemId = $(this).find("#hidden-id").html().toUpperCase();
@@ -549,7 +612,7 @@ function srUpdateHome() {
     };
     $.connection.hub.start();
 
-    
+
 }
 
 // View/Overview
@@ -557,7 +620,7 @@ function srUpdateOveriew() {
     // Ref the hub
     var myhub = $.connection.liveUpdatesHub;
     // Event handler(s)
-    myhub.client.updateOverview = function(id, status, ip, mac, lastSeen) {
+    myhub.client.updateOverview = function (id, status, ip, mac, lastSeen) {
         if (status) {
             $("#overview-well-" + id).removeClass("well-offline");
             $("#overview-well-" + id).addClass("well-online");
@@ -589,7 +652,7 @@ function srUpdateListView() {
         }
         // IP and MAC
         $("#listview-popup-" + id).prop("title", "IP: " + ip + "\nMAC: " + mac + "\nLast Seen: " + lastSeen);
-        
+
         filterListView(); // Possibly Disruptive!
     };
     $.connection.hub.start();

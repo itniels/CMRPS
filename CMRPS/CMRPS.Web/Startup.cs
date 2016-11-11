@@ -42,13 +42,13 @@ namespace CMRPS.Web
             {
                 manager.AddOrUpdate("UpdateComputers", Job.FromExpression(() => Core.Jobs.Enqueue()), Cron.MinuteInterval(settings.PingInterval), new RecurringJobOptions {QueueName = "default"});
                 manager.AddOrUpdate("Scheduler", Job.FromExpression(() => Core.Jobs.Scheduler()), Cron.Minutely(), new RecurringJobOptions { QueueName = "critical" });
-                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => Core.Jobs.CleanLogs()), Cron.MinuteInterval(2), new RecurringJobOptions { QueueName = "critical" });
+                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => Core.Jobs.CleanLogs()), Cron.Hourly(), new RecurringJobOptions { QueueName = "critical" });
             }
             else
             {
                 manager.AddOrUpdate("UpdateComputers", Job.FromExpression(() => Core.Jobs.Enqueue()), Cron.Minutely(), new RecurringJobOptions { QueueName = "default" });
                 manager.AddOrUpdate("Scheduler", Job.FromExpression(() => Core.Jobs.Scheduler()), Cron.Minutely(), new RecurringJobOptions { QueueName = "critical" });
-                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => Core.Jobs.CleanLogs()), Cron.MinuteInterval(2), new RecurringJobOptions { QueueName = "critical" });
+                manager.AddOrUpdate("CleanLogs", Job.FromExpression(() => Core.Jobs.CleanLogs()), Cron.Hourly(), new RecurringJobOptions { QueueName = "critical" });
             }
             
         }
