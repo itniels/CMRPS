@@ -332,7 +332,16 @@ namespace CMRPS.Web.Controllers
                                 string typeName = sheet.Cells[i, 4].Value.ToString();
                                 string colorName = sheet.Cells[i, 5].Value.ToString();
                                 string locationName = sheet.Cells[i, 6].Value.ToString();
+
+                                // Convert
+                                double price = 0;
+                                try
+                                {
+                                    price = sheet.Cells[i, 20].Value != null ? Convert.ToDouble(sheet.Cells[i, 20].Value) : 0;
+                                }
+                                catch (Exception){}
                                 
+
                                 // Properties
                                 // We have to check for NULL on all the optional ones!
                                 item.Name = sheet.Cells[i, 2].Value.ToString();
@@ -353,6 +362,7 @@ namespace CMRPS.Web.Controllers
                                 item.EthernetCable = sheet.Cells[i, 17].Value != null ? sheet.Cells[i, 17].Value.ToString() : "";
                                 item.EthernetWifi = sheet.Cells[i, 18].Value != null ? sheet.Cells[i, 18].Value.ToString() : "";
                                 item.OS = sheet.Cells[i, 19].Value != null ? sheet.Cells[i, 19].Value.ToString() : "";
+                                item.Price = price;
 
                                 db.Computers.AddOrUpdate(item);
                                 db.SaveChanges();
@@ -412,6 +422,7 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 17].Value = "Ethernet Cable";
                 sheet.Cells[1, 18].Value = "Ethernet WiFi";
                 sheet.Cells[1, 19].Value = "OS";
+                sheet.Cells[1, 20].Value = "Price";
 
                 // Format cells
                 sheet.Cells[1, 1].Style.Font.Bold = true;
@@ -433,6 +444,7 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 17].Style.Font.Bold = true;
                 sheet.Cells[1, 18].Style.Font.Bold = true;
                 sheet.Cells[1, 19].Style.Font.Bold = true;
+                sheet.Cells[1, 20].Style.Font.Bold = true;
                 sheet.Column(2).Width = 15;
                 sheet.Column(3).Width = 15;
                 sheet.Column(7).Width = 22;
@@ -489,6 +501,7 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 17].Value = "Ethernet Cable";
                 sheet.Cells[1, 18].Value = "Ethernet WiFi";
                 sheet.Cells[1, 19].Value = "OS";
+                sheet.Cells[1, 20].Value = "OS";
 
                 // Format cells
                 sheet.Cells[1, 1].Style.Font.Bold = true;
@@ -510,6 +523,7 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 17].Style.Font.Bold = true;
                 sheet.Cells[1, 18].Style.Font.Bold = true;
                 sheet.Cells[1, 19].Style.Font.Bold = true;
+                sheet.Cells[1, 20].Style.Font.Bold = true;
                 sheet.Column(2).Width = 15;
                 sheet.Column(3).Width = 15;
                 sheet.Column(7).Width = 22;
@@ -544,6 +558,7 @@ namespace CMRPS.Web.Controllers
                     sheet.Cells[row, 17].Value = item.EthernetCable;
                     sheet.Cells[row, 18].Value = item.EthernetWifi;
                     sheet.Cells[row, 19].Value = item.OS;
+                    sheet.Cells[row, 20].Value = item.Price;
                     row++;
                 }
 
