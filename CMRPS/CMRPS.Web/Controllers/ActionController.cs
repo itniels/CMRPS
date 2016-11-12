@@ -25,6 +25,12 @@ namespace CMRPS.Web.Controllers
 {
     public class ActionController : Controller
     {
+
+        /// <summary>
+        /// GET | Ping a hostname
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <returns></returns>
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool Ping(string hostname)
         {
@@ -48,6 +54,11 @@ namespace CMRPS.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// GET | Power on a computer by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool PowerOn(int id)
@@ -75,6 +86,11 @@ namespace CMRPS.Web.Controllers
             return false;
         }
 
+        /// <summary>
+        /// GET | Power off a computer by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool PowerOff(int id)
@@ -102,6 +118,11 @@ namespace CMRPS.Web.Controllers
             return false;
         }
 
+        /// <summary>
+        /// GET | Reboot a computer by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public bool PowerRecycle(int id)

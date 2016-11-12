@@ -13,6 +13,14 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // Overview
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Overview page.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Overview()
         {
@@ -25,6 +33,14 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        // =================================================================================
+        // ListView
+        // =================================================================================
+
+        /// <summary>
+        /// GET | ListView page.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult ListView()
         {
@@ -41,6 +57,17 @@ namespace CMRPS.Web.Controllers
 
             return View(model);
         }
+
+        /// <summary>
+        /// GET | (DEPRECATED!) Get a filtered list using ajax.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="hostname"></param>
+        /// <param name="status"></param>
+        /// <param name="type"></param>
+        /// <param name="color"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
 
         [HttpGet]
         [Authorize]

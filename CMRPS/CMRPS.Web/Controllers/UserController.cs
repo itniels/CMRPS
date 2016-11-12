@@ -18,6 +18,10 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
         /// <summary>
         /// GET | List of users.
         /// </summary>
@@ -28,6 +32,10 @@ namespace CMRPS.Web.Controllers
             List<ApplicationUser> model = db.Users.ToList();
             return View(model);
         }
+
+        // =================================================================================
+        // DELETE
+        // =================================================================================
 
         /// <summary>
         /// GET | Delete a User.
@@ -106,6 +114,10 @@ namespace CMRPS.Web.Controllers
             return RedirectToAction("Index", "User");
         }
 
+        // =================================================================================
+        // EDIT
+        // =================================================================================
+
         /// <summary>
         /// GET | Edit a user.
         /// </summary>
@@ -122,7 +134,11 @@ namespace CMRPS.Web.Controllers
             return RedirectToAction("Index", "User");
         }
 
-
+        /// <summary>
+        /// POST | Edit a user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         public ActionResult Edit(ApplicationUser model)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -21,6 +22,10 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
         /// <summary>
         /// GET | List of colors.
         /// </summary>
@@ -30,6 +35,10 @@ namespace CMRPS.Web.Controllers
         {
             return View(db.Colors.ToList());
         }
+
+        // =================================================================================
+        // DETAILS
+        // =================================================================================
 
         /// <summary>
         /// GET | Details for a color.
@@ -51,6 +60,10 @@ namespace CMRPS.Web.Controllers
             }
             return PartialView("_PartialDetails", colorModel);
         }
+
+        // =================================================================================
+        // CREATE
+        // =================================================================================
 
         /// <summary>
         /// GET | Create color
@@ -91,6 +104,10 @@ namespace CMRPS.Web.Controllers
             }
             return View(colorModel);
         }
+
+        // =================================================================================
+        // EDIT
+        // =================================================================================
 
         /// <summary>
         /// GET | Edit a color.
@@ -138,6 +155,10 @@ namespace CMRPS.Web.Controllers
             return View(colorModel);
         }
 
+        // =================================================================================
+        // DELETE
+        // =================================================================================
+
         /// <summary>
         /// GET | Delete a color.
         /// </summary>
@@ -184,6 +205,15 @@ namespace CMRPS.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        // =================================================================================
+        // GET HEX COLORS USING AJAX
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Gets the hex colors in a Json list.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -300,6 +330,12 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 2].Style.Font.Bold = true;
                 sheet.Cells[1, 3].Style.Font.Bold = true;
                 sheet.Cells[1, 4].Style.Font.Bold = true;
+
+                sheet.Cells[1, 1].Style.Font.Color.SetColor(Color.Orange);
+                sheet.Cells[1, 2].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 3].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 4].Style.Font.Color.SetColor(Color.LightCoral);
+
                 sheet.Column(2).Width = 25;
                 sheet.Column(3).Width = 25;
                 sheet.Column(4).Width = 25;
@@ -335,6 +371,12 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 2].Style.Font.Bold = true;
                 sheet.Cells[1, 3].Style.Font.Bold = true;
                 sheet.Cells[1, 4].Style.Font.Bold = true;
+
+                sheet.Cells[1, 1].Style.Font.Color.SetColor(Color.Orange);
+                sheet.Cells[1, 2].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 3].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 4].Style.Font.Color.SetColor(Color.LightCoral);
+
                 sheet.Column(2).Width = 25;
                 sheet.Column(3).Width = 25;
                 sheet.Column(4).Width = 25;
@@ -368,8 +410,6 @@ namespace CMRPS.Web.Controllers
 
             }
         }
-
-
 
         protected override void Dispose(bool disposing)
         {

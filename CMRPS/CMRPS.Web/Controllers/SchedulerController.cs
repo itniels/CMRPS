@@ -17,6 +17,14 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Gets all schedules in the system
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Index()
         {
@@ -24,6 +32,15 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        // =================================================================================
+        // SELECT VIEW AJAX
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Changes the view using ajax.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         [Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult SelectView(Enums.ScheduledType type)
@@ -61,6 +78,10 @@ namespace CMRPS.Web.Controllers
             }
             return null;
         }
+
+        // =================================================================================
+        // DETAILS
+        // =================================================================================
 
         /// <summary>
         /// GET | Details for a schedule.
@@ -114,6 +135,14 @@ namespace CMRPS.Web.Controllers
             return PartialView("_PartialDetails", model);
         }
 
+        // =================================================================================
+        // CREATE
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Create new schedule.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ActionResult Create()
@@ -130,6 +159,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST | Create a new schedule.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -264,17 +298,16 @@ namespace CMRPS.Web.Controllers
                     21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,
                     41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
                 };
-                //model.Computers = db.Computers
-                //.Include(c => c.Color)
-                //.Include(c => c.Location)
-                //.Include(c => c.Type)
-                //.ToList();
                 return View(model);
             }
         }
 
+        // =================================================================================
+        // EDIT
+        // =================================================================================
+
         /// <summary>
-        /// GET | Edit a color.
+        /// GET | Edit a schedule.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -302,7 +335,7 @@ namespace CMRPS.Web.Controllers
         }
 
         /// <summary>
-        /// POST | Edit a color.
+        /// POST | Edit a schedule.
         /// </summary>
         /// <param name="colorModel"></param>
         /// <returns></returns>
@@ -420,9 +453,6 @@ namespace CMRPS.Web.Controllers
                     }
                 }
 
-
-                
-
                 if (valid)
                 {
                     // Event
@@ -445,6 +475,9 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        // =================================================================================
+        // DELETE
+        // =================================================================================
 
         /// <summary>
         /// GET | Delete a Schedule.

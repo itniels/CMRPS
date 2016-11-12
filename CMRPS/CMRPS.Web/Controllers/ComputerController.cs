@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -18,6 +19,10 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
         /// <summary>
         /// GET | Gets the list of computers in teh system.
         /// </summary>
@@ -32,6 +37,10 @@ namespace CMRPS.Web.Controllers
             model.ComputerColors = db.Colors.ToList();
             return View(model);
         }
+
+        // =================================================================================
+        // DETAILS
+        // =================================================================================
 
         /// <summary>
         /// GET | View details of a computer in a partial view for a modal display box.
@@ -50,6 +59,10 @@ namespace CMRPS.Web.Controllers
 
             return PartialView("_PartialDetails", model);
         }
+
+        // =================================================================================
+        // DELETE
+        // =================================================================================
 
         /// <summary>
         /// GET | Delete a Computer in the system.
@@ -86,6 +99,10 @@ namespace CMRPS.Web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        // =================================================================================
+        // CREATE
+        // =================================================================================
 
         /// <summary>
         /// GET | Create a new computer.
@@ -212,6 +229,10 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        // =================================================================================
+        // EDIT
+        // =================================================================================
+
         /// <summary>
         /// GET | Returns the view for edit with the computer to edit.
         /// </summary>
@@ -337,7 +358,7 @@ namespace CMRPS.Web.Controllers
                                 double price = 0;
                                 try
                                 {
-                                    price = sheet.Cells[i, 20].Value != null ? Convert.ToDouble(sheet.Cells[i, 20].Value) : 0;
+                                    price = sheet.Cells[i, 7].Value != null ? Convert.ToDouble(sheet.Cells[i, 7].Value) : 0;
                                 }
                                 catch (Exception){}
                                 
@@ -349,20 +370,21 @@ namespace CMRPS.Web.Controllers
                                 item.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == typeName);
                                 item.Color = db.Colors.SingleOrDefault(x => x.Name == colorName);
                                 item.Location = db.Locations.SingleOrDefault(x => x.Location == locationName);
-                                item.PurchaseDate = DateTime.Parse(sheet.Cells[i, 7].Value.ToString());
-                                item.Description = sheet.Cells[i, 8].Value != null ? sheet.Cells[i, 8].Value.ToString() : "";
-                                item.Manufacturer = sheet.Cells[i, 9].Value != null ? sheet.Cells[i, 9].Value.ToString() : "";
-                                item.Model = sheet.Cells[i, 10].Value != null ? sheet.Cells[i, 10].Value.ToString() : "";
-                                item.CPU = sheet.Cells[i, 11].Value != null ? sheet.Cells[i, 11].Value.ToString() : "";
-                                item.CPUCores = sheet.Cells[i, 12].Value != null ? sheet.Cells[i, 12].Value.ToString() : "";
-                                item.RAM = sheet.Cells[i, 13].Value != null ? sheet.Cells[i, 13].Value.ToString() : "";
-                                item.RAMSize = sheet.Cells[i, 14].Value != null ? sheet.Cells[i, 14].Value.ToString() : "";
-                                item.Disk = sheet.Cells[i, 15].Value != null ? sheet.Cells[i, 15].Value.ToString() : "";
-                                item.DiskSize = sheet.Cells[i, 16].Value != null ? sheet.Cells[i, 16].Value.ToString() : "";
-                                item.EthernetCable = sheet.Cells[i, 17].Value != null ? sheet.Cells[i, 17].Value.ToString() : "";
-                                item.EthernetWifi = sheet.Cells[i, 18].Value != null ? sheet.Cells[i, 18].Value.ToString() : "";
-                                item.OS = sheet.Cells[i, 19].Value != null ? sheet.Cells[i, 19].Value.ToString() : "";
                                 item.Price = price;
+                                item.PurchaseDate = DateTime.Parse(sheet.Cells[i, 8].Value.ToString());
+                                item.Description = sheet.Cells[i, 9].Value != null ? sheet.Cells[i, 9].Value.ToString() : "";
+                                item.Manufacturer = sheet.Cells[i, 10].Value != null ? sheet.Cells[i, 10].Value.ToString() : "";
+                                item.Model = sheet.Cells[i, 11].Value != null ? sheet.Cells[i, 11].Value.ToString() : "";
+                                item.CPU = sheet.Cells[i, 12].Value != null ? sheet.Cells[i, 12].Value.ToString() : "";
+                                item.CPUCores = sheet.Cells[i, 13].Value != null ? sheet.Cells[i, 13].Value.ToString() : "";
+                                item.RAM = sheet.Cells[i, 14].Value != null ? sheet.Cells[i, 14].Value.ToString() : "";
+                                item.RAMSize = sheet.Cells[i, 15].Value != null ? sheet.Cells[i, 15].Value.ToString() : "";
+                                item.Disk = sheet.Cells[i, 16].Value != null ? sheet.Cells[i, 16].Value.ToString() : "";
+                                item.DiskSize = sheet.Cells[i, 17].Value != null ? sheet.Cells[i, 17].Value.ToString() : "";
+                                item.EthernetCable = sheet.Cells[i, 18].Value != null ? sheet.Cells[i, 18].Value.ToString() : "";
+                                item.EthernetWifi = sheet.Cells[i, 19].Value != null ? sheet.Cells[i, 19].Value.ToString() : "";
+                                item.OS = sheet.Cells[i, 20].Value != null ? sheet.Cells[i, 20].Value.ToString() : "";
+                                
 
                                 db.Computers.AddOrUpdate(item);
                                 db.SaveChanges();
@@ -409,20 +431,20 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 4].Value = "Type";
                 sheet.Cells[1, 5].Value = "Color";
                 sheet.Cells[1, 6].Value = "Location";
-                sheet.Cells[1, 7].Value = "Purchase Date";
-                sheet.Cells[1, 8].Value = "Description";
-                sheet.Cells[1, 9].Value = "Manufacturer";
-                sheet.Cells[1, 10].Value = "Model";
-                sheet.Cells[1, 11].Value = "CPU";
-                sheet.Cells[1, 12].Value = "CPU Cores";
-                sheet.Cells[1, 13].Value = "RAM";
-                sheet.Cells[1, 14].Value = "RAM Size";
-                sheet.Cells[1, 15].Value = "Disk";
-                sheet.Cells[1, 16].Value = "Disk Size";
-                sheet.Cells[1, 17].Value = "Ethernet Cable";
-                sheet.Cells[1, 18].Value = "Ethernet WiFi";
-                sheet.Cells[1, 19].Value = "OS";
-                sheet.Cells[1, 20].Value = "Price";
+                sheet.Cells[1, 7].Value = "Price";
+                sheet.Cells[1, 8].Value = "Purchase Date";
+                sheet.Cells[1, 9].Value = "Description";
+                sheet.Cells[1, 10].Value = "Manufacturer";
+                sheet.Cells[1, 11].Value = "Model";
+                sheet.Cells[1, 12].Value = "CPU";
+                sheet.Cells[1, 13].Value = "CPU Cores";
+                sheet.Cells[1, 14].Value = "RAM";
+                sheet.Cells[1, 15].Value = "RAM Size";
+                sheet.Cells[1, 16].Value = "Disk";
+                sheet.Cells[1, 17].Value = "Disk Size";
+                sheet.Cells[1, 18].Value = "Ethernet Cable";
+                sheet.Cells[1, 19].Value = "Ethernet WiFi";
+                sheet.Cells[1, 20].Value = "OS";
 
                 // Format cells
                 sheet.Cells[1, 1].Style.Font.Bold = true;
@@ -445,16 +467,27 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 18].Style.Font.Bold = true;
                 sheet.Cells[1, 19].Style.Font.Bold = true;
                 sheet.Cells[1, 20].Style.Font.Bold = true;
+
+                sheet.Cells[1, 1].Style.Font.Color.SetColor(Color.Orange);
+                sheet.Cells[1, 2].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 3].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 4].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 5].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 6].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 7].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 8].Style.Font.Color.SetColor(Color.LightCoral);
+
                 sheet.Column(2).Width = 15;
                 sheet.Column(3).Width = 15;
-                sheet.Column(7).Width = 22;
-                sheet.Column(8).Width = 15;
+                sheet.Column(8).Width = 22;
                 sheet.Column(9).Width = 15;
                 sheet.Column(10).Width = 15;
-                sheet.Column(12).Width = 10;
-                sheet.Column(14).Width = 10;
-                sheet.Column(17).Width = 15;
+                sheet.Column(11).Width = 15;
+                sheet.Column(13).Width = 10;
+                sheet.Column(15).Width = 10;
                 sheet.Column(18).Width = 15;
+                sheet.Column(19).Width = 15;
+                sheet.Column(20).Width = 15;
 
                 DateTime date = DateTime.Now;
 
@@ -488,20 +521,21 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 4].Value = "Type";
                 sheet.Cells[1, 5].Value = "Color";
                 sheet.Cells[1, 6].Value = "Location";
-                sheet.Cells[1, 7].Value = "Purchase Date";
-                sheet.Cells[1, 8].Value = "Description";
-                sheet.Cells[1, 9].Value = "Manufacturer";
-                sheet.Cells[1, 10].Value = "Model";
-                sheet.Cells[1, 11].Value = "CPU";
-                sheet.Cells[1, 12].Value = "CPU Cores";
-                sheet.Cells[1, 13].Value = "RAM";
-                sheet.Cells[1, 14].Value = "RAM Size";
-                sheet.Cells[1, 15].Value = "Disk";
-                sheet.Cells[1, 16].Value = "Disk Size";
-                sheet.Cells[1, 17].Value = "Ethernet Cable";
-                sheet.Cells[1, 18].Value = "Ethernet WiFi";
-                sheet.Cells[1, 19].Value = "OS";
+                sheet.Cells[1, 7].Value = "Price";
+                sheet.Cells[1, 8].Value = "Purchase Date";
+                sheet.Cells[1, 9].Value = "Description";
+                sheet.Cells[1, 10].Value = "Manufacturer";
+                sheet.Cells[1, 11].Value = "Model";
+                sheet.Cells[1, 12].Value = "CPU";
+                sheet.Cells[1, 13].Value = "CPU Cores";
+                sheet.Cells[1, 14].Value = "RAM";
+                sheet.Cells[1, 15].Value = "RAM Size";
+                sheet.Cells[1, 16].Value = "Disk";
+                sheet.Cells[1, 17].Value = "Disk Size";
+                sheet.Cells[1, 18].Value = "Ethernet Cable";
+                sheet.Cells[1, 19].Value = "Ethernet WiFi";
                 sheet.Cells[1, 20].Value = "OS";
+                
 
                 // Format cells
                 sheet.Cells[1, 1].Style.Font.Bold = true;
@@ -524,16 +558,27 @@ namespace CMRPS.Web.Controllers
                 sheet.Cells[1, 18].Style.Font.Bold = true;
                 sheet.Cells[1, 19].Style.Font.Bold = true;
                 sheet.Cells[1, 20].Style.Font.Bold = true;
+
+                sheet.Cells[1, 1].Style.Font.Color.SetColor(Color.Orange);
+                sheet.Cells[1, 2].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 3].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 4].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 5].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 6].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 7].Style.Font.Color.SetColor(Color.LightCoral);
+                sheet.Cells[1, 8].Style.Font.Color.SetColor(Color.LightCoral);
+
                 sheet.Column(2).Width = 15;
                 sheet.Column(3).Width = 15;
-                sheet.Column(7).Width = 22;
-                sheet.Column(8).Width = 15;
+                sheet.Column(8).Width = 22;
                 sheet.Column(9).Width = 15;
                 sheet.Column(10).Width = 15;
-                sheet.Column(12).Width = 10;
-                sheet.Column(14).Width = 10;
-                sheet.Column(17).Width = 15;
+                sheet.Column(11).Width = 15;
+                sheet.Column(13).Width = 10;
+                sheet.Column(15).Width = 10;
                 sheet.Column(18).Width = 15;
+                sheet.Column(19).Width = 15;
+                sheet.Column(20).Width = 15;
 
                 // Add data
                 int row = 2;    // Start after headers
@@ -545,20 +590,21 @@ namespace CMRPS.Web.Controllers
                     sheet.Cells[row, 4].Value = item.Type.Name;
                     sheet.Cells[row, 5].Value = item.Color.Name;
                     sheet.Cells[row, 6].Value = item.Location.Location;
-                    sheet.Cells[row, 7].Value = item.PurchaseDate.Date.ToString();
-                    sheet.Cells[row, 8].Value = item.Description;
-                    sheet.Cells[row, 9].Value = item.Manufacturer;
-                    sheet.Cells[row, 10].Value = item.Model;
-                    sheet.Cells[row, 11].Value = item.CPU;
-                    sheet.Cells[row, 12].Value = item.CPUCores;
-                    sheet.Cells[row, 13].Value = item.RAM;
-                    sheet.Cells[row, 14].Value = item.RAMSize;
-                    sheet.Cells[row, 15].Value = item.Disk;
-                    sheet.Cells[row, 16].Value = item.DiskSize;
-                    sheet.Cells[row, 17].Value = item.EthernetCable;
-                    sheet.Cells[row, 18].Value = item.EthernetWifi;
-                    sheet.Cells[row, 19].Value = item.OS;
-                    sheet.Cells[row, 20].Value = item.Price;
+                    sheet.Cells[row, 7].Value = item.Price;
+                    sheet.Cells[row, 8].Value = item.PurchaseDate.Date.ToString();
+                    sheet.Cells[row, 9].Value = item.Description;
+                    sheet.Cells[row, 10].Value = item.Manufacturer;
+                    sheet.Cells[row, 11].Value = item.Model;
+                    sheet.Cells[row, 12].Value = item.CPU;
+                    sheet.Cells[row, 13].Value = item.CPUCores;
+                    sheet.Cells[row, 14].Value = item.RAM;
+                    sheet.Cells[row, 15].Value = item.RAMSize;
+                    sheet.Cells[row, 16].Value = item.Disk;
+                    sheet.Cells[row, 17].Value = item.DiskSize;
+                    sheet.Cells[row, 18].Value = item.EthernetCable;
+                    sheet.Cells[row, 19].Value = item.EthernetWifi;
+                    sheet.Cells[row, 20].Value = item.OS;
+                    
                     row++;
                 }
 

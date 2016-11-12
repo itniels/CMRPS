@@ -18,6 +18,10 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
         /// <summary>
         /// GET | List the computer types
         /// </summary>
@@ -27,6 +31,10 @@ namespace CMRPS.Web.Controllers
         {
             return View(db.ComputerTypes.ToList());
         }
+
+        // =================================================================================
+        // DETAILS
+        // =================================================================================
 
         /// <summary>
         /// GET | Details about the Computer type.
@@ -42,6 +50,10 @@ namespace CMRPS.Web.Controllers
             if (model == null) { return HttpNotFound(); }
             return PartialView("_PartialDetails", model);
         }
+
+        // =================================================================================
+        // CREATE
+        // =================================================================================
 
         /// <summary>
         /// GET | Create a new computer type.
@@ -93,6 +105,10 @@ namespace CMRPS.Web.Controllers
 
             return View(model);
         }
+
+        // =================================================================================
+        // EDIT
+        // =================================================================================
 
         /// <summary>
         /// GET | Edit a computer type
@@ -150,6 +166,10 @@ namespace CMRPS.Web.Controllers
             }
             return View(model);
         }
+
+        // =================================================================================
+        // DELETE
+        // =================================================================================
 
         /// <summary>
         /// GET | Confirmation | Delete computer type.

@@ -14,6 +14,15 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // CREATE
+        // =================================================================================
+
+        /// <summary>
+        /// POST | Create an event or login in the system.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="uid"></param>
         public static void AddEvent(SysEvent model, string uid = null)
         {
             ApplicationDbContext db = new ApplicationDbContext();
@@ -34,7 +43,14 @@ namespace CMRPS.Web.Controllers
             context.Clients.All.UpdateHomePage();
         }
 
+        // =================================================================================
+        // EVENTS
+        // =================================================================================
 
+        /// <summary>
+        /// GET | Events list
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.Authorize]
         public ActionResult Events()
         {
@@ -42,6 +58,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// GET | Event details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [System.Web.Mvc.Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult EventDetails(int id)
@@ -50,6 +71,14 @@ namespace CMRPS.Web.Controllers
             return PartialView("EventDetails", model);
         }
 
+        // =================================================================================
+        // LOGINS
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Logins list
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.Authorize]
         public ActionResult Logins()
         {

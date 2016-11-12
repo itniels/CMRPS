@@ -18,7 +18,11 @@ namespace CMRPS.Web.Controllers
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: Admin
+        
+        /// <summary>
+        /// GET | Site settings
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public ActionResult Index()
@@ -27,6 +31,11 @@ namespace CMRPS.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST | Site settings
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public ActionResult Index(SettingsModel model)

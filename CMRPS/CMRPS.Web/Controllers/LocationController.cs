@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,6 +20,10 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
         /// <summary>
         /// GET | List locations.
         /// </summary>
@@ -28,6 +33,10 @@ namespace CMRPS.Web.Controllers
         {
             return View(db.Locations.ToList());
         }
+
+        // =================================================================================
+        // DETAILS
+        // =================================================================================
 
         /// <summary>
         /// GET | Details for a location.
@@ -49,6 +58,10 @@ namespace CMRPS.Web.Controllers
             }
             return View(locationModel);
         }
+
+        // =================================================================================
+        // CREATE
+        // =================================================================================
 
         /// <summary>
         /// GET | Create a new location.
@@ -86,6 +99,10 @@ namespace CMRPS.Web.Controllers
 
             return View(locationModel);
         }
+
+        // =================================================================================
+        // EDIT
+        // =================================================================================
 
         /// <summary>
         /// GET | Edit a location.
@@ -132,6 +149,10 @@ namespace CMRPS.Web.Controllers
             }
             return View(locationModel);
         }
+
+        // =================================================================================
+        // DELETE
+        // =================================================================================
 
         /// <summary>
         /// GET | Delete a location.
@@ -271,6 +292,10 @@ namespace CMRPS.Web.Controllers
                 // Format cells
                 sheet.Cells[1, 1].Style.Font.Bold = true;
                 sheet.Cells[1, 2].Style.Font.Bold = true;
+
+                sheet.Cells[1, 1].Style.Font.Color.SetColor(Color.Orange);
+                sheet.Cells[1, 2].Style.Font.Color.SetColor(Color.LightCoral);
+
                 sheet.Column(2).Width = 100;
 
                 DateTime date = DateTime.Now;
@@ -300,6 +325,10 @@ namespace CMRPS.Web.Controllers
                 // Format cells
                 sheet.Cells[1, 1].Style.Font.Bold = true;
                 sheet.Cells[1, 2].Style.Font.Bold = true;
+
+                sheet.Cells[1, 1].Style.Font.Color.SetColor(Color.Orange);
+                sheet.Cells[1, 2].Style.Font.Color.SetColor(Color.LightCoral);
+
                 sheet.Column(2).Width = 100;
 
                 // Add data

@@ -13,6 +13,14 @@ namespace CMRPS.Web.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // =================================================================================
+        // INDEX
+        // =================================================================================
+
+        /// <summary>
+        /// GET | Load the front page with viewmodel.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Index()
         {
@@ -27,8 +35,14 @@ namespace CMRPS.Web.Controllers
             return PartialView("_HomeContent", GetHomeViewModel());
         }
 
+        // =================================================================================
+        // GET VIEWMODEL USING AJAX
+        // =================================================================================
 
-
+        /// <summary>
+        /// GET | Home View Model
+        /// </summary>
+        /// <returns></returns>
         private HomeIndexViewModels GetHomeViewModel()
         {
             // Get data
