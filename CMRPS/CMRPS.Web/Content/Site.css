@@ -102,7 +102,7 @@ textarea {
 
 /* Power menu buttons */
 .power-menu-info {
-    background: lightskyblue;
+    background: lightblue;
 }
 .power-menu-poweron {
     background: lightgreen;
@@ -112,6 +112,15 @@ textarea {
 }
 .power-menu-reboot {
     background: lightsalmon;
+}
+.power-menu-edit {
+    background: lightblue;
+}
+.power-menu-delete > a {
+    background: lightblue;
+}
+.power-menu-delete-text {
+    color: red;
 }
 
 /* Login Page */

@@ -28,7 +28,7 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            List<ScheduledModel> model = db.Schedules.ToList();
+            List<ScheduledModel> model = db.Schedules.OrderBy(x => x.Name).ToList();
             return View(model);
         }
 
@@ -51,6 +51,7 @@ namespace CMRPS.Web.Controllers
                     .Include(c => c.Color)
                     .Include(c => c.Location)
                     .Include(c => c.Type)
+                    .OrderBy(x => x.Name)
                     .ToList();
 
                 return PartialView("_SelectIndividual", model);
@@ -59,6 +60,7 @@ namespace CMRPS.Web.Controllers
             {
                 List<ColorModel> model = db.Colors
                     .Include(x => x.Computers)
+                    .OrderBy(x => x.Name)
                     .ToList();
                 return PartialView("_SelectColor", model);
             }
@@ -66,6 +68,7 @@ namespace CMRPS.Web.Controllers
             {
                 List<LocationModel> model = db.Locations
                     .Include(x => x.Computers)
+                    .OrderBy(x => x.Location)
                     .ToList();
                 return PartialView("_SelectLocation", model);
             }
@@ -73,6 +76,7 @@ namespace CMRPS.Web.Controllers
             {
                 List<ComputerTypeModel> model = db.ComputerTypes
                     .Include(x => x.Computers)
+                    .OrderBy(x => x.Name)
                     .ToList();
                 return PartialView("_SelectType", model);
             }
@@ -113,18 +117,21 @@ namespace CMRPS.Web.Controllers
             {
                 model.Color = db.Colors
                     .Include(x => x.Computers)
+                    .OrderBy(x => x.Name)
                     .SingleOrDefault(x => x.Id == model.Schedule.ColorId);
             }
             else if (model.Schedule.Type == ScheduledType.Location)
             {
                 model.Location = db.Locations
                     .Include(x => x.Computers)
+                    .OrderByDescending(x => x.Location)
                     .SingleOrDefault(x => x.Id == model.Schedule.LocationId);
             }
             else if (model.Schedule.Type == ScheduledType.Type)
             {
                 model.ComputerType = db.ComputerTypes
                     .Include(x => x.Computers)
+                    .OrderBy(x => x.Name)
                     .SingleOrDefault(x => x.Id == model.Schedule.TypeId);
             }
 

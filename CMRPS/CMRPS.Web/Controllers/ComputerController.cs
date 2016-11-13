@@ -36,6 +36,7 @@ namespace CMRPS.Web.Controllers
                 .Include(x => x.Type)
                 .Include(x => x.Color)
                 .Include(x => x.Location)
+                .OrderBy(x => x.Name)
                 .ToList();
             model.ComputerTypes = db.ComputerTypes.ToList();
             model.ComputerColors = db.Colors.ToList();
@@ -59,6 +60,7 @@ namespace CMRPS.Web.Controllers
                 .Include(a => a.Color)
                 .Include(a => a.Location)
                 .Include(a => a.Type)
+                .OrderBy(x => x.Name)
                 .Single(x => x.Id == id);
 
             return PartialView("_PartialDetails", model);
@@ -139,6 +141,11 @@ namespace CMRPS.Web.Controllers
             model.Computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
             model.Computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
 
+            if (model.Computer.Type == null || model.Computer.Color == null || model.Computer.Location == null)
+            {
+                ModelState.AddModelError("dependency", "Type, color or location could not be found!");
+            }
+
             // Make sure hostname looks ok!
             string hostname = model.Computer.Hostname.Replace(" ", "").Replace(Environment.NewLine, "");
             model.Computer.Hostname = hostname.ToLower();
@@ -197,6 +204,11 @@ namespace CMRPS.Web.Controllers
             model.Computer.Type = db.ComputerTypes.SingleOrDefault(x => x.Name == model.SelectedType);
             model.Computer.Color = db.Colors.SingleOrDefault(x => x.Name == model.SelectedColor);
             model.Computer.Location = db.Locations.SingleOrDefault(x => x.Location == model.SelectedLocation);
+
+            if (model.Computer.Type == null || model.Computer.Color == null || model.Computer.Location == null)
+            {
+                ModelState.AddModelError("dependency", "Type, color or location could not be found!");
+            }
 
             // Get array of computers to create
             string[] hostnames = model.Computer.Hostname.Split(',');

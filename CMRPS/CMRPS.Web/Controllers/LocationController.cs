@@ -31,7 +31,7 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View(db.Locations.ToList());
+            return View(db.Locations.OrderBy(x => x.Location).ToList());
         }
 
         // =================================================================================
@@ -39,7 +39,7 @@ namespace CMRPS.Web.Controllers
         // =================================================================================
 
         /// <summary>
-        /// GET | Details for a location.
+        /// GET | Details for a color.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -56,7 +56,7 @@ namespace CMRPS.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(locationModel);
+            return PartialView("_PartialDetails", locationModel);
         }
 
         // =================================================================================

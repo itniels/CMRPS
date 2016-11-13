@@ -575,8 +575,8 @@ function SearchComputers() {
         var itemType = $(this).find("#hidden-type").html().toUpperCase();
         var itemColor = $(this).find("#hidden-color").html().toUpperCase();
         var itemLocation = $(this).find("#hidden-location").html().toUpperCase();
-        var itemIP = $(this).find("#hidden-ip").html().toUpperCase();
-        var itemMAC = $(this).find("#hidden-mac").html().toUpperCase();
+        var itemIP = $(this).find("#hidden-ip-" + itemId).html().toUpperCase();
+        var itemMAC = $(this).find("#hidden-mac-" + itemId).html().toUpperCase();
 
         if (searchString !== "") {
             // Name Contains
@@ -679,6 +679,8 @@ function srUpdateListView() {
         }
         // IP and MAC
         $("#listview-popup-" + id).prop("title", "IP: " + ip + "\nMAC: " + mac + "\nLast Seen: " + lastSeen);
+        $("#hidden-ip-" + id).html(ip);
+        $("#hidden-mac-" + id).html(mac);
 
         filterListView(); // Possibly Disruptive!
     };
@@ -702,7 +704,11 @@ function srUpdateComputers() {
         }
         // IP and MAC
         $("#computer-ip-" + id).html(ip);
+        $("#hidden-ip-" + id).html(ip);
         $("#computer-mac-" + id).html(mac);
+        $("#hidden-mac-" + id).html(mac);
+        // Last seen
+        $("#td-title-" + id).prop("title", "Lastseen: " + lastSeen);
     };
     $.connection.hub.start();
 }

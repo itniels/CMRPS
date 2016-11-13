@@ -29,7 +29,7 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            List<ApplicationUser> model = db.Users.ToList();
+            List<ApplicationUser> model = db.Users.OrderBy(x => x.UserName).ToList();
             return View(model);
         }
 

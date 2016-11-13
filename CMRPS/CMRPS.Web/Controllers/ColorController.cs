@@ -33,7 +33,7 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View(db.Colors.ToList());
+            return View(db.Colors.OrderBy(x => x.Name).ToList());
         }
 
         // =================================================================================

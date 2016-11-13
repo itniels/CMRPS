@@ -28,6 +28,7 @@ namespace CMRPS.Web.Controllers
                 .Include(x => x.Color)
                 .Include(x => x.Location)
                 .Include(x => x.Type)
+                .OrderBy(x => x.Name)
                 .ToList();
 
             return View(model);
@@ -53,6 +54,7 @@ namespace CMRPS.Web.Controllers
                 .Include(x => x.Color)
                 .Include(x => x.Location)
                 .Include(x => x.Type)
+                .OrderBy(x => x.Name)
                 .ToList();
 
             return View(model);
@@ -79,6 +81,7 @@ namespace CMRPS.Web.Controllers
                 .Include(x => x.Type)
                 .Include(x => x.Color)
                 .Include(x => x.Location)
+                .OrderBy(x => x.Name)
                 .ToList();
             foreach (ComputerModel item in list)
             {

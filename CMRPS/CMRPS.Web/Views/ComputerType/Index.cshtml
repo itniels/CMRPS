@@ -51,21 +51,37 @@
             }
             else if (item.Computers.Count == 1)
             {
-                @item.Computers.Count <span>Computer</span>
+                @item.Computers.Count
+                <span>Computer</span>
             }
             else
             {
-                @item.Computers.Count <span>Computers</span>
+                @item.Computers.Count
+                <span>Computers</span>
             }
 
         </td>
         <td>
+            <div class="pull-right listview-menu-button">
+                <div class="dropdown listview-menu-button">
+                    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-tasks"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li class="power-menu-info"><a href="#" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails"><span class="glyphicon glyphicon-info-sign"></span> Info</a></li>
+                        <li class="power-menu-edit"><a href="#" onclick="location.href = '@Url.Action("Edit", new {id = item.Id})'"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+                        <li class="power-menu-delete"><a href="#" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete"><span class="glyphicon glyphicon-remove"></span> <span class="power-menu-delete-text">Delete</span> </a></li>
+                    </ul>
+                </div>
+            </div>
+        </td>
+        @*<td>
             <div class="pull-right">
                 <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails">Details</button>
                 <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", new {id = item.Id})'">Edit</button>
                 <button class="btn btn-xs btn-danger" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete">Delete</button>
             </div>
-        </td>
+        </td>*@
     </tr>
 }
 

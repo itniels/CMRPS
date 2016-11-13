@@ -29,7 +29,7 @@ namespace CMRPS.Web.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View(db.ComputerTypes.ToList());
+            return View(db.ComputerTypes.OrderBy(x => x.Name).ToList());
         }
 
         // =================================================================================

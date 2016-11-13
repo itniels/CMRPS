@@ -30,6 +30,8 @@
 
     @foreach (var item in Model)
     {
+        var title = "Last Seen: " + item.LastSeen.ToShortDateString() + " " + item.LastSeen.ToShortTimeString();
+
         <tr id="tr-id-@item.Id" class="computer-row">
             <td>
                 <span id="hidden-id" class="hidden">@item.Id</span>
@@ -38,10 +40,10 @@
                 <span id="hidden-type" class="hidden">@item.Type.Name</span>
                 <span id="hidden-color" class="hidden">@item.Color.Name</span>
                 <span id="hidden-location" class="hidden">@item.Location.Location</span>
-                <span id="hidden-ip" class="hidden">@item.IP</span>
-                <span id="hidden-mac" class="hidden">@item.MAC</span>
+                <span id="hidden-ip-@item.Id" class="hidden">@item.IP</span>
+                <span id="hidden-mac-@item.Id" class="hidden">@item.MAC</span>
             </td>
-            <td>
+            <td id="td-title-@item.Id" title="@title">
                 <img src="@item.Type.ImagePath" width="25" height="25"/> @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
@@ -73,12 +75,29 @@
                 </span>
             </td>
             <td>
+                <div class="pull-right listview-menu-button">
+                    <div class="dropdown listview-menu-button">
+                        <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li class="power-menu-info"><a href="#" onclick="showDetailsModal(@item.Id, '@Url.Action("Details", "Computer")');" data-toggle="modal" data-target="#modalDetails"><span class="glyphicon glyphicon-info-sign"></span> Info</a></li>
+                            <li class="power-menu-edit"><a href="#" onclick="location.href = '@Url.Action("Edit", "Computer", new {id = item.Id})'"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+                            <li class="power-menu-delete"><a href="#" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete"><span class="glyphicon glyphicon-remove"></span> <span class="power-menu-delete-text">Delete</span> </a></li>
+                            <li class="power-menu-poweron"><a href="#" onclick="computerActionStartup(@item.Id);"><span class="glyphicon glyphicon-play"></span> Power On</a></li>
+                            <li class="power-menu-poweroff"><a href="#" onclick="computerActionShutdown(@item.Id);"><span class="glyphicon glyphicon-stop"></span> Power Off</a></li>
+                            <li class="power-menu-reboot"><a href="#" onclick="computerActionReboot(@item.Id);"><span class="glyphicon glyphicon-refresh"></span> Reboot</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+            @*<td>
                 <div class="pull-right">
                     <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails">Details</button>
                     <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "Computer", new {id = item.Id})'">Edit</button>
                     <button class="btn btn-xs btn-danger" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete">Delete</button>
                 </div>
-            </td>
+            </td>*@
         </tr>
     }
 

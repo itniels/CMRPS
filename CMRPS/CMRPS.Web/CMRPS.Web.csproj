@@ -429,6 +429,7 @@
     <Content Include="Views\Shared\_PartialModalDetails.cshtml" />
     <Content Include="Views\Computer\Delete.cshtml" />
     <Content Include="Views\Home\_HomeContent.cshtml" />
+    <Content Include="Views\Location\_PartialDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
