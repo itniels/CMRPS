@@ -84,10 +84,6 @@ function deleteUser(action) {
     var logins = $("#delete-item-logins").is(':checked');
     var events = $("#delete-item-events").is(':checked');
 
-    console.log('ID: ' + id);
-    console.log('Logins: ' + logins);
-    console.log('Events: ' + events);
-
     $.ajax({
         type: 'POST',
         url: action,
@@ -128,7 +124,6 @@ function colorLabel(id, textColor, labelColor) {
 }
 
 function demoColors() {
-    console.log("demoColors");
     var textColor = $('#color-text').val();
     var labelColor = $('#color-label').val();
     $('#text-example').css('color', textColor);
@@ -150,20 +145,15 @@ $(document).ready(function dropdownListColors() {
             data: { name: this.text },
             success: function (result) {
                 var colors = $.parseJSON(result);
-                console.log("text: " + colors[0] + " Label: " + colors[1]);
 
                 $(obj).css({
                     "color": colors[0],
                     "background-color": colors[1]
                 });
-            },
-            error: function () {
-                console.log("Whoops!");
             }
         });
 
         //var colors = GetColorController(this.text);
-        //console.log("Colors: " + colors);
         //if (colors !== "undefined") {
         //    $(this).css('color', colors(0));
         //    $(this).css('background-color', colors(1));
@@ -294,7 +284,6 @@ function scheduleTypeChanged() {
     schedulerClearLists();
     $("#ScheduleSelectContent").html("Loading please wait...");
     var selectedType = $("#select-type").val();
-    console.log("Type: " + selectedType);
     var action = "/Scheduler/SelectView/";
     $.ajax({
         type: 'GET',
@@ -314,7 +303,6 @@ function scheduleTypeChanged() {
 function scheduleOnLoad() {
     $("#ScheduleSelectContent").html("Loading please wait...");
     var selectedType = $("#select-type").val();
-    console.log("Type: " + selectedType);
     var action = "/Scheduler/SelectView/";
     $.ajax({
         type: 'GET',
@@ -332,7 +320,6 @@ function scheduleOnLoad() {
 }
 
 function scheduleSelectionChanged() {
-    console.log("The selection changed!");
     // Clear the list
     $("#ScheduleTargedList").html("");
 
@@ -361,7 +348,6 @@ function scheduleSelectionChanged() {
 }
 
 function scheduleColorSelectChanged() {
-    console.log("Color changed!");
     // Clear list
     schedulerClearLists();
     var id = "";
@@ -370,9 +356,7 @@ function scheduleColorSelectChanged() {
     $(".radiobutton-color-select").each(function (i, obj) {
         if (obj.checked) {
             id = obj.id.replace("c-", "");
-            console.log("ID: " + id);
             list = $("#tlist-" + id).val();
-            console.log("List: " + list);
             $("#ScheduleTargedList").html(list);
         }
     });
@@ -383,7 +367,6 @@ function scheduleColorSelectChanged() {
 }
 
 function scheduleLocationSelectChanged() {
-    console.log("Location changed!");
     // Clear list
     schedulerClearLists();
     var id = "";
@@ -392,9 +375,7 @@ function scheduleLocationSelectChanged() {
     $(".radiobutton-location-select").each(function (i, obj) {
         if (obj.checked) {
             id = obj.id.replace("c-", "");
-            console.log("ID: " + id);
             list = $("#tlist-" + id).val();
-            console.log("List: " + list);
             $("#ScheduleTargedList").html(list);
         }
     });
@@ -405,7 +386,6 @@ function scheduleLocationSelectChanged() {
 }
 
 function scheduleTypeSelectChanged() {
-    console.log("Type changed!");
     // Clear list
     schedulerClearLists();
     var id = "";
@@ -414,9 +394,7 @@ function scheduleTypeSelectChanged() {
     $(".radiobutton-type-select").each(function (i, obj) {
         if (obj.checked) {
             id = obj.id.replace("c-", "");
-            console.log("ID: " + id);
             list = $("#tlist-" + id).val();
-            console.log("List: " + list);
             $("#ScheduleTargedList").html(list);
         }
     });
@@ -427,14 +405,10 @@ function scheduleTypeSelectChanged() {
 }
 
 function scheduleOnEdit() {
-    console.log("On Edit exec");
     var selectedType = $("#hidden-selectedType").html();
     var currentType = $("#select-type option:selected").text();
 
-    console.log(selectedType + " | " + currentType);
-
     if (selectedType === currentType) {
-        console.log("Match!");
         // Individual
         if (selectedType === "Individual") {
             var list = $("#hidden-computer-list").val();
@@ -447,7 +421,6 @@ function scheduleOnEdit() {
         // Color
         if (selectedType === "Color") {
             var colorId = $("#hidden-color-id").val();
-            console.log("Color ID: " + colorId);
             $("#c-" + colorId).prop('checked', true);
             scheduleColorSelectChanged();
         }
@@ -545,7 +518,7 @@ function filterListView() {
         $("#filtering-count").html(cShown + " of " + cTotal);
     });
 
-    //// Ajax
+    //// Ajax (DEPRECATED!)
     //var action = '/View/GetFilterList';
     //$.ajax({
     //    type: 'GET',
@@ -584,6 +557,60 @@ function listViewClearFilters() {
 
     // Load without filters
     filterListView();
+}
+
+// =====================================================
+// Computers
+// =====================================================
+
+function SearchComputers() {
+    var searchString = $("#computer-search-box").val().toUpperCase();
+
+    $(".computer-row").each(function () {
+        var isMatch = false;
+        // get vars
+        var itemId = $(this).find("#hidden-id").html();
+        var itemName = $(this).find("#hidden-name").html().toUpperCase();
+        var itemHostname = $(this).find("#hidden-hostname").html().toUpperCase();
+        var itemType = $(this).find("#hidden-type").html().toUpperCase();
+        var itemColor = $(this).find("#hidden-color").html().toUpperCase();
+        var itemLocation = $(this).find("#hidden-location").html().toUpperCase();
+        var itemIP = $(this).find("#hidden-ip").html().toUpperCase();
+        var itemMAC = $(this).find("#hidden-mac").html().toUpperCase();
+
+        if (searchString !== "") {
+            // Name Contains
+            if (itemName.indexOf(searchString) > -1)
+                isMatch = true;
+            // Hostname Contains
+            if (itemHostname.indexOf(searchString) > -1)
+                isMatch = true;
+            // Type
+            if (itemType.indexOf(searchString) > -1)
+                isMatch = true;
+            // Color
+            if (itemColor.indexOf(searchString) > -1)
+                isMatch = true;
+            // Location
+            if (itemLocation.indexOf(searchString) > -1)
+                isMatch = true;
+            // IP
+            if (itemIP.indexOf(searchString) > -1)
+                isMatch = true;
+            // MAC
+            if (itemMAC.indexOf(searchString) > -1)
+                isMatch = true;
+        } else {
+            isMatch = true;
+        }
+
+        // Show or Hide
+        if (isMatch) {
+            $("#tr-id-" + itemId).show();
+        } else {
+            $("#tr-id-" + itemId).hide();
+        }
+    });
 }
 
 // =====================================================

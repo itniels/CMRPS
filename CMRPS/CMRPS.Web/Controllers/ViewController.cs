@@ -59,7 +59,8 @@ namespace CMRPS.Web.Controllers
         }
 
         /// <summary>
-        /// GET | (DEPRECATED!) Get a filtered list using ajax.
+        /// GET | Get a filtered list using ajax.
+        /// [DEPRECATED: This is moved to JavaScript code instead to make it easier for signalR.]
         /// </summary>
         /// <param name="name"></param>
         /// <param name="hostname"></param>
@@ -68,7 +69,6 @@ namespace CMRPS.Web.Controllers
         /// <param name="color"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-
         [HttpGet]
         [Authorize]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]

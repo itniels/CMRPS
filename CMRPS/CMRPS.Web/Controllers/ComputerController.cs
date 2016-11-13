@@ -32,8 +32,12 @@ namespace CMRPS.Web.Controllers
         public ActionResult Index()
         {
             IndexComputerViewModels model = new IndexComputerViewModels();
+            model.Computers = db.Computers
+                .Include(x => x.Type)
+                .Include(x => x.Color)
+                .Include(x => x.Location)
+                .ToList();
             model.ComputerTypes = db.ComputerTypes.ToList();
-            model.Computers = db.Computers.ToList();
             model.ComputerColors = db.Colors.ToList();
             return View(model);
         }

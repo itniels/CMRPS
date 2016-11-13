@@ -3,6 +3,7 @@
 
 <table class="table">
     <tr>
+        <th></th>
         <th>
             Name
         </th>
@@ -18,20 +19,36 @@
         <th>
             MAC
         </th>
+        <th>
+            Color
+        </th>
+        <th>
+            Location
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr id="tr-id-@item.Id" class="computer-row">
             <td>
-                <img src="@item.Type.ImagePath" width="25" height="25" /> @Html.DisplayFor(modelItem => item.Name)
+                <span id="hidden-id" class="hidden">@item.Id</span>
+                <span id="hidden-name" class="hidden">@item.Name</span>
+                <span id="hidden-hostname" class="hidden">@item.Hostname</span>
+                <span id="hidden-type" class="hidden">@item.Type.Name</span>
+                <span id="hidden-color" class="hidden">@item.Color.Name</span>
+                <span id="hidden-location" class="hidden">@item.Location.Location</span>
+                <span id="hidden-ip" class="hidden">@item.IP</span>
+                <span id="hidden-mac" class="hidden">@item.MAC</span>
+            </td>
+            <td>
+                <img src="@item.Type.ImagePath" width="25" height="25"/> @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Hostname)
             </td>
             <td>
-                <span id="computer-id-@item.Id" class="label @(item.Status ? "label-success":"label-danger")">
+                <span id="computer-id-@item.Id" class="label @(item.Status ? "label-success" : "label-danger")">
                     @(item.Status ? "ONLINE" : "OFFLINE")
                 </span>
             </td>
@@ -46,9 +63,19 @@
                 </span>
             </td>
             <td>
+                <span id="color-label-@item.Id">
+                    @Html.DisplayFor(modelItem => item.Color.Name)
+                </span>
+            </td>
+            <td>
+                <span>
+                    @Html.DisplayFor(modelItem => item.Location.Location)
+                </span>
+            </td>
+            <td>
                 <div class="pull-right">
-                <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails">Details</button>
-                    <button class="btn btn-xs btn-warning" onclick="location.href='@Url.Action("Edit", "Computer", new {id = item.Id})'">Edit</button>
+                    <button class="btn btn-xs btn-info" onclick="showDetailsModal(@item.Id, '@Url.Action("Details")');" data-toggle="modal" data-target="#modalDetails">Details</button>
+                    <button class="btn btn-xs btn-warning" onclick="location.href = '@Url.Action("Edit", "Computer", new {id = item.Id})'">Edit</button>
                     <button class="btn btn-xs btn-danger" onclick="showDeleteModal(@item.Id, '@Url.Action("Delete")');" data-toggle="modal" data-target="#modalDelete">Delete</button>
                 </div>
             </td>
@@ -59,3 +86,10 @@
 
 @Html.Partial("_PartialModalDetails")
 @Html.Partial("_PartialModalDelete")
+
+@foreach (var item in Model)
+{
+    <script>
+        colorLabel(@item.Id, '@item.Color.ColorText', '@item.Color.ColorLabel');
+    </script>
+}

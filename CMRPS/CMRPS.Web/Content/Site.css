@@ -151,3 +151,13 @@ textarea {
     padding-left: 4px;
     padding-right: 4px;
 }
+
+/* Computer Search */
+.computer-search-box {
+    height: 30px;
+}
+
+.computer-search-btn {
+    height: 30px;
+    margin-bottom: 3px;
+}
