@@ -49,12 +49,6 @@
                                 <li>@Html.ActionLink("Computer Types", "Index", "ComputerType", null, new { title = "Manage Computer Types" })</li>
                             </ul>
                         </li>
-                        @*<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
-                            <ul class="dropdown-menu navbar-inverse">
-                                <li>@Html.ActionLink("Network Tools", "NetworkTools", "Tools", null, new { title = "Network Tools (Ping, WOL, Shutdown, etc.)" })</li>
-                            </ul>
-                        </li>*@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs <span class="caret"></span></a>
                             <ul class="dropdown-menu navbar-inverse">
@@ -81,7 +75,7 @@
             <div class="navbar-inverse navbar-fixed-bottom">
                 <div class="footer-text">
                     <div id="server-warning" class="alert alert-danger hidden">Server is NOT RUNNING!</div>
-                    <p>&copy; @DateTime.Now.Year - CMRPS - Computer Manager and Remote Power System - by Niels Schmidt</p>
+                    <p>&copy; @DateTime.Now.Year - CMRPS - Computer Manager and Remote Power System v1.0.0 - by Niels Schmidt</p>
 
                 </div>
             </div>
@@ -92,25 +86,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-@*<script>
-        function connectionStateChanged(state) {
-            var stateConversion = { 0: 'connecting', 1: 'connected', 2: 'reconnecting', 4: 'disconnected' };
-            console.log('SignalR state changed from: ' + stateConversion[state.oldState]
-             + ' to: ' + stateConversion[state.newState]);
-
-            // Show warning
-            if (state != 1) {
-                $("#server-warning").hidden = false;
-                $("#server-warning").val('server is ' + stateConversion + '!');
-            } else {
-                $("#server-warning").hidden = true;
-            }
-        }
-
-        $.connection.hub.start
-        connection = $.connection(ConnectedHub);
-        connection.stateChanged(connectionStateChanged);
-        connection.start({ waitForPageLoad: false });
-
-</script>*@
