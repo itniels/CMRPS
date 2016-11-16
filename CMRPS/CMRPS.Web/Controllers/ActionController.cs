@@ -25,7 +25,6 @@ namespace CMRPS.Web.Controllers
 {
     public class ActionController : Controller
     {
-
         /// <summary>
         /// GET | Ping a hostname
         /// </summary>

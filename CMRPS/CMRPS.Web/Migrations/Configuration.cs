@@ -19,33 +19,33 @@ namespace CMRPS.Web.Migrations
         protected override void Seed(CMRPS.Web.Models.ApplicationDbContext context)
         {
             // Default settings
-            context.Settings.AddOrUpdate(x => x.Id,
-                new SettingsModel
-                {
-                    Id = 1,
-                    // Credentials
-                    AdminUsername = "",
-                    AdminPassword = "",
-                    AdminDomain = "",
-                    // Startup
-                    StartupMethod = 0,
-                    // Shutdown
-                    ShutdownMethod = 0,
-                    ShutdownForce = true,
-                    ShutdownMessage = "Shutdown in 2 minutes by CMRPS.",
-                    ShutdownTimeout = 120,
-                    // Reboot
-                    RebootMethod = 0,
-                    RebootForce = true,
-                    RebootMessage = "Rebooting in 2 minutes by CMRPS.",
-                    RebootTimeout = 120,
-                    // HangFire
-                    PingInterval = 1,
-                    WorkerQueues = 10,  // Number of queues to start work
-                    CleanLogs = true,   // Keep logs clear
-                    KeepLogsFor = 90,   // 3 Months
-                }
-            );
+            //context.Settings.AddOrUpdate(x => x.Id,
+            //    new SettingsModel
+            //    {
+            //        Id = 1,
+            //        // Credentials
+            //        AdminUsername = "",
+            //        AdminPassword = "",
+            //        AdminDomain = "",
+            //        // Startup
+            //        StartupMethod = 0,
+            //        // Shutdown
+            //        ShutdownMethod = 0,
+            //        ShutdownForce = true,
+            //        ShutdownMessage = "Shutdown in 2 minutes by CMRPS.",
+            //        ShutdownTimeout = 120,
+            //        // Reboot
+            //        RebootMethod = 0,
+            //        RebootForce = true,
+            //        RebootMessage = "Rebooting in 2 minutes by CMRPS.",
+            //        RebootTimeout = 120,
+            //        // HangFire
+            //        PingInterval = 1,
+            //        WorkerQueues = 10,  // Number of queues to start work
+            //        CleanLogs = true,   // Keep logs clear
+            //        KeepLogsFor = 90,   // 3 Months
+            //    }
+            //);
 
             
         }
