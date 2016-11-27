@@ -184,7 +184,6 @@ namespace CMRPS.Web.Core
             {
                 throw ex;
             }
-            return false;
         }
 
         private static bool ShutdownWMI(string hostname, bool force, string username, string password, string domain)
@@ -228,7 +227,6 @@ namespace CMRPS.Web.Core
             {
                 throw ex;
             }
-            return false;
         }
     }
 }

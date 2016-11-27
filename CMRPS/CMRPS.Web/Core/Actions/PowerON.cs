@@ -94,10 +94,8 @@ namespace CMRPS.Web.Core
             }
             catch (Exception ex)
             {
-                exception = ex.ToString();
                 throw ex;
             }
-            return false;
 
         }
 
@@ -144,7 +142,6 @@ namespace CMRPS.Web.Core
                 }
                 catch (Exception ex)
                 {
-                    exception = ex.ToString();
                     throw ex;
                 }
             }
