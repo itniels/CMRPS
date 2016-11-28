@@ -113,23 +113,23 @@ namespace CMRPS.Web.Core
                     UdpClient client = new UdpClient();
                     client.Connect(broadcast, port);
                     client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 0);
-                    //set sending bites
+                    // Set sending bites
                     int counter = 0;
-                    //buffer to be send
+                    // Buffer to be send
                     byte[] bytes = new byte[1024]; // more than enough :-)
-                    //first 6 bytes should be 0xFF
-                    for (int y = 0; y < 6; y++)
+                    // First 6 bytes should be 0xFF
+                    for (int i = 0; i < 6; i++)
                         bytes[counter++] = 0xFF;
-                    //now repeate MAC 16 times
-                    for (int y = 0; y < 16; y++)
+                    // Now repeate MAC 16 times
+                    for (int i = 0; i < 16; i++)
                     {
-                        int i = 0;
+                        int y = 0;
                         for (int z = 0; z < 6; z++)
                         {
                             bytes[counter++] =
-                                byte.Parse(macAdr.Substring(i, 2),
+                                byte.Parse(macAdr.Substring(y, 2),
                                     NumberStyles.HexNumber);
-                            i += 2;
+                            y += 2;
                         }
                     }
 
@@ -137,8 +137,7 @@ namespace CMRPS.Web.Core
                     int returnValue = client.Send(bytes, 1024);
 
                     // Check if all bytes were sent OK.
-                    bool length = returnValue == bytes.Length;
-                    return true;
+                    return returnValue == bytes.Length;
                 }
                 catch (Exception ex)
                 {
