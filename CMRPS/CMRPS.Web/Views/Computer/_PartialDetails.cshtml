@@ -24,10 +24,10 @@
 
 <div class="row">
     <div class="col-md-@col1">
-        <b>Status:</b>
+        <b>IsOnline:</b>
     </div>
     <div class="col-md-@col2">
-        <span id="computer-details-id-@Model.Id" class="label @(Model.Status ? "label-success" : "label-danger")">@(Model.Status ? "ONLINE" : "OFFLINE")</span>
+        <span id="computer-details-id-@Model.Id" class="label @(Model.IsOnline ? "label-success" : "label-danger")">@(Model.IsOnline ? "ONLINE" : "OFFLINE")</span>
     </div>
 </div>
 

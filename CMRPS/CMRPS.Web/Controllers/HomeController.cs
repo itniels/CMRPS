@@ -48,8 +48,8 @@ namespace CMRPS.Web.Controllers
             // Get data
             HomeIndexViewModels model = new HomeIndexViewModels();
             model.DevicesTotal = db.Computers.ToList().Count;
-            model.DevicesOnline = db.Computers.Where(x => x.Status == true).ToList().Count;
-            model.DevicesOffline = db.Computers.Where(x => x.Status == false).ToList().Count;
+            model.DevicesOnline = db.Computers.Where(x => x.IsOnline == true).ToList().Count;
+            model.DevicesOffline = db.Computers.Where(x => x.IsOnline == false).ToList().Count;
             // Calculate Percentage
             model.DevicesOnlinePercentage = ((double)model.DevicesOnline / (double)model.DevicesTotal) * 100;
             model.DevicesOfflinePercentage = ((double)model.DevicesOffline / (double)model.DevicesTotal) * 100;

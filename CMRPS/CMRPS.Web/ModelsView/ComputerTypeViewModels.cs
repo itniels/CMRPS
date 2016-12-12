@@ -7,11 +7,6 @@ using CMRPS.Web.Models;
 
 namespace CMRPS.Web.ModelsView
 {
-    public class IndexComputerTypeViewModel
-    {
-
-    }
-
     public class CreateComputerTypeViewModel
     {
         public ComputerTypeModel ComputerType { get; set; }

@@ -34,8 +34,8 @@ namespace CMRPS.Web.Models
 
         public LocationModel Location { get; set; }
 
-        [Display(Name = "Status:")]
-        public bool Status { get; set; }
+        [Display(Name = "Online:")]
+        public bool IsOnline { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

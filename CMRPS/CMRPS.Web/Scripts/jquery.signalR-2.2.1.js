@@ -2450,7 +2450,7 @@
                                 reconnectErrors++;
 
                                 if (connection.state !== signalR.connectionState.reconnecting) {
-                                    connection.log("An error occurred using longPolling. Status = " + textStatus + ".  Response = " + data.responseText + ".");
+                                    connection.log("An error occurred using longPolling. IsOnline = " + textStatus + ".  Response = " + data.responseText + ".");
                                     $(instance).triggerHandler(events.onError, [error]);
                                 }
 

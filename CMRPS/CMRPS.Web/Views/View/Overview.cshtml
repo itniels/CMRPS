@@ -19,7 +19,7 @@
             var title = "IP: " + item.IP + Environment.NewLine + "MAC: " + item.MAC + Environment.NewLine + "Last Seen: " + item.LastSeen.ToShortDateString() + " " + item.LastSeen.ToShortTimeString();
 
             <div id="item-id-@item.Id" class="col-md-3">
-                <div id="overview-well-@item.Id" class="well well-sm @(item.Status ? "well-online" : "well-offline")">
+                <div id="overview-well-@item.Id" class="well well-sm @(item.IsOnline ? "well-online" : "well-offline")">
                     <div class="well-header-text">
                         <div class="row">
                             <div class="col-md-10">

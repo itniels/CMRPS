@@ -8885,7 +8885,7 @@ jQuery.extend( {
 			deferred = jQuery.Deferred(),
 			completeDeferred = jQuery.Callbacks( "once memory" ),
 
-			// Status-dependent callbacks
+			// IsOnline-dependent callbacks
 			statusCode = s.statusCode || {},
 
 			// Headers (they are sent all at once)
@@ -8937,7 +8937,7 @@ jQuery.extend( {
 					return this;
 				},
 
-				// Status-dependent callbacks
+				// IsOnline-dependent callbacks
 				statusCode: function( map ) {
 					var code;
 					if ( map ) {
@@ -9244,7 +9244,7 @@ jQuery.extend( {
 				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
 			}
 
-			// Status-dependent callbacks
+			// IsOnline-dependent callbacks
 			jqXHR.statusCode( statusCode );
 			statusCode = undefined;
 

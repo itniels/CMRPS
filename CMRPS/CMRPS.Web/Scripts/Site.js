@@ -130,34 +130,28 @@ function demoColors() {
     $('#text-example').css('background-color', labelColor);
 }
 
-
 $(document).ready(function dropdownListColors() {
     var action = '/Color/GetColors';
     $('#ColorFilter > option').each(function (i, obj) {
-        //if (this.text === "All")
-        //    $(this).css('color', 'green');
+        var name = this.text;
+        if (name !== "All") {
+            $.ajax({
+                type: 'GET',
+                url: action,
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                data: { name: name },
+                success: function(result) {
+                    var colors = $.parseJSON(result);
 
-        $.ajax({
-            type: 'GET',
-            url: action,
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            data: { name: this.text },
-            success: function (result) {
-                var colors = $.parseJSON(result);
-
-                $(obj).css({
-                    "color": colors[0],
-                    "background-color": colors[1]
-                });
-            }
-        });
-
-        //var colors = GetColorController(this.text);
-        //if (colors !== "undefined") {
-        //    $(this).css('color', colors(0));
-        //    $(this).css('background-color', colors(1));
-        //}
+                    $(obj)
+                        .css({
+                            "color": colors[0],
+                            "background-color": colors[1]
+                        });
+                }
+            });
+        }
     });
 
 });
@@ -481,7 +475,7 @@ function filterListView() {
                 isMatch = false;
         }
 
-        // Status
+        // IsOnline
         if (status !== "") {
             if (itemStatus !== status)
                 isMatch = false;

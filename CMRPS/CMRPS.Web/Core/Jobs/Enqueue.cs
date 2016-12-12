@@ -119,9 +119,9 @@ namespace CMRPS.Web.Core
             if (computer != null)
             {
                 // Ping computer
-                computer.Status = Core.Actions.Ping(computer);
+                computer.IsOnline = Core.Actions.Ping(computer);
                 // Get Info (but only if it is online)
-                if (computer.Status)
+                if (computer.IsOnline)
                 {
                     computer.LastSeen = DateTime.Now;
                     computer.IP = Core.Actions.GetIP(computer);
@@ -141,9 +141,9 @@ namespace CMRPS.Web.Core
                 // Call SignalR
                 var context = GlobalHost.ConnectionManager.GetHubContext<LiveUpdatesHub>();
                 string lastSeen = computer.LastSeen.ToShortDateString() + " " + computer.LastSeen.ToShortTimeString();
-                context.Clients.All.UpdateListView(id, computer.Status, computer.IP, computer.MAC, lastSeen);
-                context.Clients.All.UpdateOverview(id, computer.Status, computer.IP, computer.MAC, lastSeen);
-                context.Clients.All.UpdateComputers(id, computer.Status, computer.IP, computer.MAC, lastSeen);
+                context.Clients.All.UpdateListView(id, computer.IsOnline, computer.IP, computer.MAC, lastSeen);
+                context.Clients.All.UpdateOverview(id, computer.IsOnline, computer.IP, computer.MAC, lastSeen);
+                context.Clients.All.UpdateComputers(id, computer.IsOnline, computer.IP, computer.MAC, lastSeen);
             }
         }
 

@@ -75,6 +75,7 @@ namespace CMRPS.Web.Controllers
             login.Success = false;
             login.Timestamp = DateTime.Now;
             login.User = db.Users.SingleOrDefault(x => x.UserName == model.Username);
+            login.Username = model.Username;
             
             
             if (!ModelState.IsValid)

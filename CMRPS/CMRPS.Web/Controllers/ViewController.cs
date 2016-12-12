@@ -98,17 +98,17 @@ namespace CMRPS.Web.Controllers
                     if (!item.Hostname.ToUpper().Contains(hostname.ToUpper()))
                         isFound = false;
                 }
-                // Status
+                // IsOnline
                 if (status != "")
                 {
                     if (status.ToUpper() == "ONLINE")
                     {
-                        if (item.Status == false)
+                        if (item.IsOnline == false)
                             isFound = false;
                     }
                     if (status.ToUpper() == "OFFLINE")
                     {
-                        if (item.Status == true)
+                        if (item.IsOnline == true)
                             isFound = false;
                     }
                 }

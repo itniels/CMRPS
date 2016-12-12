@@ -11,7 +11,7 @@
             Hostname
         </th>
         <th>
-            Status
+            IsOnline
         </th>
         <th>
             IP
@@ -50,8 +50,8 @@
                 @Html.DisplayFor(modelItem => item.Hostname)
             </td>
             <td>
-                <span id="computer-id-@item.Id" class="label @(item.Status ? "label-success" : "label-danger")">
-                    @(item.Status ? "ONLINE" : "OFFLINE")
+                <span id="computer-id-@item.Id" class="label @(item.IsOnline ? "label-success" : "label-danger")">
+                    @(item.IsOnline ? "ONLINE" : "OFFLINE")
                 </span>
             </td>
             <td>

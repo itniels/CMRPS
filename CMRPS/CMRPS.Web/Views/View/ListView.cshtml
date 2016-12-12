@@ -19,7 +19,7 @@
                 @Html.TextBox("HostnameFilter", null, new {@class = "form-control", placeholder = "All", onkeyup = "filterListView();"})
             </div>
             <div class="row">
-                <div>Status:</div>
+                <div>IsOnline:</div>
                 @Html.DropDownList("StatusFilter", new SelectList(ViewBag.Status), "All", new {@class = "form-control", onchange = "filterListView();"})
             </div>
             <div class="row">

@@ -275,6 +275,10 @@
     <Compile Include="Migrations\201611111246135_m9.Designer.cs">
       <DependentUpon>201611111246135_m9.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612121601388_m10.cs" />
+    <Compile Include="Migrations\201612121601388_m10.Designer.cs">
+      <DependentUpon>201612121601388_m10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsView\ComputerTypeViewModels.cs" />
     <Compile Include="ModelsView\ComputerViewModels.cs" />
@@ -468,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611111246135_m9.resx">
       <DependentUpon>201611111246135_m9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612121601388_m10.resx">
+      <DependentUpon>201612121601388_m10.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

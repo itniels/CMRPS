@@ -15,12 +15,12 @@
     {
         var title = "IP: " + item.IP + Environment.NewLine + "MAC: " + item.MAC + Environment.NewLine + "Last Seen: " + item.LastSeen.ToShortDateString() + " " + item.LastSeen.ToShortTimeString();
 
-        <tr id="tr-id-@item.Id" class="computer-row @(item.Status ? "tablerow-online" : "tablerow-offline")">
+        <tr id="tr-id-@item.Id" class="computer-row @(item.IsOnline ? "tablerow-online" : "tablerow-offline")">
             <td>
                 <span id="hidden-id" class="hidden">@item.Id</span>
                 <span id="hidden-name" class="hidden">@item.Name</span>
                 <span id="hidden-hostname" class="hidden">@item.Hostname</span>
-                <span id="hidden-status" class="hidden">@(item.Status ? "Online":"Offline")</span>
+                <span id="hidden-status" class="hidden">@(item.IsOnline ? "Online":"Offline")</span>
                 <span id="hidden-type" class="hidden">@item.Type.Name</span>
                 <span id="hidden-color" class="hidden">@item.Color.Name</span>
                 <span id="hidden-location" class="hidden">@item.Location.Location</span>
