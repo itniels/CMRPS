@@ -236,8 +236,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\Connected.cs" />
-    <Compile Include="Hubs\HomeHub.cs" />
     <Compile Include="Hubs\LiveUpdatesHub.cs" />
     <Compile Include="Migrations\201611011748013_m1.cs" />
     <Compile Include="Migrations\201611011748013_m1.Designer.cs">
@@ -437,7 +435,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Power\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

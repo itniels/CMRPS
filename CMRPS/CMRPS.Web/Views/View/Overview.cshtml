@@ -31,11 +31,9 @@
                                 <div class="dropdown well-menu-button">
                                     <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         <span class="glyphicon glyphicon-tasks"></span>
-                                        @*<span class="caret"></span>*@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li class="power-menu-info"><a href="#" onclick="showDetailsModal(@item.Id, '@Url.Action("Details", "Computer")');" data-toggle="modal" data-target="#modalDetails"><span class="glyphicon glyphicon-info-sign"></span> Info</a></li>
-                                        @*<li role="separator" class="divider"></li>*@
                                         <li class="power-menu-poweron"><a href="#" onclick="computerActionStartup(@item.Id);"><span class="glyphicon glyphicon-play"></span> Power On</a></li>
                                         <li class="power-menu-poweroff"><a href="#" onclick="computerActionShutdown(@item.Id);"><span class="glyphicon glyphicon-stop"></span> Power Off</a></li>
                                         <li class="power-menu-reboot"><a href="#" onclick="computerActionReboot(@item.Id);"><span class="glyphicon glyphicon-refresh"></span> Reboot</a></li>
